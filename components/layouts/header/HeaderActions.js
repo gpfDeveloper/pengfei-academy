@@ -1,15 +1,19 @@
-import React from 'react';
-import { Box, Tooltip, IconButton, Badge, Button } from '@mui/material';
+import { useRouter } from 'next/router';
+
+import { Box, Tooltip, IconButton, Badge, Button, Stack } from '@mui/material';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+
 import { useSelector, useDispatch } from 'react-redux';
 import { setDark, setLight } from 'store/theme';
 import { login } from 'store/auth';
+
 import HeaderActionsAccount from './HeaderActionsAccount';
 
 export default function HeaderActions() {
+  const router = useRouter();
   const isDark = useSelector((state) => state.theme.isDark);
   const isLogin = useSelector((state) => state.auth.isLogin);
   const dispatch = useDispatch();
@@ -45,11 +49,16 @@ export default function HeaderActions() {
         </IconButton>
       </Tooltip>
       {!isLogin && (
-        <Button variant="outlined" onClick={() => dispatch(login())}>
-          Log in
-        </Button>
+        <Stack sx={{ flexDirection: 'row', gap: 2, marginLeft: 2 }}>
+          <Button variant="outlined" onClick={() => dispatch(login())}>
+            Log in
+          </Button>
+
+          <Button variant="contained" onClick={() => router.push('/register')}>
+            Sign up
+          </Button>
+        </Stack>
       )}
-      {!isLogin && <Button variant="contained">Sign up</Button>}
       {isLogin && (
         <Tooltip title="Wishlist">
           <IconButton size="large" color="inherit">

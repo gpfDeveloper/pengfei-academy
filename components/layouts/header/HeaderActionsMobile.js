@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { useRouter } from 'next/router';
+
 import {
   Box,
   Tooltip,
@@ -9,7 +11,6 @@ import {
   Typography,
   ListItemIcon,
 } from '@mui/material';
-
 import MoreIcon from '@mui/icons-material/MoreVert';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
@@ -28,6 +29,7 @@ export default function HeaderActionsMobile() {
   const isDark = useSelector((state) => state.theme.isDark);
   const isLogin = useSelector((state) => state.auth.isLogin);
   const dispatch = useDispatch();
+  const router = useRouter();
 
   const mobileMenuId = 'menu-mobile';
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
@@ -55,6 +57,14 @@ export default function HeaderActionsMobile() {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
+      <MenuItem>
+        <ListItemIcon>
+          <Badge badgeContent={17} color="error" fontSize="small">
+            <ShoppingCartIcon fontSize="small" />
+          </Badge>
+        </ListItemIcon>
+        <Typography variant="inherit">Cart</Typography>
+      </MenuItem>
       {!isDark && (
         <MenuItem onClick={() => dispatch(setDark())}>
           <ListItemIcon>
@@ -80,7 +90,7 @@ export default function HeaderActionsMobile() {
         </MenuItem>
       )}
       {!isLogin && (
-        <MenuItem onClick={() => dispatch(login())}>
+        <MenuItem onClick={() => router.push('/register')}>
           <ListItemIcon>
             <AppRegistrationIcon fontSize="small" />
           </ListItemIcon>
@@ -97,14 +107,7 @@ export default function HeaderActionsMobile() {
           <Typography variant="inherit">Wishlist</Typography>
         </MenuItem>
       )}
-      <MenuItem>
-        <ListItemIcon>
-          <Badge badgeContent={17} color="error" fontSize="small">
-            <ShoppingCartIcon fontSize="small" />
-          </Badge>
-        </ListItemIcon>
-        <Typography variant="inherit">Cart</Typography>
-      </MenuItem>
+
       {isLogin && (
         <MenuItem>
           <ListItemIcon>

@@ -1,10 +1,10 @@
-import React from 'react';
+import Link from 'next/link';
 import { Typography } from '@mui/material';
 
 export default function Brand() {
   return (
     <Typography variant="h6" noWrap component="div">
-      Pengfei Academy
+      <Link href="/">Pengfei Academy</Link>
     </Typography>
   );
 }

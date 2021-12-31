@@ -3,9 +3,10 @@ import { AppBar, Box, Toolbar, Slide } from '@mui/material';
 import useScrollTrigger from '@mui/material/useScrollTrigger';
 import HeaderSearch from 'components/layouts/header/HeaderSearch';
 import Brand from 'components/UIs/Brand';
-import Drawer from 'components/UIs/Drawer';
+import Drawer from 'components/layouts/drawer/Drawer';
 import HeaderActions from './HeaderActions';
 import HeaderActionsMobile from './HeaderActionsMobile';
+import HeaderNavs from './HeaderNavs';
 
 function HideOnScroll(props) {
   const { children } = props;
@@ -27,7 +28,7 @@ export default function Header() {
             <Drawer />
             <Brand />
             <HeaderSearch />
-            <Box sx={{ flexGrow: 1 }} />
+            <HeaderNavs />
             <HeaderActions />
             <HeaderActionsMobile />
           </Toolbar>
