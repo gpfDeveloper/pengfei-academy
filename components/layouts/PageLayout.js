@@ -17,6 +17,15 @@ export default function PageLayout({ children, title, description }) {
     palette: {
       mode: isDark ? 'dark' : 'light',
     },
+    components: {
+      MuiButton: {
+        styleOverrides: {
+          root: {
+            textTransform: 'none',
+          },
+        },
+      },
+    },
   });
 
   return (

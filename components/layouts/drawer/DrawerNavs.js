@@ -14,7 +14,6 @@ import Brand from 'components/UIs/Brand';
 export default function DrawerNavs({ onClose }) {
   const router = useRouter();
   const pathName = router.pathname;
-  console.log(pathName);
   return (
     <Box sx={{ width: 250 }} onClick={onClose} onKeyDown={onClose}>
       <Stack sx={{ padding: 2 }}>
