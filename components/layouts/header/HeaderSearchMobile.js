@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { IconButton, SwipeableDrawer } from '@mui/material';
-import MenuIcon from '@mui/icons-material/Menu';
-import DrawerNavs from './DrawerNavs';
+import SearchIcon from '@mui/icons-material/Search';
+import HeaderSearchMobileInput from './HeaderSearchMobileInput';
 
-export default function Drawer() {
+export default function HeaderSearchMobile() {
   const [isOpen, setIsOpen] = useState(false);
   const drawerCloseHandler = () => setIsOpen(false);
   const drawerOpenHandler = () => setIsOpen(true);
@@ -11,21 +11,28 @@ export default function Drawer() {
     <>
       <IconButton
         size="large"
-        edge="start"
         color="inherit"
-        aria-label="open drawer"
+        aria-label="open search"
         onClick={drawerOpenHandler}
-        sx={{ mr: 2, display: { md: 'block', lg: 'none' } }}
+        sx={{
+          display: {
+            xs: 'flex',
+            sm: 'none',
+            alignItems: 'center',
+            justifyContent: 'center',
+          },
+        }}
       >
-        <MenuIcon />
+        <SearchIcon />
       </IconButton>
       <SwipeableDrawer
-        anchor="left"
+        anchor="Top"
         open={isOpen}
         onOpen={drawerOpenHandler}
         onClose={drawerCloseHandler}
+        PaperProps={{ sx: { height: '40px' } }}
       >
-        <DrawerNavs onClose={drawerCloseHandler} />
+        <HeaderSearchMobileInput />
       </SwipeableDrawer>
     </>
   );

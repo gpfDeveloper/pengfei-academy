@@ -29,6 +29,7 @@ export default function RegisterForm() {
   } = useForm();
   const onSubmit = ({ name, email, password }) => {
     console.log(name, email, password);
+    console.log(errors);
   };
   return (
     <Stack sx={{ gap: 2 }} component="form" onSubmit={handleSubmit(onSubmit)}>
@@ -79,11 +80,16 @@ export default function RegisterForm() {
         name="password"
         defaultValue=""
         control={control}
-        rules={{ required: true }}
+        rules={{ minLength: 6, maxLength: 64 }}
         render={({ field }) => (
           <TextField
             error={Boolean(errors.password)}
-            helperText={errors.password && 'Please enter your password'}
+            helperText={
+              errors.password &&
+              (errors.password.type === 'minLength'
+                ? 'Password should have at least 6 charactor'
+                : 'Password should have at most 64 charactors')
+            }
             label="Password"
             type={showPassword ? 'text' : 'password'}
             InputProps={{

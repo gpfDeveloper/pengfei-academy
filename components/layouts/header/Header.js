@@ -5,6 +5,7 @@ import HeaderSearch from 'components/layouts/header/HeaderSearch';
 import Brand from 'components/UIs/Brand';
 import Drawer from 'components/layouts/drawer/Drawer';
 import HeaderActions from './HeaderActions';
+import HeaderSearchMobile from './HeaderSearchMobile';
 import HeaderActionsMobile from './HeaderActionsMobile';
 import HeaderNavs from './HeaderNavs';
 
@@ -30,6 +31,7 @@ export default function Header() {
             <HeaderSearch />
             <HeaderNavs />
             <HeaderActions />
+            <HeaderSearchMobile />
             <HeaderActionsMobile />
           </Toolbar>
         </AppBar>
