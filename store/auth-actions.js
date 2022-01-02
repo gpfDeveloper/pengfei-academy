@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 import { login } from 'store/auth';
-import { setNotification } from './notification';
+import { setSnackbar } from './snackbar';
 
 export const loginAsync =
   ({ email, password }) =>
@@ -10,14 +10,12 @@ export const loginAsync =
       const data = await axios.post('/api/user/login', { email, password });
       const { id, token, name } = data.data;
       dispatch(login({ id, token, name }));
-      dispatch(
-        setNotification({ severity: 'success', message: 'Login success.' })
-      );
+      dispatch(setSnackbar({ severity: 'success', message: 'Login success.' }));
       return true;
     } catch (error) {
       const message = error.response?.data?.message;
       dispatch(
-        setNotification({
+        setSnackbar({
           severity: 'error',
           message: message || 'Login failed, please try again later',
         })

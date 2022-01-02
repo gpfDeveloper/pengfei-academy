@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux';
 import Header from './header/Header';
 import Footer from './Footer';
 import { getTheme } from 'utils/theme';
-import Notification from 'components/UIs/Notification';
+import Snackbar from 'components/UIs/Snackbar';
 
 const companyName = 'Pengfei Academy';
 
@@ -34,7 +34,7 @@ export default function PageLayout({ children, title, description }) {
         {children}
       </Container>
       <Footer />
-      <Notification />
+      <Snackbar />
     </ThemeProvider>
   );
 }

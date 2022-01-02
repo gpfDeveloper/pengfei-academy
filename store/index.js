@@ -2,13 +2,13 @@ import { configureStore } from '@reduxjs/toolkit';
 
 import themeReducer from './theme';
 import authReducer from './auth';
-import notificationReducer from './notification';
+import snackbarReducer from './snackbar';
 
 const store = configureStore({
   reducer: {
     theme: themeReducer,
     auth: authReducer,
-    notification: notificationReducer,
+    snackbar: snackbarReducer,
   },
 });
 
