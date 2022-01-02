@@ -10,7 +10,7 @@ const Search = styled('div')(({ theme }) => ({
   '&:hover': {
     backgroundColor: alpha(theme.palette.common.white, 0.25),
   },
-  minWidth: '100vw',
+  //   minWidth: '100vw',
 }));
 
 const SearchIconWrapper = styled('div')(({ theme }) => ({
@@ -30,7 +30,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     // vertical padding + font size from searchIcon
     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
     transition: theme.transitions.create('width'),
-    minWidth: '100vw',
+    //     minWidth: '100vw',
   },
 }));
 

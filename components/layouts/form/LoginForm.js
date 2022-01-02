@@ -1,4 +1,5 @@
 import { useState } from 'react';
+
 import {
   TextField,
   Button,
@@ -13,7 +14,11 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 import { Controller, useForm } from 'react-hook-form';
 
+import { useDispatch } from 'react-redux';
+import { loginAsync } from 'store/auth-actions';
+
 export default function LoginForm() {
+  const dispatch = useDispatch();
   const [showPassword, setShowPassword] = useState(false);
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
@@ -26,8 +31,8 @@ export default function LoginForm() {
     handleSubmit,
     control,
   } = useForm();
-  const onSubmit = ({ email, password }) => {
-    console.log(email, password);
+  const onSubmit = async ({ email, password }) => {
+    dispatch(loginAsync({ email, password }));
   };
   return (
     <Stack sx={{ gap: 2 }} component="form" onSubmit={handleSubmit(onSubmit)}>

@@ -1,9 +1,9 @@
 import nc from 'next-connect';
 
-import { register } from 'controllers/user';
+import { login } from 'controllers/user';
 
 const handler = nc();
 
-handler.post(register);
+handler.post(login);
 
 export default handler;

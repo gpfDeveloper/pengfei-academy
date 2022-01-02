@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import axios from 'axios';
+
 import {
   TextField,
   Button,
@@ -28,8 +30,7 @@ export default function RegisterForm() {
     control,
   } = useForm();
   const onSubmit = ({ name, email, password }) => {
-    console.log(name, email, password);
-    console.log(errors);
+    axios.post('/api/user/register', { name, email, password });
   };
   return (
     <Stack sx={{ gap: 2 }} component="form" onSubmit={handleSubmit(onSubmit)}>

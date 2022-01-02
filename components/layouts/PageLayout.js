@@ -1,12 +1,12 @@
 import Head from 'next/head';
 
 import { Container, CssBaseline } from '@mui/material';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { ThemeProvider } from '@mui/material/styles';
 import { useSelector } from 'react-redux';
 
 import Header from './header/Header';
 import Footer from './Footer';
-import { COLORS } from 'utils/constants';
+import { getTheme } from 'utils/theme';
 
 const companyName = 'Pengfei Academy';
 
@@ -16,31 +16,7 @@ export default function PageLayout({ children, title, description }) {
     'Pengfei Acadamy is an online learning and teaching marketplace. Learn web development, algorithm, programming in general and more.';
 
   const isDark = useSelector((state) => state.theme.isDark);
-  const theme = createTheme({
-    palette: {
-      mode: isDark ? 'dark' : 'light',
-      primary: {
-        main: isDark ? COLORS.dark.primary : COLORS.light.primary,
-      },
-    },
-    components: {
-      MuiButton: {
-        styleOverrides: {
-          root: {
-            textTransform: 'none',
-          },
-        },
-      },
-      MuiAppBar: {
-        styleOverrides: {
-          root: {
-            backgroundColor: isDark ? 'inherit' : 'white',
-            color: isDark ? 'inherit' : 'rgba(0,0,0,.87)',
-          },
-        },
-      },
-    },
-  });
+  const theme = getTheme(isDark);
 
   return (
     <ThemeProvider theme={theme}>

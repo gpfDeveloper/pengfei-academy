@@ -26,11 +26,11 @@ export default function HeaderSearchMobile() {
         <SearchIcon />
       </IconButton>
       <SwipeableDrawer
-        anchor="Top"
+        anchor="top"
         open={isOpen}
         onOpen={drawerOpenHandler}
         onClose={drawerCloseHandler}
-        PaperProps={{ sx: { height: '40px' } }}
+        // PaperProps={{ sx: { height: '40px' } }}
       >
         <HeaderSearchMobileInput />
       </SwipeableDrawer>

@@ -4,12 +4,3 @@ export const PAGES = [
   { label: 'Article', path: '/article' },
   { label: 'Teach here', path: '/teaching' },
 ];
-
-export const COLORS = {
-  light: {
-    primary: '#8651E2',
-  },
-  dark: {
-    primary: '#BF9CFA',
-  },
-};
