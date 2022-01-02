@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux';
 import Header from './header/Header';
 import Footer from './Footer';
 import { getTheme } from 'utils/theme';
+import Notification from 'components/UIs/Notification';
 
 const companyName = 'Pengfei Academy';
 
@@ -17,6 +18,8 @@ export default function PageLayout({ children, title, description }) {
 
   const isDark = useSelector((state) => state.theme.isDark);
   const theme = getTheme(isDark);
+
+  const notification = useSelector((state) => state.notification);
 
   return (
     <ThemeProvider theme={theme}>
@@ -33,6 +36,10 @@ export default function PageLayout({ children, title, description }) {
         {children}
       </Container>
       <Footer />
+      <Notification
+        severity={notification.severity}
+        message={notification.message}
+      />
     </ThemeProvider>
   );
 }
