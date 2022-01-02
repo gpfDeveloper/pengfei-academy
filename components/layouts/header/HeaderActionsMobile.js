@@ -22,7 +22,7 @@ import PersonIcon from '@mui/icons-material/Person';
 import LogoutIcon from '@mui/icons-material/Logout';
 
 import { useSelector, useDispatch } from 'react-redux';
-import { login, logout } from 'store/auth';
+import { logout } from 'store/auth';
 import { setDark, setLight } from 'store/theme';
 
 export default function HeaderActionsMobile() {
@@ -82,7 +82,7 @@ export default function HeaderActionsMobile() {
         </MenuItem>
       )}
       {!isLogin && (
-        <MenuItem onClick={() => dispatch(login())}>
+        <MenuItem onClick={() => router.push('/login')}>
           <ListItemIcon>
             <LoginIcon fontSize="small" />
           </ListItemIcon>

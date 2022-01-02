@@ -1,4 +1,6 @@
-import { useState, forwardRef, useEffect } from 'react';
+import { forwardRef } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { clearNotification } from 'store/notification';
 import dynamic from 'next/dynamic';
 
 import Stack from '@mui/material/Stack';
@@ -9,19 +11,16 @@ const Alert = forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
-function Notification({ severity, message }) {
-  const [open, setOpen] = useState(false);
-  useEffect(() => {
-    if (message) {
-      setOpen(true);
-    }
-  }, [message]);
+function Notification() {
+  const dispatch = useDispatch();
+  const { severity, message } = useSelector((state) => state.notification);
+  const open = Boolean(message);
 
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {
       return;
     }
-    setOpen(false);
+    dispatch(clearNotification());
   };
 
   return (

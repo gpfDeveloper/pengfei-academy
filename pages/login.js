@@ -1,3 +1,6 @@
+import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { useRouter } from 'next/router';
 import NextLink from 'next/link';
 import { Typography, Stack, Divider, Link } from '@mui/material';
 
@@ -5,6 +8,14 @@ import PageLayout from 'components/layouts/PageLayout';
 import LoginForm from 'components/layouts/form/LoginForm';
 
 export default function Login() {
+  const router = useRouter();
+  const isLogin = useSelector((state) => state.auth.isLogin);
+  console.log(isLogin);
+  useEffect(() => {
+    if (isLogin) {
+      router.push('/');
+    }
+  }, []);
   return (
     <PageLayout title="Log In to Pengfei Academy!">
       <Stack

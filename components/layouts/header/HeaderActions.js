@@ -8,7 +8,6 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { setDark, setLight } from 'store/theme';
-import { login } from 'store/auth';
 
 import HeaderActionsAccount from './HeaderActionsAccount';
 
@@ -50,7 +49,7 @@ export default function HeaderActions() {
       </Tooltip>
       {!isLogin && (
         <Stack sx={{ flexDirection: 'row', gap: 2, marginLeft: 2 }}>
-          <Button variant="outlined" onClick={() => dispatch(login())}>
+          <Button variant="outlined" onClick={() => router.push('/login')}>
             Log in
           </Button>
 

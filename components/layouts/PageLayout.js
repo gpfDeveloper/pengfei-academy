@@ -19,8 +19,6 @@ export default function PageLayout({ children, title, description }) {
   const isDark = useSelector((state) => state.theme.isDark);
   const theme = getTheme(isDark);
 
-  const notification = useSelector((state) => state.notification);
-
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -36,10 +34,7 @@ export default function PageLayout({ children, title, description }) {
         {children}
       </Container>
       <Footer />
-      <Notification
-        severity={notification.severity}
-        message={notification.message}
-      />
+      <Notification />
     </ThemeProvider>
   );
 }

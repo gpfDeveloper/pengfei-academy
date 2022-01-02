@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const initialState = {
+let initialState = {
   isLogin: false,
   id: null,
   name: null,
@@ -16,12 +16,14 @@ const authSlice = createSlice({
       state.id = id;
       state.name = name;
       state.token = token;
+      localStorage.setItem('userInfo', JSON.stringify(state));
     },
     logout: (state) => {
       state.isLogin = false;
       state.id = null;
       state.name = null;
       state.token = null;
+      localStorage.clear();
     },
   },
 });

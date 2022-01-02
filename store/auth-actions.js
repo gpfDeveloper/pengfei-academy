@@ -13,8 +13,15 @@ export const loginAsync =
       dispatch(
         setNotification({ severity: 'success', message: 'Login success.' })
       );
+      return true;
     } catch (error) {
-      const message = error.response.data.message;
-      dispatch(setNotification({ severity: 'error', message }));
+      const message = error.response?.data?.message;
+      dispatch(
+        setNotification({
+          severity: 'error',
+          message: message || 'Login failed, please try again later',
+        })
+      );
+      return false;
     }
   };
