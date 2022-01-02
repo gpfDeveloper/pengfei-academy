@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { useRouter } from 'next/router';
 
 import {
   TextField,
@@ -20,7 +19,6 @@ import { loginAsync } from 'store/auth-actions';
 
 export default function LoginForm() {
   const dispatch = useDispatch();
-  const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
@@ -33,11 +31,8 @@ export default function LoginForm() {
     handleSubmit,
     control,
   } = useForm();
-  const onSubmit = async ({ email, password }) => {
-    const isLogin = await dispatch(loginAsync({ email, password }));
-    if (isLogin) {
-      router.push('/');
-    }
+  const onSubmit = ({ email, password }) => {
+    dispatch(loginAsync({ email, password }));
   };
   return (
     <Stack sx={{ gap: 2 }} component="form" onSubmit={handleSubmit(onSubmit)}>

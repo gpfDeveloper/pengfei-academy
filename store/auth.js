@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import Cookies from 'js-cookie';
 
 let initialState = {
   isLogin: false,
@@ -6,6 +7,11 @@ let initialState = {
   name: null,
   token: null,
 };
+
+const userInfo = Cookies.get('userInfo');
+if (userInfo) {
+  initialState = JSON.parse(userInfo);
+}
 
 const authSlice = createSlice({
   name: 'auth',
@@ -16,14 +22,14 @@ const authSlice = createSlice({
       state.id = id;
       state.name = name;
       state.token = token;
-      localStorage.setItem('userInfo', JSON.stringify(state));
+      Cookies.set('userInfo', JSON.stringify(state));
     },
     logout: (state) => {
       state.isLogin = false;
       state.id = null;
       state.name = null;
       state.token = null;
-      localStorage.clear();
+      Cookies.remove('userInfo');
     },
   },
 });
