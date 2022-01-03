@@ -23,3 +23,30 @@ export const loginAsync =
       return false;
     }
   };
+
+export const registerAsync =
+  ({ name: inputName, email, password }) =>
+  async (dispatch) => {
+    try {
+      const data = await axios.post('/api/user/register', {
+        name: inputName,
+        email,
+        password,
+      });
+      const { id, token, name } = data.data;
+      dispatch(login({ id, token, name }));
+      dispatch(
+        setSnackbar({ severity: 'success', message: 'register success.' })
+      );
+      return true;
+    } catch (error) {
+      const message = error.response?.data?.message;
+      dispatch(
+        setSnackbar({
+          severity: 'error',
+          message: message || 'register failed, please try again later',
+        })
+      );
+      return false;
+    }
+  };

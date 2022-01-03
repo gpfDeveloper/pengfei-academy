@@ -15,7 +15,7 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { Controller, useForm } from 'react-hook-form';
 
 import { useDispatch } from 'react-redux';
-import { loginAsync } from 'store/auth-actions';
+import { loginAsync } from 'store/auth-async';
 
 export default function LoginForm() {
   const dispatch = useDispatch();

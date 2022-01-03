@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { registerAsync } from 'store/auth-async';
 
 import {
   TextField,
@@ -17,6 +18,7 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { Controller, useForm } from 'react-hook-form';
 
 export default function RegisterForm() {
+  const dispatch = useDispatch();
   const [showPassword, setShowPassword] = useState(false);
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
@@ -30,7 +32,7 @@ export default function RegisterForm() {
     control,
   } = useForm();
   const onSubmit = ({ name, email, password }) => {
-    axios.post('/api/user/register', { name, email, password });
+    dispatch(registerAsync({ name, email, password }));
   };
   return (
     <Stack sx={{ gap: 2 }} component="form" onSubmit={handleSubmit(onSubmit)}>
