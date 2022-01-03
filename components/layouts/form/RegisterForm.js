@@ -14,12 +14,16 @@ import EmailIcon from '@mui/icons-material/Email';
 import LockIcon from '@mui/icons-material/Lock';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import LoadingButton from '@mui/lab/LoadingButton';
 
 import { Controller, useForm } from 'react-hook-form';
 
 export default function RegisterForm() {
   const dispatch = useDispatch();
+
   const [showPassword, setShowPassword] = useState(false);
+  const [isRegisting, setIsRegisting] = useState(false);
+
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
@@ -32,7 +36,10 @@ export default function RegisterForm() {
     control,
   } = useForm();
   const onSubmit = ({ name, email, password }) => {
-    dispatch(registerAsync({ name, email, password }));
+    setIsRegisting(true);
+    dispatch(registerAsync({ name, email, password })).then(() =>
+      setIsRegisting(false)
+    );
   };
   return (
     <Stack sx={{ gap: 2 }} component="form" onSubmit={handleSubmit(onSubmit)}>
@@ -117,9 +124,16 @@ export default function RegisterForm() {
           />
         )}
       />
-      <Button size="large" variant="contained" type="submit">
-        Sign Up
-      </Button>
+      {!isRegisting && (
+        <Button size="large" variant="contained" type="submit">
+          Sign Up
+        </Button>
+      )}
+      {isRegisting && (
+        <LoadingButton loading size="large">
+          Sign up
+        </LoadingButton>
+      )}
     </Stack>
   );
 }

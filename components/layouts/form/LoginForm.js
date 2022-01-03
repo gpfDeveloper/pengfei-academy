@@ -11,6 +11,7 @@ import EmailIcon from '@mui/icons-material/Email';
 import LockIcon from '@mui/icons-material/Lock';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import LoadingButton from '@mui/lab/LoadingButton';
 
 import { Controller, useForm } from 'react-hook-form';
 
@@ -19,7 +20,10 @@ import { loginAsync } from 'store/auth-async';
 
 export default function LoginForm() {
   const dispatch = useDispatch();
+
   const [showPassword, setShowPassword] = useState(false);
+  const [isLogining, setIsLogining] = useState(false);
+
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
@@ -32,7 +36,8 @@ export default function LoginForm() {
     control,
   } = useForm();
   const onSubmit = ({ email, password }) => {
-    dispatch(loginAsync({ email, password }));
+    setIsLogining(true);
+    dispatch(loginAsync({ email, password })).then(() => setIsLogining(false));
   };
   return (
     <Stack sx={{ gap: 2 }} component="form" onSubmit={handleSubmit(onSubmit)}>
@@ -91,9 +96,16 @@ export default function LoginForm() {
           />
         )}
       />
-      <Button size="large" variant="contained" type="submit">
-        Log In
-      </Button>
+      {!isLogining && (
+        <Button size="large" variant="contained" type="submit">
+          Log In
+        </Button>
+      )}
+      {isLogining && (
+        <LoadingButton loading size="large">
+          Login
+        </LoadingButton>
+      )}
     </Stack>
   );
 }
