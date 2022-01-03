@@ -10,10 +10,10 @@ import Spinner from 'components/UIs/Spinner';
 
 export default function Login() {
   const router = useRouter();
-  const isLogin = useSelector((state) => state.auth.isLogin);
+  const isLogin = useSelector((state) => state.user.isLogin);
   useEffect(() => {
     if (isLogin) {
-      router.push('/');
+      router.replace('/');
     }
   }, [isLogin]);
   return (

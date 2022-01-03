@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { login } from 'store/auth';
+import { login, updateEmail } from 'store/user';
 import { setSnackbar } from './snackbar';
 
 export const loginAsync =
@@ -8,8 +8,8 @@ export const loginAsync =
   async (dispatch) => {
     try {
       const data = await axios.post('/api/user/login', { email, password });
-      const { id, token, name } = data.data;
-      dispatch(login({ id, token, name }));
+      const { token, name, role } = data.data;
+      dispatch(login({ token, name, email, role }));
       dispatch(setSnackbar({ severity: 'success', message: 'Login success.' }));
       return true;
     } catch (error) {
@@ -33,8 +33,8 @@ export const registerAsync =
         email,
         password,
       });
-      const { id, token, name } = data.data;
-      dispatch(login({ id, token, name }));
+      const { token, name, role } = data.data;
+      dispatch(login({ token, name, email, role }));
       dispatch(
         setSnackbar({ severity: 'success', message: 'register success.' })
       );
@@ -49,4 +49,11 @@ export const registerAsync =
       );
       return false;
     }
+  };
+
+export const accountSecurityUpdate =
+  ({ currentPassword, newPassword, email }) =>
+  async (dispatch) => {
+    console.log(currentPassword, newPassword, email);
+    dispatch(updateEmail(email));
   };

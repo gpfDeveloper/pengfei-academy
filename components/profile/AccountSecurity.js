@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { registerAsync } from 'store/user-async';
+import { useSelector, useDispatch } from 'react-redux';
+import { accountSecurityUpdate } from 'store/user-async';
 
 import {
   TextField,
@@ -9,7 +9,6 @@ import {
   IconButton,
   InputAdornment,
 } from '@mui/material';
-import PersonIcon from '@mui/icons-material/Person';
 import EmailIcon from '@mui/icons-material/Email';
 import LockIcon from '@mui/icons-material/Lock';
 import Visibility from '@mui/icons-material/Visibility';
@@ -18,55 +17,40 @@ import LoadingButton from '@mui/lab/LoadingButton';
 
 import { Controller, useForm } from 'react-hook-form';
 
-export default function RegisterForm() {
+export default function AccountSecurity() {
   const dispatch = useDispatch();
 
-  const [showPassword, setShowPassword] = useState(false);
-  const [isRegisting, setIsRegisting] = useState(false);
+  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const email = useSelector((state) => state.user.email);
 
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
-  const handleClickShowPassword = () => {
-    setShowPassword(!showPassword);
+  const handleClickShowCurrentPassword = () => {
+    setShowCurrentPassword(!showCurrentPassword);
+  };
+  const handleClickShowNewPassword = () => {
+    setShowNewPassword(!showNewPassword);
   };
   const {
     formState: { errors },
     handleSubmit,
     control,
   } = useForm();
-  const onSubmit = ({ name, email, password }) => {
-    setIsRegisting(true);
-    dispatch(registerAsync({ name, email, password })).then(() =>
-      setIsRegisting(false)
-    );
+
+  const onSubmit = ({ email, newPassword, currentPassword }) => {
+    setIsSaving(true);
+    dispatch(
+      accountSecurityUpdate({ email, newPassword, currentPassword })
+    ).then(() => setIsSaving(false));
   };
   return (
     <Stack sx={{ gap: 2 }} component="form" onSubmit={handleSubmit(onSubmit)}>
       <Controller
-        name="name"
-        defaultValue=""
-        control={control}
-        rules={{ required: true }}
-        render={({ field }) => (
-          <TextField
-            error={Boolean(errors.name)}
-            helperText={errors.name && 'Please enter your full name'}
-            label="Full Name"
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <PersonIcon />
-                </InputAdornment>
-              ),
-            }}
-            {...field}
-          />
-        )}
-      />
-      <Controller
         name="email"
-        defaultValue=""
+        defaultValue={email}
         control={control}
         rules={{ required: true }}
         render={({ field }) => (
@@ -87,7 +71,7 @@ export default function RegisterForm() {
         )}
       />
       <Controller
-        name="password"
+        name="newPassword"
         defaultValue=""
         control={control}
         rules={{ minLength: 6, maxLength: 64 }}
@@ -100,8 +84,8 @@ export default function RegisterForm() {
                 ? 'Password should have at least 6 charactor'
                 : 'Password should have at most 64 charactors')
             }
-            label="Password"
-            type={showPassword ? 'text' : 'password'}
+            label="New password"
+            type={showNewPassword ? 'text' : 'password'}
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
@@ -112,10 +96,10 @@ export default function RegisterForm() {
                 <InputAdornment position="end">
                   <IconButton
                     aria-label="toggle password visibility"
-                    onClick={handleClickShowPassword}
+                    onClick={handleClickShowNewPassword}
                     onMouseDown={handleMouseDownPassword}
                   >
-                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                    {showNewPassword ? <VisibilityOff /> : <Visibility />}
                   </IconButton>
                 </InputAdornment>
               ),
@@ -124,14 +108,52 @@ export default function RegisterForm() {
           />
         )}
       />
-      {!isRegisting && (
+      <Controller
+        name="currentPassword"
+        defaultValue=""
+        control={control}
+        rules={{ minLength: 6, maxLength: 64 }}
+        render={({ field }) => (
+          <TextField
+            error={Boolean(errors.password)}
+            helperText={
+              errors.password &&
+              (errors.password.type === 'minLength'
+                ? 'Password should have at least 6 charactor'
+                : 'Password should have at most 64 charactors')
+            }
+            label="Current password"
+            type={showCurrentPassword ? 'text' : 'password'}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <LockIcon />
+                </InputAdornment>
+              ),
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={handleClickShowCurrentPassword}
+                    onMouseDown={handleMouseDownPassword}
+                  >
+                    {showCurrentPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+            {...field}
+          />
+        )}
+      />
+      {!isSaving && (
         <Button size="large" variant="contained" type="submit">
-          Sign Up
+          Save
         </Button>
       )}
-      {isRegisting && (
+      {isSaving && (
         <LoadingButton loading size="large">
-          Sign up
+          Save
         </LoadingButton>
       )}
     </Stack>

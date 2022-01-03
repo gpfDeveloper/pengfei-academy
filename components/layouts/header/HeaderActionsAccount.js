@@ -1,10 +1,12 @@
 import { useState } from 'react';
+import { useRouter } from 'next/router';
 import { IconButton, Tooltip, Menu, MenuItem } from '@mui/material';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import { useDispatch } from 'react-redux';
-import { logout } from 'store/auth';
+import { logout } from 'store/user';
 
 export default function HeaderActionsAccount() {
+  const router = useRouter();
   const [anchorEl, setAnchorEl] = useState(null);
   const isMenuOpen = Boolean(anchorEl);
   const menuId = 'account-menu';
@@ -13,6 +15,10 @@ export default function HeaderActionsAccount() {
   };
   const handleMenuClose = () => {
     setAnchorEl(null);
+  };
+  const profileHandler = () => {
+    setAnchorEl(null);
+    router.push('/profile');
   };
 
   const dispatch = useDispatch();
@@ -33,7 +39,7 @@ export default function HeaderActionsAccount() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+      <MenuItem onClick={profileHandler}>Account</MenuItem>
       <MenuItem
         onClick={() => {
           dispatch(logout());

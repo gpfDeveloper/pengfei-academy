@@ -16,7 +16,7 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import { Controller, useForm } from 'react-hook-form';
 
 import { useDispatch } from 'react-redux';
-import { loginAsync } from 'store/auth-async';
+import { loginAsync } from 'store/user-async';
 
 export default function LoginForm() {
   const dispatch = useDispatch();
@@ -37,7 +37,11 @@ export default function LoginForm() {
   } = useForm();
   const onSubmit = ({ email, password }) => {
     setIsLogining(true);
-    dispatch(loginAsync({ email, password })).then(() => setIsLogining(false));
+    dispatch(loginAsync({ email, password })).then((isSucc) => {
+      if (!isSucc) {
+        setIsLogining(false);
+      }
+    });
   };
   return (
     <Stack sx={{ gap: 2 }} component="form" onSubmit={handleSubmit(onSubmit)}>

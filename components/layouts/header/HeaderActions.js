@@ -14,7 +14,7 @@ import HeaderActionsAccount from './HeaderActionsAccount';
 export default function HeaderActions() {
   const router = useRouter();
   const isDark = useSelector((state) => state.theme.isDark);
-  const isLogin = useSelector((state) => state.auth.isLogin);
+  const isLogin = useSelector((state) => state.user.isLogin);
   const dispatch = useDispatch();
   return (
     <Box sx={{ display: { xs: 'none', md: 'flex' } }}>

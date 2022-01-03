@@ -14,7 +14,7 @@ const snackbarSlice = createSlice({
       state.message = message;
     },
     clearSnackbar: (state) => {
-      state.severity = '';
+      state.severity = 'info';
       state.message = '';
     },
   },

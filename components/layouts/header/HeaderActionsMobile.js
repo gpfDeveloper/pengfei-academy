@@ -22,12 +22,12 @@ import PersonIcon from '@mui/icons-material/Person';
 import LogoutIcon from '@mui/icons-material/Logout';
 
 import { useSelector, useDispatch } from 'react-redux';
-import { logout } from 'store/auth';
+import { logout } from 'store/user';
 import { setDark, setLight } from 'store/theme';
 
 export default function HeaderActionsMobile() {
   const isDark = useSelector((state) => state.theme.isDark);
-  const isLogin = useSelector((state) => state.auth.isLogin);
+  const isLogin = useSelector((state) => state.user.isLogin);
   const dispatch = useDispatch();
   const router = useRouter();
 

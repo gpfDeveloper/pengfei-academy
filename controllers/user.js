@@ -20,8 +20,9 @@ export const register = async (req, res) => {
   const token = signToken(user);
   res.send({
     token,
-    id: user._id,
     name: user.name,
+    email: user.email,
+    role: user.role,
   });
 };
 
@@ -33,8 +34,9 @@ export const login = async (req, res) => {
     const token = signToken(user);
     res.json({
       token,
-      id: user._id,
       name: user.name,
+      email: user.email,
+      role: user.role,
     });
   } else {
     res.status(401).json({ message: 'Invalid email or password' });

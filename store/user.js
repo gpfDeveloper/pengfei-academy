@@ -5,8 +5,9 @@ const USER_INFO_KEY = 'userInfo';
 
 let initialState = {
   isLogin: false,
-  id: null,
+  role: [],
   name: null,
+  email: null,
   token: null,
 };
 
@@ -15,27 +16,32 @@ if (userInfo) {
   initialState = JSON.parse(userInfo);
 }
 
-const authSlice = createSlice({
-  name: 'auth',
+const userSlice = createSlice({
+  name: 'user',
   initialState,
   reducers: {
-    login: (state, { payload: { id, name, token } }) => {
+    login: (state, { payload: { name, email, token, role } }) => {
       state.isLogin = true;
-      state.id = id;
       state.name = name;
+      state.email = email;
+      state.role = role;
       state.token = token;
       Cookies.set(USER_INFO_KEY, JSON.stringify(state));
     },
     logout: (state) => {
       state.isLogin = false;
-      state.id = null;
       state.name = null;
+      state.email = null;
+      state.role = [];
       state.token = null;
       Cookies.remove(USER_INFO_KEY);
+    },
+    updateEmail: (state, { payload: { email } }) => {
+      state.email = email;
     },
   },
 });
 
-export const { login, logout } = authSlice.actions;
+export const { login, logout, updateEmail } = userSlice.actions;
 
-export default authSlice.reducer;
+export default userSlice.reducer;
