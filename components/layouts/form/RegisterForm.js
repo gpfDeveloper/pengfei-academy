@@ -37,9 +37,9 @@ export default function RegisterForm() {
   } = useForm();
   const onSubmit = ({ name, email, password }) => {
     setIsRegisting(true);
-    dispatch(registerAsync({ name, email, password })).then(() =>
-      setIsRegisting(false)
-    );
+    dispatch(registerAsync({ name, email, password })).then((isSucc) => {
+      if (!isSucc) setIsRegisting(false);
+    });
   };
   return (
     <Stack sx={{ gap: 2 }} component="form" onSubmit={handleSubmit(onSubmit)}>

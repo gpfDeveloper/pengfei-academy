@@ -23,7 +23,7 @@ export default function AccountSecurity() {
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
-  const email = useSelector((state) => state.user.email);
+  const { email, token } = useSelector((state) => state.user);
 
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
@@ -43,7 +43,7 @@ export default function AccountSecurity() {
   const onSubmit = ({ email, newPassword, currentPassword }) => {
     setIsSaving(true);
     dispatch(
-      accountSecurityUpdate({ email, newPassword, currentPassword })
+      accountSecurityUpdate({ email, newPassword, currentPassword, token })
     ).then(() => setIsSaving(false));
   };
   return (
@@ -77,10 +77,10 @@ export default function AccountSecurity() {
         rules={{ minLength: 6, maxLength: 64 }}
         render={({ field }) => (
           <TextField
-            error={Boolean(errors.password)}
+            error={Boolean(errors.newPassword)}
             helperText={
-              errors.password &&
-              (errors.password.type === 'minLength'
+              errors.newPassword &&
+              (errors.newPassword.type === 'minLength'
                 ? 'Password should have at least 6 charactor'
                 : 'Password should have at most 64 charactors')
             }
@@ -112,15 +112,12 @@ export default function AccountSecurity() {
         name="currentPassword"
         defaultValue=""
         control={control}
-        rules={{ minLength: 6, maxLength: 64 }}
+        rules={{ required: true }}
         render={({ field }) => (
           <TextField
-            error={Boolean(errors.password)}
+            error={Boolean(errors.currentPassword)}
             helperText={
-              errors.password &&
-              (errors.password.type === 'minLength'
-                ? 'Password should have at least 6 charactor'
-                : 'Password should have at most 64 charactors')
+              errors.currentPassword && 'Please enter your current password.'
             }
             label="Current password"
             type={showCurrentPassword ? 'text' : 'password'}

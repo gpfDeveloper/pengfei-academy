@@ -44,7 +44,7 @@ export const registerAsync =
       dispatch(
         setSnackbar({
           severity: 'error',
-          message: message || 'register failed, please try again later',
+          message: message || 'Register failed, please try again later',
         })
       );
       return false;
@@ -52,8 +52,27 @@ export const registerAsync =
   };
 
 export const accountSecurityUpdate =
-  ({ currentPassword, newPassword, email }) =>
+  ({ currentPassword, newPassword, email, token }) =>
   async (dispatch) => {
-    console.log(currentPassword, newPassword, email);
-    dispatch(updateEmail(email));
+    try {
+      await axios.put(
+        '/api/user/accountSecurity',
+        {
+          currentPassword,
+          newPassword,
+          email,
+        },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      dispatch(updateEmail(email));
+      dispatch(setSnackbar({ severity: 'success', message: 'Update success' }));
+    } catch (error) {
+      const message = error.response?.data?.message;
+      dispatch(
+        setSnackbar({
+          severity: 'error',
+          message: message || 'Update failed, please try again later',
+        })
+      );
+    }
   };
