@@ -14,11 +14,10 @@ export const register = async (req, res) => {
     name,
     email,
     password: bcrypt.hashSync(password),
-    role: ['Student'],
   });
   const user = await newUser.save();
   const token = signToken(user);
-  res.send({
+  return res.send({
     token,
     name: user.name,
     email: user.email,
@@ -36,10 +35,12 @@ export const login = async (req, res) => {
       token,
       name: user.name,
       email: user.email,
+      headline: user.headline,
+      bio: user.bio,
       role: user.role,
     });
   } else {
-    res.status(401).json({ message: 'Invalid email or password' });
+    return res.status(401).json({ message: 'Invalid email or password' });
   }
 };
 
@@ -55,12 +56,33 @@ export const updateAccountSecurity = async (req, res) => {
     }
     try {
       await user.save();
-      res.status(200).send();
+      return res.status(200).send();
     } catch (err) {
-      res.status(422).json({ message: 'Email already used.' });
+      return res.status(422).json({ message: 'Email already used.' });
     }
-    res.status(200).send();
   } else {
-    res.status(401).json({ message: 'Incorrenct current password.' });
+    return res.status(401).json({ message: 'Incorrenct current password.' });
+  }
+};
+
+export const updateProfileInfo = async (req, res) => {
+  await db.connect();
+  const userId = req.user.id;
+  const { name, bio, headline } = req.body;
+  const user = await User.findById(userId);
+  if (user) {
+    user.name = name;
+    user.bio = bio;
+    user.headline = headline;
+    try {
+      await user.save();
+      return res.status(200).send();
+    } catch (err) {
+      return res
+        .status(422)
+        .json({ message: 'Update profile failed, please try again latter' });
+    }
+  } else {
+    return res.status(401).json({ message: 'Incorrenct current password.' });
   }
 };

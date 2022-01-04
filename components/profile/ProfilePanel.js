@@ -5,6 +5,7 @@ import MuiTab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
 import AccountSecurity from './AccountSecurity';
+import ProfileInfo from './ProfileInfo';
 
 const Tab = styled(MuiTab)({
   textTransform: 'none',
@@ -49,7 +50,7 @@ export default function ProfilePanel() {
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs value={value} onChange={handleChange}>
           <Tab label="Account security" {...a11yProps(0)} />
-          <Tab label="Account profile" {...a11yProps(1)} />
+          <Tab label="Profile Information" {...a11yProps(1)} />
           <Tab label="Profile picture" {...a11yProps(2)} />
         </Tabs>
       </Box>
@@ -57,7 +58,7 @@ export default function ProfilePanel() {
         <AccountSecurity />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        Account profile
+        <ProfileInfo />
       </TabPanel>
       <TabPanel value={value} index={2}>
         Profile picture

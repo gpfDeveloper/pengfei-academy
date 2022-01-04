@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { login, updateEmail } from 'store/user';
+import { login, updateEmail, updateProfile } from 'store/user';
 import { setSnackbar } from './snackbar';
 
 export const loginAsync =
@@ -8,8 +8,8 @@ export const loginAsync =
   async (dispatch) => {
     try {
       const data = await axios.post('/api/user/login', { email, password });
-      const { token, name, role } = data.data;
-      dispatch(login({ token, name, email, role }));
+      const { token, name, role, headline, bio } = data.data;
+      dispatch(login({ token, name, email, role, headline, bio }));
       dispatch(setSnackbar({ severity: 'success', message: 'Login success.' }));
       return true;
     } catch (error) {
@@ -36,7 +36,10 @@ export const registerAsync =
       const { token, name, role } = data.data;
       dispatch(login({ token, name, email, role }));
       dispatch(
-        setSnackbar({ severity: 'success', message: 'register success.' })
+        setSnackbar({
+          severity: 'success',
+          message: 'Welcome to Pengfei Academy!',
+        })
       );
       return true;
     } catch (error) {
@@ -67,6 +70,33 @@ export const accountSecurityUpdate =
       dispatch(updateEmail(email));
       dispatch(setSnackbar({ severity: 'success', message: 'Update success' }));
     } catch (error) {
+      const message = error.response?.data?.message;
+      dispatch(
+        setSnackbar({
+          severity: 'error',
+          message: message || 'Update failed, please try again later',
+        })
+      );
+    }
+  };
+
+export const profileInfoUpdate =
+  ({ name, bio, headline, token }) =>
+  async (dispatch) => {
+    try {
+      await axios.put(
+        '/api/user/profileInfo',
+        {
+          name,
+          bio,
+          headline,
+        },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      dispatch(updateProfile({ name, headline, bio }));
+      dispatch(setSnackbar({ severity: 'success', message: 'Update success' }));
+    } catch (error) {
+      console.log(error);
       const message = error.response?.data?.message;
       dispatch(
         setSnackbar({

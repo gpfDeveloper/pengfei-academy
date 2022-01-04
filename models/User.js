@@ -10,14 +10,16 @@ const userSchema = new mongoose.Schema(
       unique: true,
     },
     password: { type: String, required: true, trim: true, min: 6, max: 64 },
+    headline: { type: String, trim: true, max: 60 },
+    bio: { type: String, trim: true, max: 400 },
     avatar: {
       type: String,
       default: '/avatar.png',
     },
     role: {
       type: [String],
-      default: ['Subscriber'],
-      enum: ['Student', 'Instructor', 'Administrator'],
+      default: ['User'],
+      enum: ['User', 'Instructor', 'Administrator'],
     },
   },
   { timestamps: true }

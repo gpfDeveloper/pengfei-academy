@@ -6,9 +6,11 @@ const USER_INFO_KEY = 'userInfo';
 let initialState = {
   isLogin: false,
   role: [],
-  name: null,
-  email: null,
-  token: null,
+  name: '',
+  email: '',
+  headline: '',
+  bio: '',
+  token: '',
 };
 
 const userInfo = Cookies.get(USER_INFO_KEY);
@@ -20,12 +22,17 @@ const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    login: (state, { payload: { name, email, token, role } }) => {
+    login: (
+      state,
+      { payload: { name, email, headline, bio, token, role } }
+    ) => {
       state.isLogin = true;
       state.name = name;
       state.email = email;
       state.role = role;
       state.token = token;
+      state.headline = headline;
+      state.bio = bio;
       Cookies.set(USER_INFO_KEY, JSON.stringify(state));
     },
     logout: (state) => {
@@ -36,12 +43,17 @@ const userSlice = createSlice({
       state.token = null;
       Cookies.remove(USER_INFO_KEY);
     },
-    updateEmail: (state, { payload: { email } }) => {
+    updateEmail: (state, { payload: email }) => {
       state.email = email;
+    },
+    updateProfile: (state, { payload: { name, headline, bio } }) => {
+      state.name = name;
+      state.headline = headline;
+      state.bio = bio;
     },
   },
 });
 
-export const { login, logout, updateEmail } = userSlice.actions;
+export const { login, logout, updateEmail, updateProfile } = userSlice.actions;
 
 export default userSlice.reducer;
