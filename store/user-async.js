@@ -8,8 +8,8 @@ export const loginAsync =
   async (dispatch) => {
     try {
       const data = await axios.post('/api/user/login', { email, password });
-      const { token, name, role, headline, bio } = data.data;
-      dispatch(login({ token, name, email, role, headline, bio }));
+      const { token, name, roles, headline, bio } = data.data;
+      dispatch(login({ token, name, email, roles, headline, bio }));
       dispatch(setSnackbar({ severity: 'success', message: 'Login success.' }));
       return true;
     } catch (error) {
@@ -33,8 +33,8 @@ export const registerAsync =
         email,
         password,
       });
-      const { token, name, role } = data.data;
-      dispatch(login({ token, name, email, role }));
+      const { token, name, roles } = data.data;
+      dispatch(login({ token, name, email, roles }));
       dispatch(
         setSnackbar({
           severity: 'success',

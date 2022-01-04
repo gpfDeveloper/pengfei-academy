@@ -4,8 +4,7 @@ import Tabs from '@mui/material/Tabs';
 import MuiTab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
-import AccountSecurity from './AccountSecurity';
-import ProfileInfo from './ProfileInfo';
+import AdminUserInfo from './AdminUserInfo';
 
 const Tab = styled(MuiTab)({
   textTransform: 'none',
@@ -38,7 +37,7 @@ function a11yProps(index) {
   };
 }
 
-export default function ProfilePanel() {
+export default function AdminPanel() {
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
@@ -49,19 +48,11 @@ export default function ProfilePanel() {
     <>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs value={value} onChange={handleChange}>
-          <Tab label="Account security" {...a11yProps(0)} />
-          <Tab label="Profile Information" {...a11yProps(1)} />
-          <Tab label="Profile picture" {...a11yProps(2)} />
+          <Tab label="Users" {...a11yProps(0)} />
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
-        <AccountSecurity />
-      </TabPanel>
-      <TabPanel value={value} index={1}>
-        <ProfileInfo />
-      </TabPanel>
-      <TabPanel value={value} index={2}>
-        Profile picture
+        <AdminUserInfo />
       </TabPanel>
     </>
   );

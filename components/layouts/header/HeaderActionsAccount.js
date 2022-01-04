@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
-import { IconButton, Tooltip, Menu, MenuItem } from '@mui/material';
+import { IconButton, Tooltip, Menu, MenuItem, Divider } from '@mui/material';
 import AccountCircle from '@mui/icons-material/AccountCircle';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { logout } from 'store/user';
 
 export default function HeaderActionsAccount() {
   const router = useRouter();
+  const { isAdmin } = useSelector((state) => state.user);
   const [anchorEl, setAnchorEl] = useState(null);
   const isMenuOpen = Boolean(anchorEl);
   const menuId = 'account-menu';
@@ -19,6 +20,10 @@ export default function HeaderActionsAccount() {
   const profileHandler = () => {
     setAnchorEl(null);
     router.push('/profile');
+  };
+  const adminHandler = () => {
+    setAnchorEl(null);
+    router.push('/admin');
   };
 
   const dispatch = useDispatch();
@@ -39,6 +44,12 @@ export default function HeaderActionsAccount() {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
+      {isAdmin && [
+        <MenuItem key={1} onClick={adminHandler}>
+          Admin
+        </MenuItem>,
+        <Divider key={2} />,
+      ]}
       <MenuItem onClick={profileHandler}>Account</MenuItem>
       <MenuItem
         onClick={() => {

@@ -16,7 +16,7 @@ const userSchema = new mongoose.Schema(
       type: String,
       default: '/avatar.png',
     },
-    role: {
+    roles: {
       type: [String],
       default: ['User'],
       enum: ['User', 'Instructor', 'Administrator'],

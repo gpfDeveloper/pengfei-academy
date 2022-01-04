@@ -21,7 +21,7 @@ export const register = async (req, res) => {
     token,
     name: user.name,
     email: user.email,
-    role: user.role,
+    roles: user.roles,
   });
 };
 
@@ -37,7 +37,7 @@ export const login = async (req, res) => {
       email: user.email,
       headline: user.headline,
       bio: user.bio,
-      role: user.role,
+      roles: user.roles,
     });
   } else {
     return res.status(401).json({ message: 'Invalid email or password' });

@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  severity: 'info',
+  severity: undefined,
   message: '',
 };
 
@@ -14,7 +14,7 @@ const snackbarSlice = createSlice({
       state.message = message;
     },
     clearSnackbar: (state) => {
-      state.severity = 'info';
+      state.severity = undefined;
       state.message = '';
     },
   },

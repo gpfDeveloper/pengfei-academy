@@ -5,7 +5,9 @@ const USER_INFO_KEY = 'userInfo';
 
 let initialState = {
   isLogin: false,
-  role: [],
+  isInstructor: false,
+  isAdmin: false,
+  roles: [],
   name: '',
   email: '',
   headline: '',
@@ -24,12 +26,14 @@ const userSlice = createSlice({
   reducers: {
     login: (
       state,
-      { payload: { name, email, headline, bio, token, role } }
+      { payload: { name, email, headline, bio, token, roles } }
     ) => {
       state.isLogin = true;
+      state.isAdmin = roles.indexOf('Administrator') !== -1;
+      state.isInstructor = roles.indexOf('Instructor') !== -1;
       state.name = name;
       state.email = email;
-      state.role = role;
+      state.roles = roles;
       state.token = token;
       state.headline = headline;
       state.bio = bio;
@@ -37,9 +41,11 @@ const userSlice = createSlice({
     },
     logout: (state) => {
       state.isLogin = false;
+      state.isAdmin = false;
+      state.isInstructor = false;
       state.name = null;
       state.email = null;
-      state.role = [];
+      state.roles = [];
       state.token = null;
       Cookies.remove(USER_INFO_KEY);
     },

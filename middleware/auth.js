@@ -1,4 +1,6 @@
 import jwt from 'jsonwebtoken';
+import db from 'utils/db';
+import User from 'models/User';
 
 export const isLogin = async (req, res, next) => {
   const { authorization } = req.headers;
@@ -23,5 +25,15 @@ export const isInstructor = async (req, res, next) => {
     next();
   } else {
     res.status(401).json({ message: 'Not instructor' });
+  }
+};
+
+export const isAdmin = async (req, res, next) => {
+  await db.connect();
+  const user = await User.findById(req.user.id);
+  if (user.roles.indexOf('Administrator') !== -1) {
+    next();
+  } else {
+    res.status(401).json({ message: 'Not Admin' });
   }
 };
