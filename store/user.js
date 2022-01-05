@@ -57,11 +57,13 @@ const userSlice = createSlice({
     },
     updateEmail: (state, { payload: email }) => {
       state.email = email;
+      Cookies.set(USER_INFO_KEY, JSON.stringify(state));
     },
     updateProfile: (state, { payload: { name, headline, bio } }) => {
       state.name = name;
       state.headline = headline;
       state.bio = bio;
+      Cookies.set(USER_INFO_KEY, JSON.stringify(state));
     },
   },
 });

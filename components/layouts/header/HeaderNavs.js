@@ -2,11 +2,15 @@ import { useRouter } from 'next/router';
 
 import { Box, Button } from '@mui/material';
 
-import { PAGES } from 'utils/constants';
+import { useSelector } from 'react-redux';
+
+import { PAGES, PAGES_INSTRUCTOR } from 'utils/constants';
 
 export default function HeaderNavs() {
   const router = useRouter();
   const { pathname } = router;
+  const isInstructor = useSelector((state) => state.user?.isInstructor);
+  const navs = isInstructor ? PAGES_INSTRUCTOR : PAGES;
   return (
     <>
       <Box
@@ -15,7 +19,7 @@ export default function HeaderNavs() {
           display: { lg: 'flex', md: 'none', xs: 'none', gap: 2 },
         }}
       >
-        {PAGES.map((page) => (
+        {navs.map((page) => (
           <Button
             color={page.path === pathname ? 'primary' : 'inherit'}
             key={page.label}

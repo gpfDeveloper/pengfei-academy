@@ -10,12 +10,17 @@ import Spinner from 'components/UIs/Spinner';
 
 export default function Login() {
   const router = useRouter();
+  const redirect = router.query?.redirect;
   const isLogin = useSelector((state) => state.user.isLogin);
   useEffect(() => {
     if (isLogin) {
-      router.replace('/');
+      if (redirect) {
+        router.replace(redirect);
+      } else {
+        router.replace('/');
+      }
     }
-  }, [isLogin]);
+  }, [isLogin, redirect, router]);
   return (
     <PageLayout title="Log In to Pengfei Academy!">
       {isLogin && <Spinner />}
@@ -36,7 +41,10 @@ export default function Login() {
           <Divider />
           <Stack direction="row" gap={2}>
             <Typography>Don&rsquo;t have an account? </Typography>
-            <NextLink href="/register" passHref>
+            <NextLink
+              href={!redirect ? '/register' : `/register?redirect=${redirect}`}
+              passHref
+            >
               <Link>
                 <Typography>Sign up</Typography>
               </Link>

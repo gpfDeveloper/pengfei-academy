@@ -275,10 +275,6 @@ export default function AdminUserInfo() {
 
   const isSelected = (id) => selected.indexOf(id) !== -1;
 
-  // Avoid a layout jump when reaching the last page with empty rows.
-  const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
-
   const rows = users.map((user) => ({
     id: user.id,
     name: user.name,
@@ -287,6 +283,10 @@ export default function AdminUserInfo() {
     headline: user.headline?.slice(0, 7),
     createAt: moment(user.createdAt).format('LLL'),
   }));
+
+  // Avoid a layout jump when reaching the last page with empty rows.
+  const emptyRows =
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
   return (
     <>

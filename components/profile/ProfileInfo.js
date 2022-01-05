@@ -45,7 +45,7 @@ export default function ProfileInfo() {
         name="headline"
         defaultValue={headline}
         control={control}
-        rules={{ max: 60 }}
+        rules={{ maxLength: 60 }}
         render={({ field }) => (
           <TextField
             error={Boolean(errors.headline)}
@@ -60,13 +60,13 @@ export default function ProfileInfo() {
         name="bio"
         defaultValue={bio}
         control={control}
-        rules={{ max: 400 }}
+        rules={{ maxLength: 400 }}
         render={({ field }) => (
           <TextField
             rows={4}
             multiline
             error={Boolean(errors.bio)}
-            helperText={errors.bio && 'Headline has at most 400 charactors'}
+            helperText={errors.bio && 'Biography has at most 400 charactors'}
             label="Biography"
             {...field}
           />

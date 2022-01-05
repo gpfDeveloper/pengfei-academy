@@ -12,12 +12,17 @@ import Spinner from 'components/UIs/Spinner';
 
 export default function Register() {
   const router = useRouter();
+  const redirect = router.query?.redirect;
   const isLogin = useSelector((state) => state.user.isLogin);
   useEffect(() => {
     if (isLogin) {
-      router.replace('/');
+      if (redirect) {
+        router.replace(redirect);
+      } else {
+        router.replace('/');
+      }
     }
-  }, [isLogin]);
+  }, [isLogin, redirect, router]);
   return (
     <PageLayout title="Sign up and start learning">
       {isLogin && <Spinner />}
@@ -38,7 +43,10 @@ export default function Register() {
           <Divider />
           <Stack direction="row" gap={2}>
             <Typography>Already have an account? </Typography>
-            <NextLink href="/login" passHref>
+            <NextLink
+              href={!redirect ? '/login' : `/login?redirect=${redirect}`}
+              passHref
+            >
               <Link>
                 <Typography>Login</Typography>
               </Link>
