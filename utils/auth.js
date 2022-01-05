@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken';
+import { SESSION_EXPIRE_SEC } from './constants';
 
 export const signToken = (user) => {
   return jwt.sign(
@@ -7,7 +8,7 @@ export const signToken = (user) => {
     },
     process.env.JWT_SECRET,
     {
-      expiresIn: '30d',
+      expiresIn: SESSION_EXPIRE_SEC,
     }
   );
 };

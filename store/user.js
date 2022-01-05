@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { SESSION_EXPIRE_SEC } from 'utils/constants';
 import Cookies from 'js-cookie';
 
 const USER_INFO_KEY = 'userInfo';
@@ -13,6 +14,7 @@ let initialState = {
   headline: '',
   bio: '',
   token: '',
+  expireAt: null,
 };
 
 const userInfo = Cookies.get(USER_INFO_KEY);
@@ -37,6 +39,7 @@ const userSlice = createSlice({
       state.token = token;
       state.headline = headline;
       state.bio = bio;
+      state.expireAt = new Date().getTime() + SESSION_EXPIRE_SEC * 1000;
       Cookies.set(USER_INFO_KEY, JSON.stringify(state));
     },
     logout: (state) => {
@@ -47,6 +50,9 @@ const userSlice = createSlice({
       state.email = null;
       state.roles = [];
       state.token = null;
+      state.headline = '';
+      state.bio = '';
+      state.expireAt = null;
       Cookies.remove(USER_INFO_KEY);
     },
     updateEmail: (state, { payload: email }) => {

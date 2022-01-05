@@ -22,7 +22,7 @@ import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
-import DeleteIcon from '@mui/icons-material/Delete';
+import MessageIcon from '@mui/icons-material/Message';
 import InfoIcon from '@mui/icons-material/Info';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
@@ -137,8 +137,8 @@ EnhancedTableHead.propTypes = {
 };
 
 const EnhancedTableToolbar = (props) => {
-  const { numSelected, selectedIds, router } = props;
-  console.log(selectedIds);
+  const { selectedIds, router } = props;
+  const numSelected = selectedIds.length;
 
   return (
     <Toolbar
@@ -174,16 +174,16 @@ const EnhancedTableToolbar = (props) => {
         </Typography>
       )}
       {numSelected === 1 && (
-        <Tooltip title="Detail">
+        <Tooltip title="Detail user info">
           <IconButton onClick={() => router.push(`/user/${selectedIds[0]}`)}>
             <InfoIcon />
           </IconButton>
         </Tooltip>
       )}
       {numSelected > 0 ? (
-        <Tooltip title="Delete">
+        <Tooltip title="Send a message">
           <IconButton>
-            <DeleteIcon />
+            <MessageIcon />
           </IconButton>
         </Tooltip>
       ) : (
@@ -195,10 +195,6 @@ const EnhancedTableToolbar = (props) => {
       )}
     </Toolbar>
   );
-};
-
-EnhancedTableToolbar.propTypes = {
-  numSelected: PropTypes.number.isRequired,
 };
 
 export default function AdminUserInfo() {
@@ -295,11 +291,7 @@ export default function AdminUserInfo() {
   return (
     <>
       <Paper sx={{ width: '100%', mb: 2 }}>
-        <EnhancedTableToolbar
-          numSelected={selected.length}
-          selectedIds={selected}
-          router={router}
-        />
+        <EnhancedTableToolbar selectedIds={selected} router={router} />
         <TableContainer>
           <Table
             sx={{ minWidth: 750 }}

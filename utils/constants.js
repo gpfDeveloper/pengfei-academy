@@ -4,3 +4,5 @@ export const PAGES = [
   { label: 'Article', path: '/article' },
   { label: 'Teach here', path: '/teaching' },
 ];
+
+export const SESSION_EXPIRE_SEC = 60 * 60;

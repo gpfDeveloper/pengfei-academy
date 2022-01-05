@@ -1,14 +1,18 @@
 import Head from 'next/head';
+import { useEffect } from 'react';
 
 import { Container, CssBaseline } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
-import { useSelector } from 'react-redux';
+
+import { useSelector, useDispatch } from 'react-redux';
+import { logout } from 'store/user';
 
 import Header from './header/Header';
 import Footer from './Footer';
 import { getTheme } from 'utils/theme';
 import Snackbar from 'components/UIs/Snackbar';
 
+let logoutTimer;
 const companyName = 'Pengfei Academy';
 
 export default function PageLayout({ children, title, description }) {
@@ -16,8 +20,25 @@ export default function PageLayout({ children, title, description }) {
   const defaultDescription =
     'Pengfei Acadamy is an online learning and teaching marketplace. Learn web development, algorithm, programming in general and more.';
 
+  const dispatch = useDispatch();
   const isDark = useSelector((state) => state.theme.isDark);
+  const loginExpireAt = useSelector((state) => state.user.expireAt);
   const theme = getTheme(isDark);
+
+  useEffect(() => {
+    if (loginExpireAt) {
+      const currentTime = new Date().getTime();
+      if (currentTime > loginExpireAt) {
+        dispatch(logout());
+        clearTimeout(logoutTimer);
+      } else {
+        logoutTimer = setTimeout(
+          () => dispatch(logout()),
+          loginExpireAt - currentTime
+        );
+      }
+    }
+  }, [loginExpireAt, dispatch]);
 
   return (
     <ThemeProvider theme={theme}>
