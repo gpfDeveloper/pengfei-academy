@@ -12,7 +12,7 @@ export const PAGES_INSTRUCTOR = [
   { label: 'Instructor', path: '/instructor' },
 ];
 
-export const SESSION_EXPIRE_SEC = 60 * 60;
+export const SESSION_EXPIRE_SEC = 60 * 60 * 24 * 365;
 
 export const TEACHING_STATUS = {
   signup: 'signup',

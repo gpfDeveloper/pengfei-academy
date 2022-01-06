@@ -55,3 +55,12 @@ export const approveRequest = async (req, res) => {
   await user.save();
   res.status(200).send();
 };
+
+export const setHasMeeting = async (req, res) => {
+  const teachRequestId = req.query.id;
+  await db.connect();
+  const teachRequest = await TeachRequest.findById(teachRequestId).exec();
+  teachRequest.hasMeeting = true;
+  await teachRequest.save();
+  res.status(200).send();
+};

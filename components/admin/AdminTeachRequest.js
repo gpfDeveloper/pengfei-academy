@@ -16,6 +16,7 @@ const cols = [
   {
     field: 'sendTime',
     headerName: 'Send time',
+    type: 'date',
     width: 240,
   },
   {
@@ -26,7 +27,9 @@ const cols = [
   {
     field: 'status',
     headerName: 'Status',
+    type: 'singleSelect',
     width: 150,
+    valueOptions: ['draft', 'approved', 'reject'],
   },
   {
     field: 'email',
@@ -56,10 +59,11 @@ const cols = [
 ];
 
 const transform = (rawTeachReqs) => {
+  console.log(rawTeachReqs);
   const ret = [];
   for (const teachReq of rawTeachReqs) {
     const row = {};
-    row.sendTime = moment(teachReq.updateAt).format('LLL');
+    row.sendTime = moment(teachReq.updatedAt).format('LLL');
     row.userName = teachReq.userName;
     row.email = teachReq.userEmail;
     row.hasMeeting = teachReq.hasMeeting;
@@ -84,6 +88,7 @@ const SingleRequest = ({
   sendTime,
   onApprove,
   onReject,
+  onUpdateHasMeeting,
   onSendComment,
   adminCommentRef,
 }) => {
@@ -95,12 +100,14 @@ const SingleRequest = ({
       <Typography>userName: {userName}</Typography>
       <Typography>email: {email}</Typography>
       <Typography>hasMeeting: {hasMeeting ? 'Yes' : 'No'}</Typography>
+      <Button onClick={onUpdateHasMeeting}>Set has meeting</Button>
       <Typography sx={{ maxWidth: '40rem', overflowWrap: 'break-word' }}>
         message: {message}
       </Typography>
       <form onSubmit={onSendComment}>
         <TextField
           id="adminComment"
+          label="Admin comment"
           defaultValue={adminComment}
           inputRef={adminCommentRef}
         />
@@ -187,6 +194,29 @@ export default function AdminTeachRequest() {
       dispatch(setSnackbar({ severity: 'error', message: 'Approve failed.' }));
     }
   };
+  const hasMeetingHandler = async () => {
+    try {
+      await axios.get(
+        `/api/admin/teachRequest/${currentSelection.id}/setHasMeeting`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      dispatch(
+        setSnackbar({
+          severity: 'success',
+          message: 'Change has meeting success.',
+        })
+      );
+    } catch (err) {
+      dispatch(
+        setSnackbar({
+          severity: 'error',
+          message: 'Change has meeting failed.',
+        })
+      );
+    }
+  };
   return (
     <>
       <div style={{ height: 400, width: '100%' }}>
@@ -207,6 +237,7 @@ export default function AdminTeachRequest() {
           onSendComment={sendCommentHandler}
           onReject={rejectHandler}
           onApprove={approveHandler}
+          onUpdateHasMeeting={hasMeetingHandler}
         />
       )}
     </>
