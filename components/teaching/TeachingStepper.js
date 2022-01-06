@@ -5,12 +5,12 @@ import Box from '@mui/material/Box';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
-import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 
 import { TEACHING_STATUS } from 'utils/constants';
 import TeachingSignup from './TeachingSignup';
 import TeachingSendRequest from './TeachingSendRequest';
+import TeachingMeeting from './TeachingMeeting';
 
 const stepMap = {
   [TEACHING_STATUS.signup]: 0,
@@ -42,9 +42,6 @@ export default function TeachingStepper() {
     setActiveStep(currentStep);
   }, [currentStep]);
 
-  const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
-  };
   let content;
   switch (activeStep) {
     case 0:
@@ -54,7 +51,7 @@ export default function TeachingStepper() {
       content = <TeachingSendRequest />;
       break;
     case 2:
-      content = <div>metting</div>;
+      content = <TeachingMeeting />;
       break;
     case 3:
       content = <div>finished</div>;
@@ -77,28 +74,11 @@ export default function TeachingStepper() {
         })}
       </Stepper>
       {activeStep === steps.length ? (
-        <>
-          <Typography sx={{ mt: 2, mb: 1 }}>
-            All steps completed - you&apos;re finished
-          </Typography>
-        </>
+        <Typography sx={{ mt: 2, mb: 1 }}>
+          All steps completed - you&apos;re finished
+        </Typography>
       ) : (
-        <>
-          <Typography sx={{ mt: 4, mb: 1 }}>{content}</Typography>
-
-          <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
-            {activeStep > 1 && (
-              <Button
-                color="inherit"
-                disabled={activeStep === 0}
-                onClick={handleBack}
-                sx={{ mr: 1 }}
-              >
-                Back
-              </Button>
-            )}
-          </Box>
-        </>
+        content
       )}
     </Box>
   );

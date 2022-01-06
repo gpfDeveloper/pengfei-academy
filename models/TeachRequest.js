@@ -9,6 +9,19 @@ const teachRequestSchema = new mongoose.Schema(
       required: true,
       ref: 'User',
     },
+    status: {
+      type: String,
+      default: 'draft',
+      enum: ['draft', 'approved', 'reject'],
+    },
+    hasMeeting: {
+      type: Boolean,
+      default: false,
+    },
+    adminComment: {
+      type: String,
+      default: '',
+    },
   },
   { timestamps: true }
 );

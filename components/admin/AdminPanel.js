@@ -5,6 +5,7 @@ import MuiTab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
 import AdminUserInfo from './AdminUserInfo';
+import AdminTeachRequest from './AdminTeachRequest';
 
 const Tab = styled(MuiTab)({
   textTransform: 'none',
@@ -49,10 +50,14 @@ export default function AdminPanel() {
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs value={value} onChange={handleChange}>
           <Tab label="Users" {...a11yProps(0)} />
+          <Tab label="Teach Requests" {...a11yProps(1)} />
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
         <AdminUserInfo />
+      </TabPanel>
+      <TabPanel value={value} index={1}>
+        <AdminTeachRequest />
       </TabPanel>
     </>
   );

@@ -13,6 +13,7 @@
     "@mui/icons-material": "^5.2.5",
     "@mui/lab": "^5.0.0-alpha.62",
     "@mui/material": "^5.2.6",
+    "@mui/x-data-grid": "^5.2.1",
     "@reduxjs/toolkit": "^1.7.1",
     "axios": "^0.24.0",
     "bcrypt": "^5.0.1",
