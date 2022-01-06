@@ -22,7 +22,7 @@ const stepMap = {
 const steps = [
   'Sign up',
   'Send a request',
-  'Have a meeting with Pengfei',
+  'Schedule and have a meeting with Pengfei',
   'Teaching on Pengfei Academy!',
 ];
 

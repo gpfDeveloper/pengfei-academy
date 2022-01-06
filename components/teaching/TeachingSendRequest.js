@@ -33,7 +33,7 @@ export default function TeachingSendRequest() {
         name="skypeName"
         defaultValue={skypeName}
         control={control}
-        rules={{ required: true }}
+        rules={{ required: true, maxLength: 200 }}
         render={({ field }) => (
           <TextField
             error={Boolean(errors.skypeName)}

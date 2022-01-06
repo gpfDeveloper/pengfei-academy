@@ -8,19 +8,22 @@ export const sendRequestAsync =
   async (dispatch) => {
     try {
       console.log(skypeName, message, token);
-      // await axios.post('/api/teaching/sendRequest', {
-      //   skypeName,
-      //   message,
-      //   token,
-      // });
-      // dispatch(setStatusHaveMeeting({ skypeName, message }));
-      // dispatch(
-      //   setSnackbar({
-      //     severity: 'success',
-      //     message:
-      //       'Request send success, please schedule a meeting with Pengfei.',
-      //   })
-      // );
+      await axios.post(
+        '/api/teaching/sendRequest',
+        {
+          skypeName,
+          message,
+        },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      dispatch(setStatusHaveMeeting({ skypeName, message }));
+      dispatch(
+        setSnackbar({
+          severity: 'success',
+          message:
+            'Request send success, please schedule a meeting with Pengfei.',
+        })
+      );
     } catch (error) {
       const message = error.response?.data?.message;
       dispatch(

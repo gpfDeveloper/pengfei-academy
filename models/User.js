@@ -22,6 +22,10 @@ const userSchema = new mongoose.Schema(
       default: ['User'],
       enum: ['User', 'Instructor', 'Administrator'],
     },
+    teachRequest: {
+      type: mongoose.Types.ObjectId,
+      ref: 'TeachRequest',
+    },
   },
   { timestamps: true }
 );
