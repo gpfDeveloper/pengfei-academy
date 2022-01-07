@@ -5,7 +5,7 @@ import { Container, CssBaseline } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
 
 import { useSelector, useDispatch } from 'react-redux';
-import { logout } from 'store/user';
+import { logoutAsync } from 'store/user-async';
 
 import Header from './header/Header';
 import Footer from './Footer';
@@ -29,11 +29,11 @@ export default function PageLayout({ children, title, description }) {
     if (loginExpireAt) {
       const currentTime = new Date().getTime();
       if (currentTime > loginExpireAt) {
-        dispatch(logout());
+        dispatch(logoutAsync());
         clearTimeout(logoutTimer);
       } else {
         logoutTimer = setTimeout(
-          () => dispatch(logout()),
+          () => dispatch(logoutAsync()),
           loginExpireAt - currentTime
         );
       }

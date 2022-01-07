@@ -33,3 +33,16 @@ export const sendRequest = async (req, res) => {
     return res.status(404).json({ message: 'User not found.' });
   }
 };
+
+export const fetchRequest = async (req, res) => {
+  await db.connect();
+  const userId = req.user.id;
+  const user = await User.findById(userId).populate('teachRequest');
+  if (user) {
+    const skypeName = user.teachRequest?.skypeName || '';
+    const message = user.teachRequest?.message || '';
+    res.status(200).json({ skypeName, message });
+  } else {
+    return res.status(404).json({ message: 'User not found.' });
+  }
+};

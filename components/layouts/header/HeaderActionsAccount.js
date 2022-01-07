@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { IconButton, Tooltip, Menu, MenuItem, Divider } from '@mui/material';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import { useSelector, useDispatch } from 'react-redux';
-import { logout } from 'store/user';
+import { logoutAsync } from 'store/user-async';
 
 export default function HeaderActionsAccount() {
   const router = useRouter();
@@ -53,7 +53,7 @@ export default function HeaderActionsAccount() {
       <MenuItem onClick={profileHandler}>Account</MenuItem>
       <MenuItem
         onClick={() => {
-          dispatch(logout());
+          dispatch(logoutAsync());
           handleMenuClose();
         }}
       >

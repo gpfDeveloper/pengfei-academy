@@ -25,10 +25,19 @@ const teachingSlicer = createSlice({
     setStatusComplete: (state) => {
       state.status = complete;
     },
+    clear: (state) => {
+      state.status = signup;
+      state.message = '';
+      state.skypeName = '';
+    },
   },
 });
 
-export const { setStatusSendRequest, setStatusHaveMeeting, setStatusComplete } =
-  teachingSlicer.actions;
+export const {
+  setStatusSendRequest,
+  setStatusHaveMeeting,
+  setStatusComplete,
+  clear,
+} = teachingSlicer.actions;
 
 export default teachingSlicer.reducer;

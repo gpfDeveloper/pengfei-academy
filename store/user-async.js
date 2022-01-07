@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-import { login, updateEmail, updateProfile } from 'store/user';
+import { login, logout, updateEmail, updateProfile } from 'store/user';
+import { clear as clearTeaching } from './teaching';
 import { setSnackbar } from './snackbar';
 
 export const loginAsync =
@@ -23,6 +24,11 @@ export const loginAsync =
       return false;
     }
   };
+
+export const logoutAsync = () => async (dispatch) => {
+  dispatch(logout());
+  dispatch(clearTeaching());
+};
 
 export const registerAsync =
   ({ name: inputName, email, password }) =>

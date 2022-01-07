@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { sendRequestAsync } from 'store/teaching-async';
 
@@ -6,6 +6,7 @@ import { TextField, Button, Stack } from '@mui/material';
 import LoadingButton from '@mui/lab/LoadingButton';
 
 import { Controller, useForm } from 'react-hook-form';
+import axios from 'axios';
 
 export default function TeachingSendRequest() {
   const dispatch = useDispatch();
@@ -19,7 +20,19 @@ export default function TeachingSendRequest() {
     formState: { errors },
     handleSubmit,
     control,
+    setValue,
   } = useForm();
+
+  useEffect(() => {
+    const fetchSkypeMessage = async () => {
+      const data = await axios.get('/api/teaching/sendRequest', {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setValue('skypeName', data.data.skypeName);
+      setValue('message', data.data.message);
+    };
+    fetchSkypeMessage();
+  }, []);
 
   const onSubmit = ({ skypeName, message }) => {
     setIsSaving(true);
