@@ -4,7 +4,8 @@ import moment from 'moment';
 import { useSelector, useDispatch } from 'react-redux';
 import { setSnackbar } from 'store/snackbar';
 import { DataGrid } from '@mui/x-data-grid';
-import { Button, Typography, Stack, TextField } from '@mui/material';
+import { Box } from '@mui/material';
+import AdminTechRequestCurrent from './AdminTechRequestCurrent';
 
 const cols = [
   { field: 'id', headerName: 'ID', width: 90 },
@@ -59,7 +60,6 @@ const cols = [
 ];
 
 const transform = (rawTeachReqs) => {
-  console.log(rawTeachReqs);
   const ret = [];
   for (const teachReq of rawTeachReqs) {
     const row = {};
@@ -75,54 +75,6 @@ const transform = (rawTeachReqs) => {
     ret.push(row);
   }
   return ret;
-};
-
-const SingleRequest = ({
-  id,
-  userName,
-  email,
-  hasMeeting,
-  skypeName,
-  message,
-  adminComment,
-  sendTime,
-  onApprove,
-  onReject,
-  onUpdateHasMeeting,
-  onSendComment,
-  adminCommentRef,
-}) => {
-  return (
-    <Stack sx={{ gap: 4, mt: 4 }}>
-      <Typography>Id: {id}</Typography>
-      <Typography>sendTime: {sendTime}</Typography>
-      <Typography>skypeName: {skypeName}</Typography>
-      <Typography>userName: {userName}</Typography>
-      <Typography>email: {email}</Typography>
-      <Typography>hasMeeting: {hasMeeting ? 'Yes' : 'No'}</Typography>
-      <Button onClick={onUpdateHasMeeting}>Set has meeting</Button>
-      <Typography sx={{ maxWidth: '40rem', overflowWrap: 'break-word' }}>
-        message: {message}
-      </Typography>
-      <form onSubmit={onSendComment}>
-        <TextField
-          id="adminComment"
-          label="Admin comment"
-          defaultValue={adminComment}
-          inputRef={adminCommentRef}
-        />
-        <Button type="submit" color="info">
-          Update Comment
-        </Button>
-      </form>
-      <Button color="success" onClick={onApprove}>
-        Approve
-      </Button>
-      <Button color="error" onClick={onReject}>
-        Reject
-      </Button>
-    </Stack>
-  );
 };
 
 export default function AdminTeachRequest() {
@@ -219,7 +171,7 @@ export default function AdminTeachRequest() {
   };
   return (
     <>
-      <div style={{ height: 400, width: '100%' }}>
+      <Box sx={{ height: 400, width: '100%' }}>
         <DataGrid
           rows={teachRequests}
           columns={cols}
@@ -229,9 +181,9 @@ export default function AdminTeachRequest() {
           disableSelectionOnClick
           onSelectionModelChange={selectionHandler}
         />
-      </div>
+      </Box>
       {currentSelection && (
-        <SingleRequest
+        <AdminTechRequestCurrent
           {...currentSelection}
           adminCommentRef={adminCommentRef}
           onSendComment={sendCommentHandler}
