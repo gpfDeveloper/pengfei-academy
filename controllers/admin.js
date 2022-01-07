@@ -4,14 +4,16 @@ import db from 'utils/db';
 
 export const getUsers = async (req, res) => {
   await db.connect();
-  const users = await User.find();
+  const users = await User.find().select('-password');
   res.status(200).json(users.map((user) => user.toObject({ getters: true })));
 };
 
 export const getTeachRequests = async (req, res) => {
   await db.connect();
 
-  const teachRequests = await TeachRequest.find().populate('user');
+  const teachRequests = await TeachRequest.find().populate([
+    { path: 'user', select: ['name', 'email'] },
+  ]);
 
   res.status(200).json(
     teachRequests.map((teachReq) => ({

@@ -50,7 +50,7 @@ export default function AdminPanel() {
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs value={value} onChange={handleChange}>
           <Tab label="Users" {...a11yProps(0)} />
-          <Tab label="Teach Requests" {...a11yProps(1)} />
+          <Tab label="Teaching Requests" {...a11yProps(1)} />
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
