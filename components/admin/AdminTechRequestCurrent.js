@@ -1,3 +1,5 @@
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import {
   Card,
   Typography,
@@ -6,6 +8,7 @@ import {
   TextField,
   Tooltip,
   Badge,
+  Divider,
 } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 import PhoneIcon from '@mui/icons-material/Phone';
@@ -39,6 +42,15 @@ export default function AdminTechRequestCurrent({
   onSendComment,
   adminCommentRef,
 }) {
+  const theme = useTheme();
+  const isBelowMd = useMediaQuery(theme.breakpoints.down('md'));
+  const rowStyle = {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    flexDirection: isBelowMd ? 'column' : 'row',
+    gap: 4,
+  };
   return (
     <Card
       sx={{
@@ -48,8 +60,6 @@ export default function AdminTechRequestCurrent({
         gap: 4,
         mt: 4,
         '& p': {
-          borderBottom: '1px solid grey',
-          pb: 2,
           display: 'flex',
           alignItems: 'center',
           gap: 2,
@@ -57,62 +67,78 @@ export default function AdminTechRequestCurrent({
       }}
     >
       <Badge badgeContent={status} color={statusColorMap[status]}></Badge>
-      <Typography>
-        {' '}
-        <Tooltip title="Id">
-          <ArticleIcon />
-        </Tooltip>{' '}
-        {id}
-      </Typography>
-      <Typography>
-        <Tooltip title="Sent Time">
-          <SendIcon />
-        </Tooltip>{' '}
-        {sendTime}
-      </Typography>
-      <Typography>
-        {' '}
-        <Tooltip title="Skype Name">
-          <PhoneIcon />
-        </Tooltip>{' '}
-        {skypeName}
-      </Typography>
-      <Typography>
-        {' '}
-        <Tooltip title="User Name">
-          <PersonIcon />
-        </Tooltip>{' '}
-        {userName}
-      </Typography>
-      <Typography>
-        {' '}
-        <Tooltip title="Email">
-          <EmailIcon />
-        </Tooltip>{' '}
-        {email}
-      </Typography>
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+      <Box sx={rowStyle}>
         <Typography>
           {' '}
-          <Tooltip title="Has Meeting">
-            <EventIcon />
+          <Tooltip title="Id">
+            <ArticleIcon />
           </Tooltip>{' '}
-          {hasMeeting ? (
-            <CheckIcon color="success" />
-          ) : (
-            <CloseIcon color="error" />
-          )}
+          {id}
         </Typography>
-        {!hasMeeting && (
-          <Button onClick={onUpdateHasMeeting}>Set has meeting</Button>
-        )}
+        <Typography>
+          <Tooltip title="Sent Time">
+            <SendIcon />
+          </Tooltip>{' '}
+          {sendTime}
+        </Typography>
       </Box>
-      <Typography sx={{ maxWidth: '40rem', overflowWrap: 'break-word' }}>
+      <Divider />
+      <Box sx={rowStyle}>
+        <Typography>
+          {' '}
+          <Tooltip title="Skype Name">
+            <PhoneIcon />
+          </Tooltip>{' '}
+          {skypeName}
+        </Typography>
+        <Typography>
+          {' '}
+          <Tooltip title="User Name">
+            <PersonIcon />
+          </Tooltip>{' '}
+          {userName}
+        </Typography>
+      </Box>
+      <Divider />
+      <Box sx={rowStyle}>
+        <Typography>
+          {' '}
+          <Tooltip title="Email">
+            <EmailIcon />
+          </Tooltip>{' '}
+          {email}
+        </Typography>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+          <Typography>
+            {' '}
+            <Tooltip title="Has Meeting">
+              <EventIcon />
+            </Tooltip>{' '}
+            {hasMeeting ? (
+              <CheckIcon color="success" />
+            ) : (
+              <CloseIcon color="error" />
+            )}
+          </Typography>
+          {!hasMeeting && (
+            <Button onClick={onUpdateHasMeeting}>Set has meeting</Button>
+          )}
+        </Box>
+      </Box>
+      <Divider />
+      <Typography
+        sx={{
+          maxWidth: '40rem',
+          overflowWrap: 'break-word',
+          overflow: isBelowMd ? 'scroll' : undefined,
+        }}
+      >
         <Tooltip title="Message from user">
           <MessageIcon />
         </Tooltip>{' '}
         {message}
       </Typography>
+      <Divider />
       <Box
         component="form"
         onSubmit={onSendComment}

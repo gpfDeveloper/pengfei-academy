@@ -8,17 +8,17 @@ import { Box } from '@mui/material';
 import AdminTechRequestCurrent from './AdminTechRequestCurrent';
 
 const cols = [
-  { field: 'id', headerName: 'ID', width: 90 },
+  { field: 'id', headerName: 'ID', width: 90, hide: true },
   {
     field: 'userName',
     headerName: 'User name',
-    width: 150,
+    width: 100,
   },
   {
     field: 'sendTime',
     headerName: 'Send time',
     type: 'date',
-    width: 240,
+    width: 200,
   },
   {
     field: 'skypeName',
@@ -29,7 +29,7 @@ const cols = [
     field: 'status',
     headerName: 'Status',
     type: 'singleSelect',
-    width: 150,
+    width: 90,
     valueOptions: ['draft', 'approved', 'reject'],
   },
   {
@@ -39,9 +39,9 @@ const cols = [
   },
   {
     field: 'hasMeeting',
-    headerName: 'HasMeeting',
+    headerName: 'Meet',
     type: 'boolean',
-    width: 90,
+    width: 60,
   },
   {
     field: 'message',
@@ -94,9 +94,10 @@ export default function AdminTeachRequest() {
   }, [token]);
   const selectionHandler = (selections) => {
     if (selections.length === 1) {
-      setCurrentSelection(
-        teachRequests.filter((item) => item.id === selections[0])[0]
-      );
+      const selection = teachRequests.filter(
+        (item) => item.id === selections[0]
+      )[0];
+      setCurrentSelection(selection);
     } else {
       setCurrentSelection(null);
     }
@@ -112,6 +113,14 @@ export default function AdminTeachRequest() {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
+      const newTeachReqs = teachRequests.map((tq) => {
+        if (tq.id === currentSelection.id) {
+          return { ...tq, adminComment: comment };
+        } else {
+          return { ...tq };
+        }
+      });
+      setTeachRequests(newTeachReqs);
       dispatch(
         setSnackbar({ severity: 'success', message: 'Update comment success.' })
       );
@@ -124,6 +133,17 @@ export default function AdminTeachRequest() {
       await axios.get(`/api/admin/teachRequest/${currentSelection.id}/reject`, {
         headers: { Authorization: `Bearer ${token}` },
       });
+      let newTeachReq;
+      const newTeachReqs = teachRequests.map((tq) => {
+        if (tq.id === currentSelection.id) {
+          newTeachReq = { ...tq, status: 'reject' };
+          return newTeachReq;
+        } else {
+          return { ...tq };
+        }
+      });
+      setCurrentSelection(newTeachReq);
+      setTeachRequests(newTeachReqs);
       dispatch(
         setSnackbar({ severity: 'success', message: 'Reject success.' })
       );
@@ -139,6 +159,17 @@ export default function AdminTeachRequest() {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
+      let newTeachReq;
+      const newTeachReqs = teachRequests.map((tq) => {
+        if (tq.id === currentSelection.id) {
+          newTeachReq = { ...tq, status: 'approved' };
+          return newTeachReq;
+        } else {
+          return { ...tq };
+        }
+      });
+      setCurrentSelection(newTeachReq);
+      setTeachRequests(newTeachReqs);
       dispatch(
         setSnackbar({ severity: 'success', message: 'Approve success.' })
       );
@@ -154,6 +185,17 @@ export default function AdminTeachRequest() {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
+      let newTeachReq;
+      const newTeachReqs = teachRequests.map((tq) => {
+        if (tq.id === currentSelection.id) {
+          newTeachReq = { ...tq, hasMeeting: true };
+          return newTeachReq;
+        } else {
+          return { ...tq };
+        }
+      });
+      setCurrentSelection(newTeachReq);
+      setTeachRequests(newTeachReqs);
       dispatch(
         setSnackbar({
           severity: 'success',
