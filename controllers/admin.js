@@ -36,8 +36,15 @@ export const rejectRequest = async (req, res) => {
   const teachRequestId = req.query.id;
   await db.connect();
   const teachRequest = await TeachRequest.findById(teachRequestId).exec();
+  const user = await User.findById(teachRequest.user);
+  const role = 'Instructor';
+  const idx = user.roles.indexOf(role);
+  if (idx !== -1) {
+    user.roles.splice(idx, 1);
+  }
   teachRequest.status = 'reject';
   await teachRequest.save();
+  await user.save();
   res.status(200).send();
 };
 
