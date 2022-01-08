@@ -1,6 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { SESSION_EXPIRE_SEC } from 'utils/constants';
 import Cookies from 'js-cookie';
+import { USER_ROLES } from 'utils/constants';
+const { Instructor: RoleInstructor, Administrator: RoleAdminstrator } =
+  USER_ROLES;
 
 const USER_INFO_KEY = 'userInfo';
 
@@ -31,8 +34,8 @@ const userSlice = createSlice({
       { payload: { name, email, headline, bio, token, roles } }
     ) => {
       state.isLogin = true;
-      state.isAdmin = roles.indexOf('Administrator') !== -1;
-      state.isInstructor = roles.indexOf('Instructor') !== -1;
+      state.isAdmin = roles.indexOf(RoleAdminstrator) !== -1;
+      state.isInstructor = roles.indexOf(RoleInstructor) !== -1;
       state.name = name;
       state.email = email;
       state.roles = roles;

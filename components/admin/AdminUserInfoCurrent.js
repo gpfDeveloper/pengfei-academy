@@ -10,7 +10,7 @@ import WorkIcon from '@mui/icons-material/Work';
 
 const roleColorMap = {
   User: 'info',
-  Admin: 'success',
+  Administrator: 'success',
   Instructor: 'primary',
 };
 

@@ -6,6 +6,12 @@ import { setSnackbar } from 'store/snackbar';
 import { DataGrid } from '@mui/x-data-grid';
 import { Box } from '@mui/material';
 import AdminTechRequestCurrent from './AdminTechRequestCurrent';
+import { TEACH_REQUEST_STATUS } from 'utils/constants';
+const {
+  draft: DRAFT,
+  approved: APPROVED,
+  rejected: REJECTED,
+} = TEACH_REQUEST_STATUS;
 
 const cols = [
   { field: 'id', headerName: 'ID', width: 90, hide: true },
@@ -30,7 +36,7 @@ const cols = [
     headerName: 'Status',
     type: 'singleSelect',
     width: 90,
-    valueOptions: ['draft', 'approved', 'reject'],
+    valueOptions: [DRAFT, APPROVED, REJECTED],
   },
   {
     field: 'email',
@@ -136,7 +142,7 @@ export default function AdminTeachRequest() {
       let newTeachReq;
       const newTeachReqs = teachRequests.map((tq) => {
         if (tq.id === currentSelection.id) {
-          newTeachReq = { ...tq, status: 'reject' };
+          newTeachReq = { ...tq, status: REJECTED };
           return newTeachReq;
         } else {
           return { ...tq };
@@ -162,7 +168,7 @@ export default function AdminTeachRequest() {
       let newTeachReq;
       const newTeachReqs = teachRequests.map((tq) => {
         if (tq.id === currentSelection.id) {
-          newTeachReq = { ...tq, status: 'approved' };
+          newTeachReq = { ...tq, status: APPROVED };
           return newTeachReq;
         } else {
           return { ...tq };

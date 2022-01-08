@@ -23,7 +23,7 @@ import ArticleIcon from '@mui/icons-material/Article';
 const statusColorMap = {
   draft: 'info',
   approved: 'success',
-  reject: 'error',
+  rejected: 'error',
 };
 
 export default function AdminTechRequestCurrent({
@@ -163,7 +163,7 @@ export default function AdminTechRequestCurrent({
             Approve
           </Button>
         )}
-        {status !== 'reject' && (
+        {status !== 'rejected' && (
           <Button color="error" onClick={onReject}>
             Reject
           </Button>

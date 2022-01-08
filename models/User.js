@@ -1,4 +1,11 @@
 import mongoose from 'mongoose';
+import { USER_ROLES } from 'utils/constants';
+
+const {
+  User: RoleUser,
+  Instructor: RoleInstructor,
+  Administrator: RoleAdminstrator,
+} = USER_ROLES;
 
 const userSchema = new mongoose.Schema(
   {
@@ -19,8 +26,8 @@ const userSchema = new mongoose.Schema(
     },
     roles: {
       type: [String],
-      default: ['User'],
-      enum: ['User', 'Instructor', 'Administrator'],
+      default: [RoleUser],
+      enum: [RoleUser, RoleInstructor, RoleAdminstrator],
     },
     teachRequest: {
       type: mongoose.Types.ObjectId,

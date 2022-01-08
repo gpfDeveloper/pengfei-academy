@@ -20,3 +20,15 @@ export const TEACHING_STATUS = {
   haveMeeting: 'haveMeeting',
   complete: 'complete',
 };
+
+export const USER_ROLES = {
+  User: 'User',
+  Instructor: 'Instructor',
+  Administrator: 'Administrator',
+};
+
+export const TEACH_REQUEST_STATUS = {
+  draft: 'draft',
+  approved: 'approved',
+  rejected: 'rejected',
+};

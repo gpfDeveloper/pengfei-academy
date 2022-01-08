@@ -1,6 +1,10 @@
 import User from 'models/User';
 import TeachRequest from 'models/TeachRequest';
 import db from 'utils/db';
+import { USER_ROLES, TEACH_REQUEST_STATUS } from 'utils/constants';
+
+const { Instructor: RoleInstructor } = USER_ROLES;
+const { approved: APPROVED, rejected: REJECTED } = TEACH_REQUEST_STATUS;
 
 export const getUsers = async (req, res) => {
   await db.connect();
@@ -39,12 +43,11 @@ export const rejectRequest = async (req, res) => {
   await db.connect();
   const teachRequest = await TeachRequest.findById(teachRequestId).exec();
   const user = await User.findById(teachRequest.user);
-  const role = 'Instructor';
-  const idx = user.roles.indexOf(role);
+  const idx = user.roles.indexOf(RoleInstructor);
   if (idx !== -1) {
     user.roles.splice(idx, 1);
   }
-  teachRequest.status = 'reject';
+  teachRequest.status = REJECTED;
   await teachRequest.save();
   await user.save();
   res.status(200).send();
@@ -55,11 +58,10 @@ export const approveRequest = async (req, res) => {
   await db.connect();
   const teachRequest = await TeachRequest.findById(teachRequestId).exec();
   const user = await User.findById(teachRequest.user);
-  const role = 'Instructor';
-  if (user.roles.indexOf(role) === -1) {
-    user.roles.push(role);
+  if (user.roles.indexOf(RoleInstructor) === -1) {
+    user.roles.push(RoleInstructor);
   }
-  teachRequest.status = 'approved';
+  teachRequest.status = APPROVED;
   await teachRequest.save();
   await user.save();
   res.status(200).send();

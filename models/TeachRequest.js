@@ -1,4 +1,7 @@
 import mongoose from 'mongoose';
+import { TEACH_REQUEST_STATUS } from 'utils/constants';
+
+const { draft, approved, rejected } = TEACH_REQUEST_STATUS;
 
 const teachRequestSchema = new mongoose.Schema(
   {
@@ -11,8 +14,8 @@ const teachRequestSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      default: 'draft',
-      enum: ['draft', 'approved', 'reject'],
+      default: draft,
+      enum: [draft, approved, rejected],
     },
     hasMeeting: {
       type: Boolean,
