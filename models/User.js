@@ -33,6 +33,14 @@ const userSchema = new mongoose.Schema(
       type: mongoose.Types.ObjectId,
       ref: 'TeachRequest',
     },
+    notification: {
+      type: mongoose.Types.ObjectId,
+      ref: 'Notification',
+    },
+    unReadNotificationCount: {
+      type: Number,
+      default: 0,
+    },
   },
   { timestamps: true }
 );

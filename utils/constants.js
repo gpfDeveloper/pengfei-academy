@@ -32,3 +32,8 @@ export const TEACH_REQUEST_STATUS = {
   approved: 'approved',
   rejected: 'rejected',
 };
+
+export const NOTIFICATION_TYPES = {
+  system: 'system',
+  message: 'message',
+};

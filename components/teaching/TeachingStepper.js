@@ -5,7 +5,6 @@ import Box from '@mui/material/Box';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
-import Typography from '@mui/material/Typography';
 
 import { TEACHING_STATUS } from 'utils/constants';
 import TeachingSignup from './TeachingSignup';
@@ -53,11 +52,8 @@ export default function TeachingStepper() {
     case 2:
       content = <TeachingMeeting />;
       break;
-    case 3:
-      content = <div>finished</div>;
-      break;
     default:
-      content = <div>signup</div>;
+      content = <TeachingSendRequest />;
   }
 
   return (
@@ -73,13 +69,7 @@ export default function TeachingStepper() {
           );
         })}
       </Stepper>
-      {activeStep === steps.length ? (
-        <Typography sx={{ mt: 2, mb: 1 }}>
-          All steps completed - you&apos;re finished
-        </Typography>
-      ) : (
-        content
-      )}
+      {content}
     </Box>
   );
 }

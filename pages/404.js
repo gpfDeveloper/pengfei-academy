@@ -9,8 +9,8 @@ export default function NotFound() {
         justifyContent="center"
         sx={{ marginTop: '8rem' }}
       >
-        <Typography variant="h1" component="h1">
-          Page Not Found.
+        <Typography variant="h3" component="h1">
+          We can&rsquo;t find the page your&rsquo;re looking for
         </Typography>
       </Stack>
     </PageLayout>

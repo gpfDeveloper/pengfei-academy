@@ -1,10 +1,16 @@
 import User from 'models/User';
 import TeachRequest from 'models/TeachRequest';
+import Notification from 'models/Notification';
 import db from 'utils/db';
-import { USER_ROLES, TEACH_REQUEST_STATUS } from 'utils/constants';
+import {
+  USER_ROLES,
+  TEACH_REQUEST_STATUS,
+  NOTIFICATION_TYPES,
+} from 'utils/constants';
 
 const { Instructor: RoleInstructor } = USER_ROLES;
 const { approved: APPROVED, rejected: REJECTED } = TEACH_REQUEST_STATUS;
+const { system: NotificationSystem } = NOTIFICATION_TYPES;
 
 export const getUsers = async (req, res) => {
   await db.connect();
@@ -62,8 +68,20 @@ export const approveRequest = async (req, res) => {
     user.roles.push(RoleInstructor);
   }
   teachRequest.status = APPROVED;
+  let notification;
+  const message =
+    'Congratulation, you are approved to teach at Pengfei Academy!';
+  if (user.notification) {
+    notification = user.populate('notification');
+  } else {
+    notification = new Notification({ user });
+    user.notification = notification;
+  }
+  user.unReadNotificationCount += 1;
+  notification.notifications.push({ message, type: NotificationSystem });
   await teachRequest.save();
   await user.save();
+  await notification.save();
   res.status(200).send();
 };
 
