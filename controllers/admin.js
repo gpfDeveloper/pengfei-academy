@@ -64,8 +64,7 @@ export const approveRequest = async (req, res) => {
   }
   teachRequest.status = APPROVED;
   let notification;
-  const message =
-    'Congratulation, you are approved to teach at Pengfei Academy!';
+  const message = `Congratulation ${user.name}, you are approved to teach at Pengfei Academy!`;
   if (user.notification) {
     notification = await Notification.findOne({ user });
   } else {

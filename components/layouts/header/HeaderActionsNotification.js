@@ -25,7 +25,11 @@ export default function HeaderActionsNotification() {
   return (
     <>
       <Tooltip title="Notifications">
-        <IconButton size="large" color="inherit" onClick={clickButtonHandler}>
+        <IconButton
+          size="large"
+          color={isOpen ? 'primary' : 'inherit'}
+          onClick={clickButtonHandler}
+        >
           <Badge badgeContent={unReadNotificationCount} color="error">
             <NotificationsIcon />
           </Badge>

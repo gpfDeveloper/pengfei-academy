@@ -56,8 +56,8 @@ export const registerAsync =
         email,
         password,
       });
-      const { token, name, roles } = data.data;
-      dispatch(login({ token, name, email, roles }));
+      const { token, name, roles, unReadNotificationCount } = data.data;
+      dispatch(login({ token, name, email, roles, unReadNotificationCount }));
       dispatch(
         setSnackbar({
           severity: 'success',

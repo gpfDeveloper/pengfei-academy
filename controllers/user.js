@@ -18,11 +18,21 @@ export const register = async (req, res) => {
   });
   const user = await newUser.save();
   const token = signToken(user);
+
+  const message = `Hi ${name}, welcome to Pengfei Academy!`;
+  const notification = new Notification({ user });
+  user.notification = notification;
+  user.unReadNotificationCount = 1;
+  notification.notifications.push({ message });
+  await user.save();
+  await notification.save();
+
   return res.send({
     token,
     name: user.name,
     email: user.email,
     roles: user.roles,
+    unReadNotificationCount: 1,
   });
 };
 
