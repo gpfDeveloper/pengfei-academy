@@ -18,7 +18,7 @@ export default function NotificationMenu({ anchorEl, isOpen, onClose }) {
           headers: { Authorization: `Bearer ${token}` },
         });
         setLoading(false);
-        setNotifications(data.data.notifications);
+        setNotifications(data.data.notifications.reverse());
       } catch (error) {
         setLoading(false);
       }
@@ -27,6 +27,17 @@ export default function NotificationMenu({ anchorEl, isOpen, onClose }) {
       fetchNotifications();
     }
   }, [token, isOpen]);
+  const deleteSingleHandler = async (notiId) => {
+    try {
+      await axios.delete(`/api/user/notification/item/${notiId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+    } catch (err) {
+      console.log(err);
+    }
+    const newNotis = notifications.filter((noti) => noti.id !== notiId);
+    setNotifications(newNotis);
+  };
   return (
     <Menu
       anchorEl={anchorEl}
@@ -36,12 +47,17 @@ export default function NotificationMenu({ anchorEl, isOpen, onClose }) {
       anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       PaperProps={{
         sx: {
-          minWidth: '300px',
+          width: '300px',
         },
       }}
     >
       {loading && <Spinner />}
-      {!loading && <NotificationList notifications={notifications} />}
+      {!loading && (
+        <NotificationList
+          onDeleteSingle={deleteSingleHandler}
+          notifications={notifications}
+        />
+      )}
     </Menu>
   );
 }

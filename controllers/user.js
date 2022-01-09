@@ -116,13 +116,42 @@ export const getNotifications = async (req, res) => {
       const notificationObj = await Notification.findById(user.notification);
       notifications = notificationObj.notifications;
     }
+    return res.status(200).json({
+      notifications: notifications.map((noti) =>
+        noti.toObject({ getters: true })
+      ),
+    });
+  } else {
+    return res.status(404).json({ message: 'User not found.' });
+  }
+};
+
+export const deleteNotificationItem = async (req, res) => {
+  const notificationItemId = req.query.id;
+  if (!notificationItemId) {
     return res
-      .status(200)
-      .json({
-        notifications: notifications.map((noti) =>
-          noti.toObject({ getters: true })
-        ),
-      });
+      .status(422)
+      .json({ message: 'Notification item id not provided' });
+  }
+  await db.connect();
+  const userId = req.user.id;
+  const user = await User.findById(userId);
+  if (user) {
+    if (user.notification) {
+      const notificationObj = await Notification.findById(user.notification);
+      const notifications = notificationObj.notifications;
+      const idx = notifications
+        .map((noti) => noti._id.toString())
+        .indexOf(notificationItemId);
+      if (idx === -1) {
+        return res.status(404).json({ message: 'Notification item not found' });
+      }
+      notifications.splice(idx, 1);
+      await notificationObj.save();
+      return res.status(200).send();
+    } else {
+      return res.status(404).json({ message: 'Notification not found' });
+    }
   } else {
     return res.status(404).json({ message: 'User not found.' });
   }
