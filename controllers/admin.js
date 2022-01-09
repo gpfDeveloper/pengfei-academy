@@ -72,7 +72,7 @@ export const approveRequest = async (req, res) => {
     user.notification = notification;
   }
   user.unReadNotificationCount += 1;
-  notification.notifications.push({ message });
+  notification.items.push({ message });
   await teachRequest.save();
   await user.save();
   await notification.save();

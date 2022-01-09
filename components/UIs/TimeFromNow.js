@@ -15,7 +15,7 @@ const DateTime = ({ createdAt }) => {
   };
 
   if (diffInMins < 1) {
-    return <Typography {...props}>Just Now</Typography>;
+    return <Typography {...props}>Just now</Typography>;
   } else if (diffInMins < 60) {
     return <Typography {...props}>{diffInMins} minutes ago.</Typography>;
   } else if (diffInHours < 24) {

@@ -3,7 +3,7 @@ import { NOTIFICATION_TYPES } from 'utils/constants';
 
 const { system: SYSTEM, message: MESSAGE } = NOTIFICATION_TYPES;
 
-const SingleNotificationSchema = new mongoose.Schema(
+const NotificationItem = new mongoose.Schema(
   {
     message: { type: String, trim: true, required: true, max: 1000 },
     type: {
@@ -23,7 +23,7 @@ const notificationSchema = new mongoose.Schema(
       unique: true,
       ref: 'User',
     },
-    notifications: [SingleNotificationSchema],
+    items: [NotificationItem],
   },
   { timestamps: true }
 );

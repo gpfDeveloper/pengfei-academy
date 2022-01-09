@@ -23,7 +23,7 @@ export const register = async (req, res) => {
   const notification = new Notification({ user });
   user.notification = notification;
   user.unReadNotificationCount = 1;
-  notification.notifications.push({ message });
+  notification.items.push({ message });
   await user.save();
   await notification.save();
 
@@ -121,13 +121,13 @@ export const getNotifications = async (req, res) => {
   const userId = req.user.id;
   const user = await User.findById(userId);
   if (user) {
-    let notifications = [];
+    let notificationItems = [];
     if (user.notification) {
       const notificationObj = await Notification.findById(user.notification);
-      notifications = notificationObj.notifications;
+      notificationItems = notificationObj.items;
     }
     return res.status(200).json({
-      notifications: notifications.map((noti) =>
+      notifications: notificationItems.map((noti) =>
         noti.toObject({ getters: true })
       ),
     });
@@ -149,14 +149,14 @@ export const deleteNotificationItem = async (req, res) => {
   if (user) {
     if (user.notification) {
       const notificationObj = await Notification.findById(user.notification);
-      const notifications = notificationObj.notifications;
-      const idx = notifications
+      const notificationItems = notificationObj.items;
+      const idx = notificationItems
         .map((noti) => noti._id.toString())
         .indexOf(notificationItemId);
       if (idx === -1) {
         return res.status(404).json({ message: 'Notification item not found' });
       }
-      notifications.splice(idx, 1);
+      notificationItems.splice(idx, 1);
       await notificationObj.save();
       return res.status(200).send();
     } else {
