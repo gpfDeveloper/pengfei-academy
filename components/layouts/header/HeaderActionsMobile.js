@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
+import dynamic from 'next/dynamic';
 
 import {
   Box,
@@ -25,7 +26,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { logoutAsync } from 'store/user-async';
 import { setDark, setLight } from 'store/theme';
 
-export default function HeaderActionsMobile() {
+function HeaderActionsMobile() {
   const isDark = useSelector((state) => state.theme.isDark);
   const isLogin = useSelector((state) => state.user.isLogin);
   const dispatch = useDispatch();
@@ -146,3 +147,7 @@ export default function HeaderActionsMobile() {
     </>
   );
 }
+
+export default dynamic(() => Promise.resolve(HeaderActionsMobile), {
+  ssr: false,
+});

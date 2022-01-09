@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router';
+import dynamic from 'next/dynamic';
 
 import { Box, Button } from '@mui/material';
 
@@ -6,7 +7,7 @@ import { useSelector } from 'react-redux';
 
 import { PAGES, PAGES_INSTRUCTOR } from 'utils/constants';
 
-export default function HeaderNavs() {
+function HeaderNavs() {
   const router = useRouter();
   const { pathname } = router;
   const isInstructor = useSelector((state) => state.user?.isInstructor);
@@ -33,3 +34,5 @@ export default function HeaderNavs() {
     </>
   );
 }
+
+export default dynamic(() => Promise.resolve(HeaderNavs), { ssr: false });

@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router';
+import dynamic from 'next/dynamic';
 
 import { Box, Tooltip, IconButton, Badge, Button, Stack } from '@mui/material';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
@@ -12,7 +13,7 @@ import { setDark, setLight } from 'store/theme';
 import HeaderActionsAccount from './HeaderActionsAccount';
 import HeaderActionsNotification from './HeaderActionsNotification';
 
-export default function HeaderActions() {
+function HeaderActions() {
   const router = useRouter();
   const isDark = useSelector((state) => state.theme.isDark);
   const user = useSelector((state) => state.user);
@@ -76,3 +77,4 @@ export default function HeaderActions() {
     </Box>
   );
 }
+export default dynamic(() => Promise.resolve(HeaderActions), { ssr: false });
