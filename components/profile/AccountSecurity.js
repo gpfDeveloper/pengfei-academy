@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { accountSecurityUpdate } from 'store/user-async';
+import { accountSecurityUpdateAsync } from 'store/user-async';
 
 import {
   TextField,
@@ -43,7 +43,7 @@ export default function AccountSecurity() {
   const onSubmit = ({ email, newPassword, currentPassword }) => {
     setIsSaving(true);
     dispatch(
-      accountSecurityUpdate({ email, newPassword, currentPassword, token })
+      accountSecurityUpdateAsync({ email, newPassword, currentPassword, token })
     ).then(() => setIsSaving(false));
   };
   return (

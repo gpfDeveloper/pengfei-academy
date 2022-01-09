@@ -1,5 +1,6 @@
 import bcrypt from 'bcryptjs';
 import User from 'models/User';
+import Notification from 'models/Notification';
 import db from 'utils/db';
 import { signToken } from 'utils/auth';
 
@@ -38,6 +39,7 @@ export const login = async (req, res) => {
       headline: user.headline,
       bio: user.bio,
       roles: user.roles,
+      unReadNotificationCount: user.unReadNotificationCount,
     });
   } else {
     return res.status(401).json({ message: 'Invalid email or password' });
@@ -83,6 +85,45 @@ export const updateProfileInfo = async (req, res) => {
         .json({ message: 'Update profile failed, please try again latter' });
     }
   } else {
-    return res.status(401).json({ message: 'Incorrenct current password.' });
+    return res.status(404).json({ message: 'User not found.' });
+  }
+};
+
+export const clearUnReadNotificationCount = async (req, res) => {
+  await db.connect();
+  const userId = req.user.id;
+  const user = await User.findById(userId);
+  if (user) {
+    user.unReadNotificationCount = 0;
+    try {
+      await user.save();
+      return res.status(200).send();
+    } catch (err) {
+      return res.status(500).json({ message: 'Clear failed.' });
+    }
+  } else {
+    return res.status(404).json({ message: 'User not found.' });
+  }
+};
+
+export const getNotifications = async (req, res) => {
+  await db.connect();
+  const userId = req.user.id;
+  const user = await User.findById(userId);
+  if (user) {
+    let notifications = [];
+    if (user.notification) {
+      const notificationObj = await Notification.findById(user.notification);
+      notifications = notificationObj.notifications;
+    }
+    return res
+      .status(200)
+      .json({
+        notifications: notifications.map((noti) =>
+          noti.toObject({ getters: true })
+        ),
+      });
+  } else {
+    return res.status(404).json({ message: 'User not found.' });
   }
 };

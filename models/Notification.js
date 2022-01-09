@@ -8,12 +8,8 @@ const SingleNotificationSchema = new mongoose.Schema(
     message: { type: String, trim: true, required: true, max: 1000 },
     type: {
       type: String,
-      required: true,
+      default: SYSTEM,
       enum: [SYSTEM, MESSAGE],
-    },
-    isRead: {
-      type: Boolean,
-      default: false,
     },
   },
   { timestamps: true }
@@ -24,6 +20,7 @@ const notificationSchema = new mongoose.Schema(
     user: {
       type: mongoose.Types.ObjectId,
       required: true,
+      unique: true,
       ref: 'User',
     },
     notifications: [SingleNotificationSchema],

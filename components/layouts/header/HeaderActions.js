@@ -10,11 +10,13 @@ import { useSelector, useDispatch } from 'react-redux';
 import { setDark, setLight } from 'store/theme';
 
 import HeaderActionsAccount from './HeaderActionsAccount';
+import HeaderActionsNotification from './HeaderActionsNotification';
 
 export default function HeaderActions() {
   const router = useRouter();
   const isDark = useSelector((state) => state.theme.isDark);
-  const isLogin = useSelector((state) => state.user.isLogin);
+  const user = useSelector((state) => state.user);
+  const { isLogin } = user;
   const dispatch = useDispatch();
   return (
     <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
@@ -59,13 +61,16 @@ export default function HeaderActions() {
         </Stack>
       )}
       {isLogin && (
-        <Tooltip title="Wishlist">
-          <IconButton size="large" color="inherit">
-            <Badge badgeContent={4} color="error">
-              <FavoriteIcon />
-            </Badge>
-          </IconButton>
-        </Tooltip>
+        <Stack sx={{ flexDirection: 'row' }}>
+          <Tooltip title="Wishlist">
+            <IconButton size="large" color="inherit">
+              <Badge badgeContent={4} color="error">
+                <FavoriteIcon />
+              </Badge>
+            </IconButton>
+          </Tooltip>
+          <HeaderActionsNotification />
+        </Stack>
       )}
       {isLogin && <HeaderActionsAccount />}
     </Box>

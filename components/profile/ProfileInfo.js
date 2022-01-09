@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { profileInfoUpdate } from 'store/user-async';
+import { profileInfoUpdateAsync } from 'store/user-async';
 
 import { TextField, Button, Stack } from '@mui/material';
 import LoadingButton from '@mui/lab/LoadingButton';
@@ -21,7 +21,7 @@ export default function ProfileInfo() {
 
   const onSubmit = ({ name, headline, bio }) => {
     setIsSaving(true);
-    dispatch(profileInfoUpdate({ name, headline, bio, token })).then(() =>
+    dispatch(profileInfoUpdateAsync({ name, headline, bio, token })).then(() =>
       setIsSaving(false)
     );
   };

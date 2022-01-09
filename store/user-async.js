@@ -1,6 +1,12 @@
 import axios from 'axios';
 
-import { login, logout, updateEmail, updateProfile } from 'store/user';
+import {
+  login,
+  logout,
+  updateEmail,
+  updateProfile,
+  clearUnReadNotificationCount,
+} from 'store/user';
 import { clear as clearTeaching } from './teaching';
 import { setSnackbar } from './snackbar';
 
@@ -9,8 +15,19 @@ export const loginAsync =
   async (dispatch) => {
     try {
       const data = await axios.post('/api/user/login', { email, password });
-      const { token, name, roles, headline, bio } = data.data;
-      dispatch(login({ token, name, email, roles, headline, bio }));
+      const { token, name, roles, headline, bio, unReadNotificationCount } =
+        data.data;
+      dispatch(
+        login({
+          token,
+          name,
+          email,
+          roles,
+          headline,
+          bio,
+          unReadNotificationCount,
+        })
+      );
       dispatch(setSnackbar({ severity: 'success', message: 'Login success.' }));
       return true;
     } catch (error) {
@@ -60,7 +77,7 @@ export const registerAsync =
     }
   };
 
-export const accountSecurityUpdate =
+export const accountSecurityUpdateAsync =
   ({ currentPassword, newPassword, email, token }) =>
   async (dispatch) => {
     try {
@@ -86,7 +103,7 @@ export const accountSecurityUpdate =
     }
   };
 
-export const profileInfoUpdate =
+export const profileInfoUpdateAsync =
   ({ name, bio, headline, token }) =>
   async (dispatch) => {
     try {
@@ -110,5 +127,17 @@ export const profileInfoUpdate =
           message: message || 'Update failed, please try again later',
         })
       );
+    }
+  };
+
+export const clearUnReadNotificationCountAsync =
+  (token) => async (dispatch) => {
+    try {
+      await axios.get('/api/user/notification/clearUnReadCount', {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      dispatch(clearUnReadNotificationCount());
+    } catch (error) {
+      console.log(error);
     }
   };

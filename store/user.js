@@ -17,6 +17,7 @@ let initialState = {
   headline: '',
   bio: '',
   token: '',
+  unReadNotificationCount: 0,
   expireAt: null,
 };
 
@@ -31,7 +32,17 @@ const userSlice = createSlice({
   reducers: {
     login: (
       state,
-      { payload: { name, email, headline, bio, token, roles } }
+      {
+        payload: {
+          name,
+          email,
+          headline,
+          bio,
+          token,
+          roles,
+          unReadNotificationCount,
+        },
+      }
     ) => {
       state.isLogin = true;
       state.isAdmin = roles.indexOf(RoleAdminstrator) !== -1;
@@ -42,6 +53,7 @@ const userSlice = createSlice({
       state.token = token;
       state.headline = headline;
       state.bio = bio;
+      state.unReadNotificationCount = unReadNotificationCount;
       state.expireAt = new Date().getTime() + SESSION_EXPIRE_SEC * 1000;
       Cookies.set(USER_INFO_KEY, JSON.stringify(state));
     },
@@ -55,6 +67,7 @@ const userSlice = createSlice({
       state.token = null;
       state.headline = '';
       state.bio = '';
+      state.unReadNotificationCount = 0;
       state.expireAt = null;
       Cookies.remove(USER_INFO_KEY);
     },
@@ -68,9 +81,19 @@ const userSlice = createSlice({
       state.bio = bio;
       Cookies.set(USER_INFO_KEY, JSON.stringify(state));
     },
+    clearUnReadNotificationCount: (state) => {
+      state.unReadNotificationCount = 0;
+      Cookies.set(USER_INFO_KEY, JSON.stringify(state));
+    },
   },
 });
 
-export const { login, logout, updateEmail, updateProfile } = userSlice.actions;
+export const {
+  login,
+  logout,
+  updateEmail,
+  updateProfile,
+  clearUnReadNotificationCount,
+} = userSlice.actions;
 
 export default userSlice.reducer;
