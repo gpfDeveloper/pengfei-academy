@@ -116,6 +116,18 @@ export const clearUnReadNotificationCount = async (req, res) => {
   }
 };
 
+export const getUnReadNotificationCount = async (req, res) => {
+  await db.connect();
+  const userId = req.user.id;
+  const user = await User.findById(userId);
+  if (user) {
+    const unReadNotificationCount = user.unReadNotificationCount;
+    return res.status(200).send({ unReadNotificationCount });
+  } else {
+    return res.status(404).json({ message: 'User not found.' });
+  }
+};
+
 export const getNotifications = async (req, res) => {
   await db.connect();
   const userId = req.user.id;

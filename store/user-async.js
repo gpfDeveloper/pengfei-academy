@@ -6,6 +6,7 @@ import {
   updateEmail,
   updateProfile,
   clearUnReadNotificationCount,
+  getUnReadNotificationCount,
 } from 'store/user';
 import { clear as clearTeaching } from './teaching';
 import { setSnackbar } from './snackbar';
@@ -141,3 +142,15 @@ export const clearUnReadNotificationCountAsync =
       console.log(error);
     }
   };
+
+export const getUnReadNotificationCountAsync = (token) => async (dispatch) => {
+  try {
+    const data = await axios.get('/api/user/notification/getUnReadCount', {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    const count = data.data.unReadNotificationCount;
+    dispatch(getUnReadNotificationCount(count));
+  } catch (error) {
+    console.log(error);
+  }
+};
