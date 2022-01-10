@@ -64,6 +64,7 @@ export default function AdminTechRequestCurrent({
           alignItems: 'center',
           gap: 2,
         },
+        wordBreak: 'break-word',
       }}
     >
       <Badge badgeContent={status} color={statusColorMap[status]}></Badge>
@@ -126,18 +127,12 @@ export default function AdminTechRequestCurrent({
         </Box>
       </Box>
       <Divider />
-      <Typography
-        sx={{
-          maxWidth: '40rem',
-          overflowWrap: 'break-word',
-          overflow: isBelowMd ? 'scroll' : undefined,
-        }}
-      >
+      <Box>
         <Tooltip title="Message from user">
           <MessageIcon />
         </Tooltip>{' '}
-        {message}
-      </Typography>
+        <Typography>{message}</Typography>
+      </Box>
       <Divider />
       <Box
         component="form"

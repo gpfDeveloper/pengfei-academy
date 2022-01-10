@@ -1,6 +1,7 @@
 import db from 'utils/db';
 import TeachRequest from 'models/TeachRequest';
 import User from 'models/User';
+import { TEACH_REQUEST_STATUS } from 'utils/constants';
 
 export const sendRequest = async (req, res) => {
   await db.connect();
@@ -17,6 +18,7 @@ export const sendRequest = async (req, res) => {
         teachRequest = user.teachRequest;
         teachRequest.skypeName = skypeName;
         teachRequest.message = message;
+        teachRequest.status = TEACH_REQUEST_STATUS.draft;
       }
 
       await teachRequest.save();
