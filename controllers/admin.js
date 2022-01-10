@@ -2,9 +2,8 @@ import User from 'models/User';
 import TeachRequest from 'models/TeachRequest';
 import Notification from 'models/Notification';
 import db from 'utils/db';
-import { USER_ROLES, TEACH_REQUEST_STATUS } from 'utils/constants';
+import { TEACH_REQUEST_STATUS } from 'utils/constants';
 
-const { Instructor: RoleInstructor } = USER_ROLES;
 const { approved: APPROVED, rejected: REJECTED } = TEACH_REQUEST_STATUS;
 
 export const getUsers = async (req, res) => {
@@ -44,10 +43,7 @@ export const rejectRequest = async (req, res) => {
   await db.connect();
   const teachRequest = await TeachRequest.findById(teachRequestId).exec();
   const user = await User.findById(teachRequest.user);
-  const idx = user.roles.indexOf(RoleInstructor);
-  if (idx !== -1) {
-    user.roles.splice(idx, 1);
-  }
+  user.isInstructor = false;
   teachRequest.status = REJECTED;
   await teachRequest.save();
   await user.save();
@@ -59,9 +55,7 @@ export const approveRequest = async (req, res) => {
   await db.connect();
   const teachRequest = await TeachRequest.findById(teachRequestId).exec();
   const user = await User.findById(teachRequest.user);
-  if (user.roles.indexOf(RoleInstructor) === -1) {
-    user.roles.push(RoleInstructor);
-  }
+  user.isInstructor = true;
   teachRequest.status = APPROVED;
   let notification;
   const message = `Congratulation ${user.name}, you are approved to teach at Pengfei Academy!`;

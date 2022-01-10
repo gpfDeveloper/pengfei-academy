@@ -31,7 +31,8 @@ export const register = async (req, res) => {
     token,
     name: user.name,
     email: user.email,
-    roles: user.roles,
+    isAdmin: user.isAdmin,
+    isInstructor: user.isInstructor,
     unReadNotificationCount: 1,
   });
 };
@@ -48,7 +49,8 @@ export const login = async (req, res) => {
       email: user.email,
       headline: user.headline,
       bio: user.bio,
-      roles: user.roles,
+      isAdmin: user.isAdmin,
+      isInstructor: user.isInstructor,
       unReadNotificationCount: user.unReadNotificationCount,
     });
   } else {

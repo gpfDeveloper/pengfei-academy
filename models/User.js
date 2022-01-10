@@ -1,11 +1,4 @@
 import mongoose from 'mongoose';
-import { USER_ROLES } from 'utils/constants';
-
-const {
-  User: RoleUser,
-  Instructor: RoleInstructor,
-  Administrator: RoleAdminstrator,
-} = USER_ROLES;
 
 const userSchema = new mongoose.Schema(
   {
@@ -23,10 +16,13 @@ const userSchema = new mongoose.Schema(
     avatar: {
       type: String,
     },
-    roles: {
-      type: [String],
-      default: [RoleUser],
-      enum: [RoleUser, RoleInstructor, RoleAdminstrator],
+    isAdmin: {
+      type: Boolean,
+      default: false,
+    },
+    isInstructor: {
+      type: Boolean,
+      default: false,
     },
     teachRequest: {
       type: mongoose.Types.ObjectId,

@@ -6,13 +6,10 @@ import { setSnackbar } from 'store/snackbar';
 import { DataGrid } from '@mui/x-data-grid';
 import { Box } from '@mui/material';
 import AdminUserInfoCurrent from './AdminUserInfoCurrent';
-import { USER_ROLES } from 'utils/constants';
 
-const {
-  User: RoleUser,
-  Instructor: RoleInstructor,
-  Administrator: RoleAdmin,
-} = USER_ROLES;
+const RoleUser = 'User';
+const RoleInstructor = 'Instructor';
+const RoleAdmin = 'Admin';
 
 const cols = [
   { field: 'id', headerName: 'ID', width: 90, hide: true },
@@ -61,8 +58,8 @@ const transform = (rawUserData) => {
     row.name = userData.name;
     row.email = userData.email;
     row.headline = userData.headline;
-    const isAdmin = userData.roles.indexOf(RoleAdmin) !== -1;
-    const isInstructor = userData.roles.indexOf(RoleInstructor) !== -1;
+    const isAdmin = userData.isAdmin;
+    const isInstructor = userData.isInstructor;
     row.role = isAdmin ? RoleAdmin : isInstructor ? RoleInstructor : RoleUser;
     row.bio = userData.bio;
     row.id = userData.id;

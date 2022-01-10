@@ -16,17 +16,25 @@ export const loginAsync =
   async (dispatch) => {
     try {
       const data = await axios.post('/api/user/login', { email, password });
-      const { token, name, roles, headline, bio, unReadNotificationCount } =
-        data.data;
+      const {
+        token,
+        name,
+        headline,
+        bio,
+        unReadNotificationCount,
+        isAdmin,
+        isInstructor,
+      } = data.data;
       dispatch(
         login({
           token,
           name,
           email,
-          roles,
           headline,
           bio,
           unReadNotificationCount,
+          isAdmin,
+          isInstructor,
         })
       );
       dispatch(setSnackbar({ severity: 'success', message: 'Login success.' }));
@@ -57,8 +65,18 @@ export const registerAsync =
         email,
         password,
       });
-      const { token, name, roles, unReadNotificationCount } = data.data;
-      dispatch(login({ token, name, email, roles, unReadNotificationCount }));
+      const { token, name, unReadNotificationCount, isAdmin, isInstructor } =
+        data.data;
+      dispatch(
+        login({
+          token,
+          name,
+          email,
+          unReadNotificationCount,
+          isAdmin,
+          isInstructor,
+        })
+      );
       dispatch(
         setSnackbar({
           severity: 'success',

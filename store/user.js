@@ -1,9 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { SESSION_EXPIRE_SEC } from 'utils/constants';
 import Cookies from 'js-cookie';
-import { USER_ROLES } from 'utils/constants';
-const { Instructor: RoleInstructor, Administrator: RoleAdminstrator } =
-  USER_ROLES;
 
 const USER_INFO_KEY = 'userInfo';
 
@@ -11,7 +8,6 @@ let initialState = {
   isLogin: false,
   isInstructor: false,
   isAdmin: false,
-  roles: [],
   name: '',
   email: '',
   headline: '',
@@ -39,17 +35,17 @@ const userSlice = createSlice({
           headline,
           bio,
           token,
-          roles,
           unReadNotificationCount,
+          isAdmin,
+          isInstructor,
         },
       }
     ) => {
       state.isLogin = true;
-      state.isAdmin = roles.indexOf(RoleAdminstrator) !== -1;
-      state.isInstructor = roles.indexOf(RoleInstructor) !== -1;
+      state.isAdmin = isAdmin;
+      state.isInstructor = isInstructor;
       state.name = name;
       state.email = email;
-      state.roles = roles;
       state.token = token;
       state.headline = headline;
       state.bio = bio;
@@ -63,7 +59,6 @@ const userSlice = createSlice({
       state.isInstructor = false;
       state.name = null;
       state.email = null;
-      state.roles = [];
       state.token = null;
       state.headline = '';
       state.bio = '';
