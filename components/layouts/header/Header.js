@@ -1,3 +1,7 @@
+import { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { getHeaderInfoAsync } from 'store/user-async';
+
 import { AppBar, Box, Toolbar, Slide } from '@mui/material';
 
 import useScrollTrigger from '@mui/material/useScrollTrigger';
@@ -21,6 +25,13 @@ function HideOnScroll(props) {
 }
 
 export default function Header() {
+  const dispatch = useDispatch();
+  const token = useSelector((state) => state.user?.token);
+  useEffect(() => {
+    if (token) {
+      dispatch(getHeaderInfoAsync(token));
+    }
+  }, [dispatch, token]);
   return (
     <Box sx={{ flexGrow: 1 }}>
       <HideOnScroll>

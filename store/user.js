@@ -80,8 +80,12 @@ const userSlice = createSlice({
       state.unReadNotificationCount = 0;
       Cookies.set(USER_INFO_KEY, JSON.stringify(state));
     },
-    getUnReadNotificationCount: (state, { payload }) => {
-      state.unReadNotificationCount = payload;
+    getHeaderInfo: (
+      state,
+      { payload: { unReadNotificationCount, isInstructor } }
+    ) => {
+      state.unReadNotificationCount = unReadNotificationCount;
+      state.isInstructor = isInstructor;
       Cookies.set(USER_INFO_KEY, JSON.stringify(state));
     },
   },
@@ -93,7 +97,7 @@ export const {
   updateEmail,
   updateProfile,
   clearUnReadNotificationCount,
-  getUnReadNotificationCount,
+  getHeaderInfo,
 } = userSlice.actions;
 
 export default userSlice.reducer;

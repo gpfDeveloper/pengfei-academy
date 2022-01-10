@@ -1,9 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import {
-  clearUnReadNotificationCountAsync,
-  getUnReadNotificationCountAsync,
-} from 'store/user-async';
+import { clearUnReadNotificationCountAsync } from 'store/user-async';
 import { Tooltip, IconButton, Badge } from '@mui/material';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import NotificationMenu from 'components/notification/NotificationMenu';
@@ -15,10 +12,6 @@ export default function HeaderActionsNotification() {
 
   const [anchorEl, setAnchorEl] = useState(null);
   const isOpen = Boolean(anchorEl);
-
-  useEffect(() => {
-    dispatch(getUnReadNotificationCountAsync(token));
-  }, [token, dispatch]);
 
   const clickButtonHandler = (e) => {
     dispatch(clearUnReadNotificationCountAsync(token));

@@ -1,10 +1,10 @@
 import nc from 'next-connect';
 
-import { getUnReadNotificationCount } from 'controllers/user';
+import { getHeaderUserInfo } from 'controllers/user';
 import { isLogin } from 'middleware/auth';
 
 const handler = nc();
 
-handler.get(isLogin, getUnReadNotificationCount);
+handler.get(isLogin, getHeaderUserInfo);
 
 export default handler;
