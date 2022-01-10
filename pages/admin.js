@@ -16,7 +16,7 @@ function Admin() {
     if (!isAdmin) {
       router.replace('/login');
     }
-  }, [isAdmin]);
+  }, [isAdmin, router]);
   return (
     <PageLayout>
       {!isAdmin && <Spinner />}

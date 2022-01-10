@@ -16,7 +16,7 @@ function Profile() {
     if (!isLogin) {
       router.replace('/login');
     }
-  }, [isLogin]);
+  }, [isLogin, router]);
   return (
     <PageLayout>
       {!isLogin && <Spinner />}

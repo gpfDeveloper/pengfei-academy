@@ -32,7 +32,7 @@ export default function TeachingSendRequest() {
       setValue('message', data.data.message);
     };
     fetchSkypeMessage();
-  }, []);
+  }, [setValue, token]);
 
   const onSubmit = ({ skypeName, message }) => {
     setIsSaving(true);

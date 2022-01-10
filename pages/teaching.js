@@ -15,7 +15,7 @@ function Teaching() {
     if (isInstructor) {
       router.replace('/');
     }
-  }, [isInstructor]);
+  }, [isInstructor, router]);
   return (
     <PageLayout>
       <Stack
