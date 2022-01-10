@@ -1,13 +1,19 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
-import { IconButton, Tooltip, Menu, MenuItem, Divider } from '@mui/material';
-import AccountCircle from '@mui/icons-material/AccountCircle';
+import {
+  IconButton,
+  Tooltip,
+  Menu,
+  MenuItem,
+  Divider,
+  Avatar,
+} from '@mui/material';
 import { useSelector, useDispatch } from 'react-redux';
 import { logoutAsync } from 'store/user-async';
 
 export default function HeaderActionsAccount() {
   const router = useRouter();
-  const { isAdmin } = useSelector((state) => state.user);
+  const { isAdmin, name } = useSelector((state) => state.user);
   const [anchorEl, setAnchorEl] = useState(null);
   const isMenuOpen = Boolean(anchorEl);
   const menuId = 'account-menu';
@@ -74,7 +80,9 @@ export default function HeaderActionsAccount() {
           onClick={handleProfileMenuOpen}
           color="inherit"
         >
-          <AccountCircle />
+          <Avatar sx={{ backgroundColor: 'primary.main' }}>
+            {name[0].toUpperCase()}
+          </Avatar>
         </IconButton>
       </Tooltip>
       {renderMenu}

@@ -22,7 +22,6 @@ const userSchema = new mongoose.Schema(
     bio: { type: String, trim: true, max: 400 },
     avatar: {
       type: String,
-      default: '/avatar.png',
     },
     roles: {
       type: [String],
