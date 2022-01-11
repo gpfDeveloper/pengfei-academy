@@ -12,6 +12,11 @@ const conversationSchma = new mongoose.Schema(
       required: true,
       ref: 'User',
     },
+    lastMsg: {
+      type: mongoose.Types.ObjectId,
+      required: true,
+      ref: 'Message',
+    },
   },
   { timestamps: true }
 );

@@ -35,12 +35,65 @@ export const sendMessage = async (req, res) => {
     conversation = new Conversation();
     conversation.member1 = sender;
     conversation.member2 = receiver;
-    await conversation.save();
   }
 
   const message = new Message({ conversation, sender, text });
+  conversation.lastMsg = message;
   await message.save();
+  await conversation.save();
   res.status(200).json({ message: 'Message send success' });
 
   //to do, send notification to receiver.
+};
+
+export const getConversations = async (req, res) => {
+  const userId = req.user.id;
+  const user = await User.findById(userId);
+  if (!user) {
+    return res.status(404).json({ message: 'User not exist.' });
+  }
+  const conversations = [];
+  const relatedCons = await Conversation.find({
+    $or: [{ member1: user }, { member2: user }],
+  }).sort({ updatedAt: 'desc' });
+  if (relatedCons && relatedCons.length > 0) {
+    for (const conv of relatedCons) {
+      const convInfo = {};
+      convInfo.lastMsgTime = conv.updatedAt;
+      let convUser;
+      if (conv.member1.toString() === userId) {
+        convUser = await User.findById(conv.member2).select('name');
+      } else {
+        convUser = await User.findById(conv.member1).select('name');
+      }
+      convInfo.userName = convUser.name;
+      const lastMsg = await Message.findById(conv.lastMsg).select({
+        text: 1,
+        sender: 1,
+      });
+      convInfo.lastMsg = lastMsg.text;
+      convInfo.isSendByMe = lastMsg.sender.toString() === userId;
+      conversations.push(convInfo);
+    }
+  }
+  res.status(200).json({ conversations });
+};
+
+export const getMsgsByConversation = async (req, res) => {
+  const conversationId = req.query.id;
+  await db.connect();
+  const messages = [];
+  const relatedMsg = await Message.find({ conversation: conversationId }).sort({
+    createdAt: 'desc',
+  });
+  for (const msg of relatedMsg) {
+    const msgInfo = {};
+    msgInfo.sendTime = msg.createdAt;
+    msgInfo.senderId = msg.sender;
+    const senderNameObj = await User.findById(msg.sender).select('name');
+    msgInfo.senderName = senderNameObj.name;
+    msgInfo.text = msg.text;
+    messages.push(msgInfo);
+  }
+  res.status(200).json({ messages });
 };
