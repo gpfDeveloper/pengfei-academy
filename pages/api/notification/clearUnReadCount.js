@@ -1,6 +1,6 @@
 import nc from 'next-connect';
 
-import { clearUnReadNotificationCount } from 'controllers/user';
+import { clearUnReadNotificationCount } from 'controllers/notification';
 import { isLogin } from 'middleware/auth';
 
 const handler = nc();
