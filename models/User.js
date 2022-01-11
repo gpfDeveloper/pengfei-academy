@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 
 const userSchema = new mongoose.Schema(
   {
-    name: { type: String, trim: true, required: true, max: 200 },
+    name: { type: String, trim: true, required: true, maxlength: 200 },
     email: {
       type: String,
       trim: true,
@@ -10,9 +10,15 @@ const userSchema = new mongoose.Schema(
       unique: true,
       max: 200,
     },
-    password: { type: String, required: true, trim: true, min: 6, max: 64 },
-    headline: { type: String, trim: true, max: 60 },
-    bio: { type: String, trim: true, max: 400 },
+    password: {
+      type: String,
+      required: true,
+      trim: true,
+      minlength: 6,
+      maxlength: 64,
+    },
+    headline: { type: String, trim: true, maxlength: 60 },
+    bio: { type: String, trim: true, maxlength: 400 },
     avatar: {
       type: String,
     },

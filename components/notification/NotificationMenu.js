@@ -14,7 +14,7 @@ export default function NotificationMenu({ anchorEl, isOpen, onClose }) {
     const fetchNotifications = async () => {
       try {
         setLoading(true);
-        const data = await axios.get('/api/user/notification', {
+        const data = await axios.get('/api/notification', {
           headers: { Authorization: `Bearer ${token}` },
         });
         setLoading(false);
@@ -29,7 +29,7 @@ export default function NotificationMenu({ anchorEl, isOpen, onClose }) {
   }, [token, isOpen]);
   const deleteSingleHandler = (notiId) => {
     try {
-      axios.delete(`/api/user/notification/item/${notiId}`, {
+      axios.delete(`/api/notification/item/${notiId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
     } catch (err) {

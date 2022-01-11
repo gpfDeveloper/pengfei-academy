@@ -7,7 +7,6 @@ export const sendRequestAsync =
   ({ skypeName, message, token }) =>
   async (dispatch) => {
     try {
-      console.log(skypeName, message, token);
       await axios.post(
         '/api/teaching/sendRequest',
         {

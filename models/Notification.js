@@ -5,7 +5,7 @@ const { system: SYSTEM, message: MESSAGE } = NOTIFICATION_TYPES;
 
 const NotificationItem = new mongoose.Schema(
   {
-    message: { type: String, trim: true, required: true, max: 1000 },
+    message: { type: String, trim: true, required: true, maxlength: 1000 },
     type: {
       type: String,
       default: SYSTEM,

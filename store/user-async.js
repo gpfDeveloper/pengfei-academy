@@ -152,7 +152,7 @@ export const profileInfoUpdateAsync =
 export const clearUnReadNotificationCountAsync =
   (token) => async (dispatch) => {
     try {
-      await axios.get('/api/user/notification/clearUnReadCount', {
+      await axios.get('/api/notification/clearUnReadCount', {
         headers: { Authorization: `Bearer ${token}` },
       });
       dispatch(clearUnReadNotificationCount());

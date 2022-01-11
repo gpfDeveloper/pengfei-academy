@@ -5,8 +5,14 @@ const { draft, approved, rejected } = TEACH_REQUEST_STATUS;
 
 const teachRequestSchema = new mongoose.Schema(
   {
-    skypeName: { type: String, trim: true, required: true, max: 200 },
-    message: { type: String, trim: true, required: true, min: 100, max: 1000 },
+    skypeName: { type: String, trim: true, required: true, maxlength: 200 },
+    message: {
+      type: String,
+      trim: true,
+      required: true,
+      minlength: 100,
+      maxlength: 1000,
+    },
     user: {
       type: mongoose.Types.ObjectId,
       required: true,
