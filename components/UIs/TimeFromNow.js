@@ -2,9 +2,9 @@ import moment from 'moment';
 import dynamic from 'next/dynamic';
 import { Typography } from '@mui/material';
 
-const DateTime = ({ createdAt }) => {
+const TimeFromNow = ({ timestamp }) => {
   const currentTime = moment(Date.now());
-  const createTime = moment(createdAt);
+  const createTime = moment(timestamp);
   const diffInMins = currentTime.diff(createTime, 'minute');
   const diffInHours = currentTime.diff(createTime, 'hour');
   const diffInDays = currentTime.diff(createTime, 'day');
@@ -27,4 +27,4 @@ const DateTime = ({ createdAt }) => {
   }
 };
 
-export default dynamic(() => Promise.resolve(DateTime), { ssr: false });
+export default dynamic(() => Promise.resolve(TimeFromNow), { ssr: false });

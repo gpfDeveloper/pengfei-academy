@@ -59,6 +59,7 @@ export const getConversations = async (req, res) => {
   if (relatedCons && relatedCons.length > 0) {
     for (const conv of relatedCons) {
       const convInfo = {};
+      convInfo.id = conv._id.toString();
       convInfo.lastMsgTime = conv.updatedAt;
       let convUser;
       if (conv.member1.toString() === userId) {

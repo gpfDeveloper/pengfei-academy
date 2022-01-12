@@ -1,0 +1,60 @@
+import {
+  ListItemButton,
+  ListItemAvatar,
+  Avatar,
+  Typography,
+  Box,
+  Divider,
+} from '@mui/material';
+import TimeFromNow from 'components/UIs/TimeFromNow';
+
+export default function ConversationItem({
+  userName,
+  lastMsgTime,
+  isSendByMe,
+  lastMsg,
+  onClick,
+  current,
+  id,
+}) {
+  return (
+    <>
+      <ListItemButton
+        alignItems="flex-start"
+        onClick={onClick.bind(null, id)}
+        selected={id === current}
+      >
+        <ListItemAvatar>
+          <Avatar alt={userName} src="/" />
+        </ListItemAvatar>
+        <Box sx={{ display: 'flex', flexDirection: 'column', flex: 1, gap: 2 }}>
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+            }}
+          >
+            <Typography>{userName}</Typography>
+            <TimeFromNow timestamp={lastMsgTime} />
+          </Box>
+          <Box>
+            {isSendByMe && (
+              <Typography
+                component="span"
+                variant="body2"
+                sx={{ fontWeight: 'bold' }}
+              >
+                Me - &nbsp;
+              </Typography>
+            )}
+            <Typography component="span" variant="body2" color="text.secondary">
+              {lastMsg}
+            </Typography>
+          </Box>
+        </Box>
+      </ListItemButton>
+      <Divider variant="inset" component="li" />
+    </>
+  );
+}

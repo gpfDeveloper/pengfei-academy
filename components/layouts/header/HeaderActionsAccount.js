@@ -80,9 +80,7 @@ export default function HeaderActionsAccount() {
           onClick={handleProfileMenuOpen}
           color="inherit"
         >
-          <Avatar sx={{ backgroundColor: 'primary.main' }}>
-            {name[0].toUpperCase()}
-          </Avatar>
+          <Avatar alt={name} src="/" sx={{ backgroundColor: 'primary.main' }} />
         </IconButton>
       </Tooltip>
       {renderMenu}

@@ -12,6 +12,7 @@ import { setDark, setLight } from 'store/theme';
 
 import HeaderActionsAccount from './HeaderActionsAccount';
 import HeaderActionsNotification from './HeaderActionsNotification';
+import HeaderActionsMessage from './HeaderActionsMessage';
 
 function HeaderActions() {
   const router = useRouter();
@@ -71,6 +72,7 @@ function HeaderActions() {
             </IconButton>
           </Tooltip>
           <HeaderActionsNotification />
+          <HeaderActionsMessage />
         </Stack>
       )}
       {isLogin && <HeaderActionsAccount />}

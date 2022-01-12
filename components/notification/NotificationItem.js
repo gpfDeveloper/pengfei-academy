@@ -21,7 +21,7 @@ export default function NotificationItem({ noti, onDelete }) {
             justifyContent: 'space-between',
           }}
         >
-          <TimeFromNow createdAt={noti.createdAt} />
+          <TimeFromNow timestamp={noti.createdAt} />
           <Tooltip title="Delete">
             <IconButton onClick={onDelete}>
               <DeleteIcon />
