@@ -14,6 +14,23 @@ export default function MessageLayout() {
   const [msgs, setMsgs] = useState([]);
   const [isLoadingMsgs, setIsLoadingMsgs] = useState(false);
   const [current, setCurrent] = useState(null);
+
+  useEffect(() => {
+    const fetchConversations = async () => {
+      try {
+        setIsLoadingConvs(true);
+        const data = await axios.get('/api/message/conversation', {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setConversations(data.data.conversations);
+        setIsLoadingConvs(false);
+      } catch (err) {
+        setIsLoadingConvs(false);
+      }
+    };
+    fetchConversations();
+  }, [token]);
+
   const selectConversationHandler = (convId) => {
     const current = conversations.find((item) => item.id === convId);
     setCurrent(current);
@@ -36,21 +53,20 @@ export default function MessageLayout() {
     };
     fetchMsgs();
   };
-  useEffect(() => {
-    const fetchConversations = async () => {
-      try {
-        setIsLoadingConvs(true);
-        const data = await axios.get('/api/message/conversation', {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        setConversations(data.data.conversations);
-        setIsLoadingConvs(false);
-      } catch (err) {
-        setIsLoadingConvs(false);
-      }
-    };
-    fetchConversations();
-  }, [token]);
+
+  const sendMsgHandler = async (text) => {
+    const receiverId = current.userId;
+    const data = await axios.post(
+      '/api/message',
+      { receiverId, text },
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+    const msg = data.data.message;
+    setMsgs((prev) => {
+      return [...prev, { ...msg, isSendByMe: true }];
+    });
+  };
+
   return (
     <Box sx={{ display: 'flex' }}>
       <ConversationItems
@@ -64,6 +80,7 @@ export default function MessageLayout() {
           userName={current.userName}
           isLoadingMsgs={isLoadingMsgs}
           msgs={msgs}
+          onSend={sendMsgHandler}
         />
       )}
     </Box>

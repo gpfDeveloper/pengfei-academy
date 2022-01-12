@@ -2,9 +2,17 @@ import { Box } from '@mui/material';
 import MessageContentItem from './MessageContentItem';
 
 export default function MessageContentItems({ items }) {
-  console.log(items);
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, ml: 2 }}>
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 2,
+        height: 400,
+        overflowY: 'auto',
+        padding: 2,
+      }}
+    >
       {items.map((item) => (
         <MessageContentItem
           key={item.id}

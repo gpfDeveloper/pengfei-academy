@@ -33,15 +33,19 @@ export const sendMessage = async (req, res) => {
 
   if (!conversation) {
     conversation = new Conversation();
-    conversation.member1 = sender;
-    conversation.member2 = receiver;
+    conversation.member1 = sender._id;
+    conversation.member2 = receiver._id;
   }
 
-  const message = new Message({ conversation, sender, text });
-  conversation.lastMsg = message;
+  const message = new Message({
+    conversation: conversation._id,
+    sender: sender._id,
+    text,
+  });
+  conversation.lastMsg = message._id;
   await message.save();
   await conversation.save();
-  res.status(200).json({ message: 'Message send success' });
+  res.status(200).json({ message: message.toObject({ getters: true }) });
 
   //to do, send notification to receiver.
 };
@@ -68,6 +72,7 @@ export const getConversations = async (req, res) => {
         convUser = await User.findById(conv.member1).select('name');
       }
       convInfo.userName = convUser.name;
+      convInfo.userId = convUser._id.toString();
       const lastMsg = await Message.findById(conv.lastMsg).select({
         text: 1,
         sender: 1,
@@ -85,7 +90,7 @@ export const getMsgsByConversation = async (req, res) => {
   await db.connect();
   const messages = [];
   const relatedMsg = await Message.find({ conversation: conversationId }).sort({
-    createdAt: 'desc',
+    createdAt: 'asc',
   });
   for (const msg of relatedMsg) {
     const msgInfo = {};
