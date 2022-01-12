@@ -89,6 +89,7 @@ export const getMsgsByConversation = async (req, res) => {
   });
   for (const msg of relatedMsg) {
     const msgInfo = {};
+    msgInfo.id = msg._id.toString();
     msgInfo.sendTime = msg.createdAt;
     msgInfo.senderId = msg.sender;
     const senderNameObj = await User.findById(msg.sender).select('name');

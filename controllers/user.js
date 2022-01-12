@@ -29,6 +29,7 @@ export const register = async (req, res) => {
 
   return res.send({
     token,
+    id: user._id.toString(),
     name: user.name,
     email: user.email,
     isAdmin: user.isAdmin,
@@ -45,6 +46,7 @@ export const login = async (req, res) => {
     const token = signToken(user);
     res.json({
       token,
+      id: user._id.toString(),
       name: user.name,
       email: user.email,
       headline: user.headline,

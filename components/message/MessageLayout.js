@@ -5,14 +5,36 @@ import axios from 'axios';
 import { Box } from '@mui/material';
 
 import ConversationItems from './ConversationItems';
+import MessageContent from './MessageContent';
 
 export default function MessageLayout() {
-  const { token } = useSelector((state) => state.user);
+  const { token, id: myId } = useSelector((state) => state.user);
   const [conversations, setConversations] = useState([]);
   const [isLoadingConvs, setIsLoadingConvs] = useState(false);
+  const [msgs, setMsgs] = useState([]);
+  const [isLoadingMsgs, setIsLoadingMsgs] = useState(false);
   const [current, setCurrent] = useState(null);
-  const selectConversationHandler = (newValue) => {
-    setCurrent(newValue);
+  const selectConversationHandler = (convId) => {
+    const current = conversations.find((item) => item.id === convId);
+    setCurrent(current);
+    const fetchMsgs = async () => {
+      try {
+        setIsLoadingMsgs(true);
+        const data = await axios.get(`/api/message/conversation/${convId}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setMsgs(
+          data.data.messages.map((msg) => ({
+            ...msg,
+            isSendByMe: myId === msg.senderId,
+          }))
+        );
+        setIsLoadingMsgs(false);
+      } catch (err) {
+        setIsLoadingMsgs(false);
+      }
+    };
+    fetchMsgs();
   };
   useEffect(() => {
     const fetchConversations = async () => {
@@ -23,7 +45,6 @@ export default function MessageLayout() {
         });
         setConversations(data.data.conversations);
         setIsLoadingConvs(false);
-        setCurrent(data.data?.conversations[0]?.id);
       } catch (err) {
         setIsLoadingConvs(false);
       }
@@ -38,6 +59,13 @@ export default function MessageLayout() {
         onSelectItem={selectConversationHandler}
         items={conversations}
       />
+      {current && (
+        <MessageContent
+          userName={current.userName}
+          isLoadingMsgs={isLoadingMsgs}
+          msgs={msgs}
+        />
+      )}
     </Box>
   );
 }

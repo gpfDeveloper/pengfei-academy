@@ -22,7 +22,7 @@ export default function ConversationItem({
       <ListItemButton
         alignItems="flex-start"
         onClick={onClick.bind(null, id)}
-        selected={id === current}
+        selected={id === current?.id}
       >
         <ListItemAvatar>
           <Avatar alt={userName} src="/" />

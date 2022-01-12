@@ -15,6 +15,9 @@ export default function ConversationItems({
         width: '100%',
         maxWidth: 360,
         bgcolor: 'background.paper',
+        borderRight: 1,
+        borderColor: 'divider',
+        padding: 2,
       }}
     >
       {isLoading && <Spinner />}

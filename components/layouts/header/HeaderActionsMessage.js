@@ -1,7 +1,7 @@
 import { useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
 import { Tooltip, IconButton, Badge } from '@mui/material';
-import MessageIcon from '@mui/icons-material/Message';
+import MailIcon from '@mui/icons-material/Mail';
 
 export default function HeaderActionsMessage() {
   const dispatch = useDispatch();
@@ -18,7 +18,7 @@ export default function HeaderActionsMessage() {
       <Tooltip title="Messages">
         <IconButton size="large" color={'inherit'} onClick={clickButtonHandler}>
           <Badge badgeContent={2} color="error">
-            <MessageIcon />
+            <MailIcon />
           </Badge>
         </IconButton>
       </Tooltip>

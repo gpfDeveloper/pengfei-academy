@@ -9,6 +9,7 @@ let initialState = {
   isInstructor: false,
   isAdmin: false,
   name: '',
+  id: '',
   email: '',
   headline: '',
   bio: '',
@@ -30,6 +31,7 @@ const userSlice = createSlice({
       state,
       {
         payload: {
+          id,
           name,
           email,
           headline,
@@ -41,6 +43,7 @@ const userSlice = createSlice({
         },
       }
     ) => {
+      state.id = id;
       state.isLogin = true;
       state.isAdmin = isAdmin;
       state.isInstructor = isInstructor;
@@ -57,9 +60,10 @@ const userSlice = createSlice({
       state.isLogin = false;
       state.isAdmin = false;
       state.isInstructor = false;
-      state.name = null;
-      state.email = null;
-      state.token = null;
+      state.id = '';
+      state.name = '';
+      state.email = '';
+      state.token = '';
       state.headline = '';
       state.bio = '';
       state.unReadNotificationCount = 0;

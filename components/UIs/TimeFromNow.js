@@ -17,11 +17,11 @@ const TimeFromNow = ({ timestamp }) => {
   if (diffInMins < 1) {
     return <Typography {...props}>Just now</Typography>;
   } else if (diffInMins < 60) {
-    return <Typography {...props}>{diffInMins} minutes ago.</Typography>;
+    return <Typography {...props}>{diffInMins} minutes ago</Typography>;
   } else if (diffInHours < 24) {
-    return <Typography {...props}>{diffInHours} hours ago.</Typography>;
+    return <Typography {...props}>{diffInHours} hours ago</Typography>;
   } else if (diffInDays < 30) {
-    return <Typography {...props}>{diffInDays} days ago.</Typography>;
+    return <Typography {...props}>{diffInDays} days ago</Typography>;
   } else {
     return <Typography {...props}>{diffInMonths} months ago</Typography>;
   }
