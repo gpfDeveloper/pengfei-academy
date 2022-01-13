@@ -106,6 +106,7 @@ export const {
   updateEmail,
   updateProfile,
   clearUnReadNotificationCount,
+  clearUnReadMsgCount,
   getHeaderInfo,
 } = userSlice.actions;
 

@@ -1,6 +1,8 @@
 import bcrypt from 'bcryptjs';
 import User from 'models/User';
 import Notification from 'models/Notification';
+import Conversation from 'models/Conversation';
+import Message from 'models/Message';
 import db from 'utils/db';
 import { signToken } from 'utils/auth';
 
@@ -23,15 +25,31 @@ export const register = async (req, res) => {
   user.notification = notification._id;
   user.unReadNotificationCount = 1;
   notification.items.push({ message: notiMsg });
-  await user.save();
-  await notification.save();
 
-  return res.send({
+  const conversation = new Conversation();
+  const admin = await User.findOne({ isAdmin: true });
+  conversation.member1 = admin._id;
+  conversation.member2 = user._id;
+  const message = new Message({
+    conversation: conversation._id,
+    sender: admin._id,
+    text: `Hi, ${user.name}, welcome to Pengfei Academy! I'm Pengfei and feel free to message me if you have any question.`,
+  });
+  conversation.lastMsg = message._id;
+  user.unReadMsgCount += 1;
+
+  await user.save();
+
+  res.send({
     token,
     id: user._id.toString(),
     name: user.name,
     email: user.email,
   });
+
+  notification.save();
+  conversation.save();
+  message.save();
 };
 
 export const login = async (req, res) => {
