@@ -37,6 +37,7 @@ export default function MessageContentInput({ onSend }) {
     >
       <TextField
         label="New message"
+        placeholder="New message, at most 1000 charactors."
         multiline
         fullWidth
         value={msg}
