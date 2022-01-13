@@ -7,16 +7,18 @@ import { Stack, Typography, Divider } from '@mui/material';
 import { useSelector } from 'react-redux';
 import Spinner from 'components/UIs/Spinner';
 import PageLayout from 'components/layouts/PageLayout';
-import MessageLayout from 'components/message/MessageLayout';
+import MessageContentFullView from 'components/message/MessageContentFullView';
 
-function Message() {
+function Conversation() {
   const router = useRouter();
   const isLogin = useSelector((state) => state.user.isLogin);
+  const { conversationId } = router.query;
   useEffect(() => {
     if (!isLogin) {
       router.replace('/login');
     }
   }, [isLogin, router]);
+
   return (
     <PageLayout>
       {!isLogin && <Spinner />}
@@ -31,11 +33,11 @@ function Message() {
             Messages
           </Typography>
           <Divider />
-          <MessageLayout />
+          <MessageContentFullView convId={conversationId} />
         </Stack>
       )}
     </PageLayout>
   );
 }
 
-export default dynamic(() => Promise.resolve(Message), { ssr: false });
+export default dynamic(() => Promise.resolve(Conversation), { ssr: false });

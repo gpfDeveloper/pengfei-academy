@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { getHeaderInfoAsync } from 'store/user-async';
 
-import { AppBar, Box, Toolbar, Slide } from '@mui/material';
+import { AppBar, Toolbar, Slide } from '@mui/material';
 
 import useScrollTrigger from '@mui/material/useScrollTrigger';
 import HeaderSearch from 'components/layouts/header/HeaderSearch';
@@ -18,7 +18,7 @@ function HideOnScroll(props) {
   const trigger = useScrollTrigger();
 
   return (
-    <Slide appear={false} direction="down" in={!trigger}>
+    <Slide appear={false} direction="down" in={!trigger} sx={{ zIndex: 1100 }}>
       {children}
     </Slide>
   );
@@ -33,20 +33,18 @@ export default function Header() {
     }
   }, [dispatch, token]);
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <HideOnScroll>
-        <AppBar>
-          <Toolbar>
-            <Drawer />
-            <Brand />
-            <HeaderSearch />
-            <HeaderNavs />
-            <HeaderActions />
-            <HeaderSearchMobile />
-            <HeaderActionsMobile />
-          </Toolbar>
-        </AppBar>
-      </HideOnScroll>
-    </Box>
+    <HideOnScroll>
+      <AppBar>
+        <Toolbar>
+          <Drawer />
+          <Brand />
+          <HeaderSearch />
+          <HeaderNavs />
+          <HeaderActions />
+          <HeaderSearchMobile />
+          <HeaderActionsMobile />
+        </Toolbar>
+      </AppBar>
+    </HideOnScroll>
   );
 }
