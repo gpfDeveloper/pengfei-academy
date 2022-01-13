@@ -39,6 +39,7 @@ export default function MessageContentInput({ onSend }) {
         label="New message"
         placeholder="New message, at most 1000 charactors."
         multiline
+        rows={4}
         fullWidth
         value={msg}
         onChange={(e) => setMsg(e.currentTarget.value)}

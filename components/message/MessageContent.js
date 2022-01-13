@@ -11,7 +11,7 @@ export default function MessageContent({
   onSend,
 }) {
   return (
-    <Box sx={{ position: 'relative', flex: 1, height: 640 }}>
+    <Box sx={{ position: 'relative', flex: 1, height: 680 }}>
       <MessageContentHeader userName={userName} />
       <Box sx={{ mt: 10 }}>
         {isLoadingMsgs && <Spinner />}

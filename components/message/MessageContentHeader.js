@@ -16,6 +16,7 @@ export default function MessageContentHeader({ userName }) {
             '&:hover': {
               textDecoration: 'underline',
             },
+            wordBreak: 'break-word',
           }}
         >
           {userName}

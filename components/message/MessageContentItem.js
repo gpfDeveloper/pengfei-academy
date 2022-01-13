@@ -8,6 +8,7 @@ export default function MessageContentItem({ text, sendTime, isSendByMe }) {
         alignSelf: isSendByMe ? 'flex-end' : 'flex-start',
         padding: 2,
         overflow: 'initial',
+        maxWidth: '50%',
       }}
     >
       <TimeFromNow timestamp={sendTime} />

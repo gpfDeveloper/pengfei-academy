@@ -7,6 +7,7 @@ import {
   Divider,
 } from '@mui/material';
 import TimeFromNow from 'components/UIs/TimeFromNow';
+import { sliceText } from 'utils';
 
 export default function ConversationItem({
   userName,
@@ -35,7 +36,7 @@ export default function ConversationItem({
               justifyContent: 'space-between',
             }}
           >
-            <Typography>{userName}</Typography>
+            <Typography>{sliceText(userName, 16)}</Typography>
             <TimeFromNow timestamp={lastMsgTime} />
           </Box>
           <Box>
@@ -49,7 +50,7 @@ export default function ConversationItem({
               </Typography>
             )}
             <Typography component="span" variant="body2" color="text.secondary">
-              {lastMsg}
+              {sliceText(lastMsg, 32)}
             </Typography>
           </Box>
         </Box>
