@@ -11,19 +11,18 @@ export const register = async (req, res) => {
   if (existingUser) {
     return res.status(422).json({ message: 'Email has been used already.' });
   }
-  const newUser = new User({
+  const user = new User({
     name,
     email,
     password: bcrypt.hashSync(password),
   });
-  const user = await newUser.save();
   const token = signToken(user);
 
-  const message = `Hi ${name}, welcome to Pengfei Academy!`;
-  const notification = new Notification({ user });
-  user.notification = notification;
+  const notiMsg = `Hi ${name}, welcome to Pengfei Academy!`;
+  const notification = new Notification({ user: user._id });
+  user.notification = notification._id;
   user.unReadNotificationCount = 1;
-  notification.items.push({ message });
+  notification.items.push({ message: notiMsg });
   await user.save();
   await notification.save();
 
@@ -32,9 +31,6 @@ export const register = async (req, res) => {
     id: user._id.toString(),
     name: user.name,
     email: user.email,
-    isAdmin: user.isAdmin,
-    isInstructor: user.isInstructor,
-    unReadNotificationCount: 1,
   });
 };
 
@@ -53,7 +49,6 @@ export const login = async (req, res) => {
       bio: user.bio,
       isAdmin: user.isAdmin,
       isInstructor: user.isInstructor,
-      unReadNotificationCount: user.unReadNotificationCount,
     });
   } else {
     return res.status(401).json({ message: 'Invalid email or password' });

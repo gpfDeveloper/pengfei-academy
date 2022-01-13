@@ -38,7 +38,6 @@ const userSlice = createSlice({
           headline,
           bio,
           token,
-          unReadNotificationCount,
           isAdmin,
           isInstructor,
         },
@@ -53,7 +52,6 @@ const userSlice = createSlice({
       state.token = token;
       state.headline = headline;
       state.bio = bio;
-      state.unReadNotificationCount = unReadNotificationCount;
       state.expireAt = new Date().getTime() + SESSION_EXPIRE_SEC * 1000;
       Cookies.set(USER_INFO_KEY, JSON.stringify(state));
     },
@@ -68,6 +66,7 @@ const userSlice = createSlice({
       state.headline = '';
       state.bio = '';
       state.unReadNotificationCount = 0;
+      state.unReadMsgCount = 0;
       state.expireAt = null;
       Cookies.remove(USER_INFO_KEY);
     },

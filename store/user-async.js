@@ -17,16 +17,8 @@ export const loginAsync =
   async (dispatch) => {
     try {
       const data = await axios.post('/api/user/login', { email, password });
-      const {
-        token,
-        id,
-        name,
-        headline,
-        bio,
-        unReadNotificationCount,
-        isAdmin,
-        isInstructor,
-      } = data.data;
+      const { token, id, name, headline, bio, isAdmin, isInstructor } =
+        data.data;
       dispatch(
         login({
           token,
@@ -35,7 +27,6 @@ export const loginAsync =
           email,
           headline,
           bio,
-          unReadNotificationCount,
           isAdmin,
           isInstructor,
         })
@@ -68,23 +59,15 @@ export const registerAsync =
         email,
         password,
       });
-      const {
-        token,
-        id,
-        name,
-        unReadNotificationCount,
-        isAdmin,
-        isInstructor,
-      } = data.data;
+      const { token, id, name } = data.data;
       dispatch(
         login({
           token,
           id,
           name,
           email,
-          unReadNotificationCount,
-          isAdmin,
-          isInstructor,
+          isAdmin: false,
+          isInstructor: false,
         })
       );
       dispatch(
