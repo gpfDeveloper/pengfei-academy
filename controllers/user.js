@@ -109,8 +109,11 @@ export const getHeaderUserInfo = async (req, res) => {
   const user = await User.findById(userId);
   if (user) {
     const unReadNotificationCount = user.unReadNotificationCount;
+    const unReadMsgCount = user.unReadMsgCount;
     const isInstructor = user.isInstructor;
-    return res.status(200).send({ unReadNotificationCount, isInstructor });
+    return res
+      .status(200)
+      .send({ unReadNotificationCount, unReadMsgCount, isInstructor });
   } else {
     return res.status(404).json({ message: 'User not found.' });
   }

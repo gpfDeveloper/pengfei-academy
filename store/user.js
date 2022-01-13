@@ -15,6 +15,7 @@ let initialState = {
   bio: '',
   token: '',
   unReadNotificationCount: 0,
+  unReadMsgCount: 0,
   expireAt: null,
 };
 
@@ -84,11 +85,16 @@ const userSlice = createSlice({
       state.unReadNotificationCount = 0;
       Cookies.set(USER_INFO_KEY, JSON.stringify(state));
     },
+    clearUnReadMsgCount: (state) => {
+      state.unReadMsgCount = 0;
+      Cookies.set(USER_INFO_KEY, JSON.stringify(state));
+    },
     getHeaderInfo: (
       state,
-      { payload: { unReadNotificationCount, isInstructor } }
+      { payload: { unReadNotificationCount, unReadMsgCount, isInstructor } }
     ) => {
       state.unReadNotificationCount = unReadNotificationCount;
+      state.unReadMsgCount = unReadMsgCount;
       state.isInstructor = isInstructor;
       Cookies.set(USER_INFO_KEY, JSON.stringify(state));
     },

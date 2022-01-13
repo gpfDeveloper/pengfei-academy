@@ -48,6 +48,8 @@ export const sendMessage = async (req, res) => {
   res.status(200).json({ message: message.toObject({ getters: true }) });
 
   //to do, send notification to receiver.
+  receiver.unReadMsgCount += 1;
+  receiver.save();
 };
 
 export const getConversations = async (req, res) => {
@@ -103,4 +105,21 @@ export const getMsgsByConversation = async (req, res) => {
     messages.push(msgInfo);
   }
   res.status(200).json({ messages });
+};
+
+export const clearUnReadMsgCount = async (req, res) => {
+  await db.connect();
+  const userId = req.user.id;
+  const user = await User.findById(userId);
+  if (user) {
+    user.unReadMsgCount = 0;
+    try {
+      await user.save();
+      return res.status(200).send();
+    } catch (err) {
+      return res.status(500).json({ message: 'Clear failed.' });
+    }
+  } else {
+    return res.status(404).json({ message: 'User not found.' });
+  }
 };

@@ -1,23 +1,25 @@
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { clearUnReadMsgCountAsync } from 'store/user-async';
 import { useRouter } from 'next/router';
 import { Tooltip, IconButton, Badge } from '@mui/material';
 import MailIcon from '@mui/icons-material/Mail';
 
 export default function HeaderActionsMessage() {
   const dispatch = useDispatch();
+  const user = useSelector((state) => state.user);
+  const { unReadMsgCount, token } = user;
   const router = useRouter();
 
   const clickButtonHandler = () => {
     router.push('/message');
-    // dispatch(clearUnReadNotificationCountAsync(token));
-    // setAnchorEl(e.currentTarget);
+    dispatch(clearUnReadMsgCountAsync(token));
   };
 
   return (
     <>
       <Tooltip title="Messages">
         <IconButton size="large" color={'inherit'} onClick={clickButtonHandler}>
-          <Badge badgeContent={2} color="error">
+          <Badge badgeContent={unReadMsgCount} color="error">
             <MailIcon />
           </Badge>
         </IconButton>

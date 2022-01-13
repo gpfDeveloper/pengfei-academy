@@ -6,6 +6,7 @@ import {
   updateEmail,
   updateProfile,
   clearUnReadNotificationCount,
+  clearUnReadMsgCount,
   getHeaderInfo,
 } from 'store/user';
 import { clear as clearTeaching } from './teaching';
@@ -170,13 +171,26 @@ export const clearUnReadNotificationCountAsync =
     }
   };
 
+export const clearUnReadMsgCountAsync = (token) => async (dispatch) => {
+  try {
+    await axios.get('/api/message/clearUnReadCount', {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    dispatch(clearUnReadMsgCount());
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const getHeaderInfoAsync = (token) => async (dispatch) => {
   try {
     const data = await axios.get('/api/user/headerInfo', {
       headers: { Authorization: `Bearer ${token}` },
     });
-    const { unReadNotificationCount, isInstructor } = data.data;
-    dispatch(getHeaderInfo({ unReadNotificationCount, isInstructor }));
+    const { unReadNotificationCount, unReadMsgCount, isInstructor } = data.data;
+    dispatch(
+      getHeaderInfo({ unReadNotificationCount, unReadMsgCount, isInstructor })
+    );
   } catch (error) {
     console.log(error);
   }
