@@ -88,19 +88,14 @@ export const getConversations = async (req, res) => {
 };
 
 export const getMsgsByConversation = async (req, res) => {
-  //todo throw 403, if user not in conver.member1 or conver.member2
   const conversationId = req.query.id;
+  const member1 = req.member1;
+  const member2 = req.member2;
   await db.connect();
   const messages = [];
   const relatedMsg = await Message.find({ conversation: conversationId }).sort({
     createdAt: 'asc',
   });
-  const conversation = await Conversation.findById(conversationId).populate([
-    { path: 'member1', select: 'name' },
-    { path: 'member2', select: 'name' },
-  ]);
-  const member1 = conversation.member1;
-  const member2 = conversation.member2;
   for (const msg of relatedMsg) {
     const msgInfo = {};
     msgInfo.id = msg._id.toString();
@@ -111,13 +106,11 @@ export const getMsgsByConversation = async (req, res) => {
     msgInfo.text = msg.text;
     messages.push(msgInfo);
   }
-  res
-    .status(200)
-    .json({
-      messages,
-      member1: member1.toObject({ getters: true }),
-      member2: member2.toObject({ getters: true }),
-    });
+  res.status(200).json({
+    messages,
+    member1: member1.toObject({ getters: true }),
+    member2: member2.toObject({ getters: true }),
+  });
 };
 
 export const clearUnReadMsgCount = async (req, res) => {

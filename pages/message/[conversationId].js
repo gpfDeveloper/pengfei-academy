@@ -22,7 +22,7 @@ function Conversation() {
   return (
     <PageLayout>
       {!isLogin && <Spinner />}
-      {isLogin && (
+      {isLogin && conversationId && (
         <Stack
           sx={{
             gap: 4,
