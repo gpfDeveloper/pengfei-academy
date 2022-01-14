@@ -5,14 +5,14 @@ import Spinner from 'components/UIs/Spinner';
 import MessageContentItems from './MessageContentItems';
 import MessageContentInput from './MessageContentInput';
 import axios from 'axios';
-import MessageContentHeaderFullView from './MessageContentHeaderFullView';
+import MessageContentFullViewHeader from './MessageContentFullViewHeader';
 
 export default function MessageContentFullView({ convId }) {
   const user = useSelector((state) => state.user);
   const { token, id: myId } = user;
   const [isLoadingMsgs, setIsLoadingMsgs] = useState(false);
   const [msgs, setMsgs] = useState([]);
-  const [targetUserName, setTargetUserName] = useState(null);
+  const [targetUser, setTargetUser] = useState({});
   useEffect(() => {
     const fetchMsgs = async () => {
       try {
@@ -23,9 +23,9 @@ export default function MessageContentFullView({ convId }) {
         const member1 = data.data.member1;
         const member2 = data.data.member2;
         if (member1.id === myId) {
-          setTargetUserName(member2.name);
+          setTargetUser({ ...member2 });
         } else {
-          setTargetUserName(member1.name);
+          setTargetUser({ ...member1 });
         }
         setMsgs(
           data.data.messages.map((msg) => ({
@@ -40,21 +40,30 @@ export default function MessageContentFullView({ convId }) {
     };
     fetchMsgs();
   }, [convId, myId, token]);
-  console.log(msgs);
+  const sendMsgHandler = async (text) => {
+    const receiverId = targetUser.id;
+    const data = await axios.post(
+      '/api/message',
+      { receiverId, text },
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+    const msg = data.data.message;
+    setMsgs((prev) => {
+      return [...prev, { ...msg, isSendByMe: true }];
+    });
+  };
   return (
     <Box sx={{ position: 'relative', height: 680 }}>
       {isLoadingMsgs && <Spinner />}
       {!isLoadingMsgs && (
         <>
-          <MessageContentHeaderFullView userName={targetUserName} />
+          <MessageContentFullViewHeader userName={targetUser.name} />
+          <Box sx={{ mt: 10 }}>
+            <MessageContentItems items={msgs} />
+          </Box>
+          <MessageContentInput onSend={sendMsgHandler} />
         </>
       )}
-      {/* <MessageContentHeader userName={userName} />
-      <Box sx={{ mt: 10 }}>
-        {isLoadingMsgs && <Spinner />}
-        {!isLoadingMsgs && <MessageContentItems items={msgs} />}
-      </Box>
-      <MessageContentInput onSend={onSend} /> */}
     </Box>
   );
 }

@@ -3,7 +3,7 @@ import { AppBar, Toolbar, IconButton, Avatar, Link, Box } from '@mui/material';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import { sliceText } from 'utils';
 
-export default function MessageContentHeaderFullView({ userName }) {
+export default function MessageContentFullViewHeader({ userName }) {
   return (
     <AppBar sx={{ position: 'absolute', zIndex: 1000 }}>
       <Toolbar

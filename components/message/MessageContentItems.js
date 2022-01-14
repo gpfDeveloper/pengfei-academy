@@ -10,8 +10,7 @@ export default function MessageContentItems({ items }) {
       const lastMsg = msgItems[msgItems.length - 1];
       lastMsg.scrollIntoView({
         behavior: 'smooth',
-        block: 'center',
-        inline: 'nearest',
+        block: 'end',
       });
     }
   }, [items]);
