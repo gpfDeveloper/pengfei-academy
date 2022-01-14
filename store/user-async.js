@@ -31,7 +31,6 @@ export const loginAsync =
           isInstructor,
         })
       );
-      dispatch(setSnackbar({ severity: 'success', message: 'Login success.' }));
       return true;
     } catch (error) {
       const message = error.response?.data?.message;

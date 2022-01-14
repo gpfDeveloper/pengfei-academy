@@ -20,7 +20,7 @@ const stepMap = {
 
 const steps = [
   'Sign up',
-  'Send a request',
+  'Your Infomation',
   'Schedule and have a meeting with Pengfei',
   'Teaching on Pengfei Academy!',
 ];

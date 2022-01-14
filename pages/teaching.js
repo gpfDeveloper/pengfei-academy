@@ -25,8 +25,12 @@ function Teaching() {
           textAlign: 'center',
         }}
       >
-        <Typography variant="h3" component="h3">
+        <Typography variant="h3" component="h1">
           Teaching on Pengfei Academy
+        </Typography>
+        <Divider />
+        <Typography variant="h6" component="h6">
+          Become an instructor and change lives — including your own
         </Typography>
         <Divider />
         <TeachingStepper />
