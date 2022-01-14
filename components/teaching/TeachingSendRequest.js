@@ -2,11 +2,14 @@ import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { sendRequestAsync } from 'store/teaching-async';
 
-import { TextField, Button, Stack } from '@mui/material';
+import { TextField, Button, Typography, Box } from '@mui/material';
 import LoadingButton from '@mui/lab/LoadingButton';
 
 import { Controller, useForm } from 'react-hook-form';
 import axios from 'axios';
+
+const introText =
+  'Please talk something about yourself, your teaching experience, do you have videos to be uploaded, do you already have audiences ...';
 
 export default function TeachingSendRequest() {
   const dispatch = useDispatch();
@@ -14,7 +17,7 @@ export default function TeachingSendRequest() {
   const [isSaving, setIsSaving] = useState(false);
   const { token } = useSelector((state) => state.user);
   const teachingState = useSelector((state) => state.teaching);
-  const { skypeName, message } = teachingState;
+  const { message } = teachingState;
 
   const {
     formState: { errors },
@@ -24,76 +27,71 @@ export default function TeachingSendRequest() {
   } = useForm();
 
   useEffect(() => {
-    const fetchSkypeMessage = async () => {
+    const fetchMessage = async () => {
       const data = await axios.get('/api/teaching/sendRequest', {
         headers: { Authorization: `Bearer ${token}` },
       });
-      setValue('skypeName', data.data.skypeName);
       setValue('message', data.data.message);
     };
-    fetchSkypeMessage();
+    fetchMessage();
   }, [setValue, token]);
 
-  const onSubmit = ({ skypeName, message }) => {
+  const onSubmit = ({ message }) => {
     setIsSaving(true);
-    dispatch(sendRequestAsync({ skypeName, message, token })).then(() =>
+    dispatch(sendRequestAsync({ message, token })).then(() =>
       setIsSaving(false)
     );
   };
   return (
-    <Stack
-      sx={{ gap: 2, mt: 4 }}
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 2,
+        mt: 4,
+        alignItems: 'flex-start',
+        textAlign: 'left',
+      }}
       component="form"
       onSubmit={handleSubmit(onSubmit)}
     >
-      <Controller
-        name="skypeName"
-        defaultValue={skypeName}
-        control={control}
-        rules={{ required: true, maxLength: 200 }}
-        render={({ field }) => (
-          <TextField
-            error={Boolean(errors.skypeName)}
-            helperText={
-              errors.skypeName &&
-              'Please enter your skype name so we can have a meeting.'
-            }
-            label="Skype Name"
-            {...field}
-          />
-        )}
-      />
+      <Typography variant="h6">{introText}</Typography>
       <Controller
         name="message"
         defaultValue={message}
         control={control}
-        rules={{ required: true, minLength: 100, maxLength: 1000 }}
+        rules={{ required: true, maxLength: 1000 }}
         render={({ field }) => (
           <TextField
             rows={4}
             multiline
-            placeholder="Talk about yourself, what you want to teach, your experience ..."
+            fullWidth
+            placeholder={introText}
             error={Boolean(errors.message)}
             helperText={
               errors.message &&
-              'Message must have at least 100 charactor and at most 1000 charactor to talk about yourself, what you want to teach, your experience ...'
+              (errors.message.type === 'required'
+                ? 'Please talk something about yourself.'
+                : 'Message at most have 1000 charactors.')
             }
-            label="Message"
+            label="Introduce yourself"
             {...field}
           />
         )}
       />
 
-      {!isSaving && (
-        <Button size="large" variant="contained" type="submit">
-          Continue
-        </Button>
-      )}
-      {isSaving && (
-        <LoadingButton loading size="large">
-          Continue
-        </LoadingButton>
-      )}
-    </Stack>
+      <Box sx={{ alignSelf: 'flex-end' }}>
+        {!isSaving && (
+          <Button size="large" variant="contained" type="submit">
+            Continue
+          </Button>
+        )}
+        {isSaving && (
+          <LoadingButton loading size="large">
+            Continue
+          </LoadingButton>
+        )}
+      </Box>
+    </Box>
   );
 }

@@ -11,7 +11,6 @@ import {
   Divider,
 } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
-import PhoneIcon from '@mui/icons-material/Phone';
 import PersonIcon from '@mui/icons-material/Person';
 import EmailIcon from '@mui/icons-material/Email';
 import EventIcon from '@mui/icons-material/Event';
@@ -32,7 +31,6 @@ export default function AdminTechRequestCurrent({
   email,
   status,
   hasMeeting,
-  skypeName,
   message,
   adminComment,
   sendTime,
@@ -87,21 +85,11 @@ export default function AdminTechRequestCurrent({
       <Box sx={rowStyle}>
         <Typography>
           {' '}
-          <Tooltip title="Skype Name">
-            <PhoneIcon />
-          </Tooltip>{' '}
-          {skypeName}
-        </Typography>
-        <Typography>
-          {' '}
           <Tooltip title="User Name">
             <PersonIcon />
           </Tooltip>{' '}
           {userName}
         </Typography>
-      </Box>
-      <Divider />
-      <Box sx={rowStyle}>
         <Typography>
           {' '}
           <Tooltip title="Email">
@@ -109,6 +97,9 @@ export default function AdminTechRequestCurrent({
           </Tooltip>{' '}
           {email}
         </Typography>
+      </Box>
+      <Divider />
+      <Box sx={rowStyle}>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 4 }}>
           <Typography>
             {' '}

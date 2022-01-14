@@ -27,11 +27,6 @@ const cols = [
     width: 200,
   },
   {
-    field: 'skypeName',
-    headerName: 'Skype name',
-    width: 150,
-  },
-  {
     field: 'status',
     headerName: 'Status',
     type: 'singleSelect',
@@ -73,7 +68,6 @@ const transform = (rawTeachReqs) => {
     row.userName = teachReq.userName;
     row.email = teachReq.userEmail;
     row.hasMeeting = teachReq.hasMeeting;
-    row.skypeName = teachReq.skypeName;
     row.message = teachReq.message;
     row.status = teachReq.status;
     row.adminComment = teachReq.adminComment;

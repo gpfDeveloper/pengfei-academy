@@ -1,27 +1,46 @@
+import { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { useRouter } from 'next/router';
 import { Button, Stack, Typography } from '@mui/material';
-import ScheduleIcon from '@mui/icons-material/Schedule';
+import MailIcon from '@mui/icons-material/Mail';
+import axios from 'axios';
 
 export default function TeachingMeeting() {
-  const scheduleMeetingHandler = () => {
-    window.open('https://calendly.com/pengfei-gao');
+  const router = useRouter();
+  const user = useSelector((state) => state.user);
+  const { name, token } = user;
+  const [convId, setConvId] = useState(null);
+
+  useEffect(() => {
+    const fetchConvId = async () => {
+      const data = await axios.get('/api/user/conversationWithAdmin', {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setConvId(data?.data?.conversationWithAdmin);
+    };
+    fetchConvId();
+  }, [convId, token]);
+
+  const messageHandler = () => {
+    router.push(`/message/${convId}`);
   };
+
   return (
     <Stack sx={{ maxWidth: 800, margin: '4rem auto', gap: '4rem' }}>
-      <Typography component="h3" variant="h3">
-        Please click the button below to schedule a meeting with Pengfei
+      <Typography component="h3" variant="h6">
+        {`Hi ${name}, I'm Pengfei and I have received your information. I will contact you back as soon as I'm available. Feel free to message me if you have any question.`}
       </Typography>
-      <Button
-        variant="contained"
-        size="large"
-        fullWidth
-        startIcon={<ScheduleIcon />}
-        onClick={scheduleMeetingHandler}
-      >
-        Schedule a meeting on Pengfei&rsquo;s calendar.
-      </Button>
-      <Typography>
-        After talking with Pengfei you can start to teach at Pengfei Academy.
-      </Typography>
+      {convId && (
+        <Button
+          startIcon={<MailIcon />}
+          variant="contained"
+          size="large"
+          fullWidth
+          onClick={messageHandler}
+        >
+          Message Pengfei
+        </Button>
+      )}
     </Stack>
   );
 }

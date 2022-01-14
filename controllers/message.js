@@ -1,6 +1,5 @@
 import db from 'utils/db';
 import User from 'models/User';
-// import Notification from 'models/Notification';
 import Conversation from 'models/Conversation';
 import Message from 'models/Message';
 
@@ -47,7 +46,6 @@ export const sendMessage = async (req, res) => {
   await conversation.save();
   res.status(200).json({ message: message.toObject({ getters: true }) });
 
-  //to do, send notification to receiver.
   receiver.unReadMsgCount += 1;
   receiver.save();
 };

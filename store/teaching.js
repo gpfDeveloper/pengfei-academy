@@ -7,7 +7,6 @@ const { signup, sendRequest, haveMeeting, complete } = TEACHING_STATUS;
 let initialState = {
   status: signup,
   message: '',
-  skypeName: '',
 };
 
 const teachingSlicer = createSlice({
@@ -17,10 +16,9 @@ const teachingSlicer = createSlice({
     setStatusSendRequest: (state) => {
       state.status = sendRequest;
     },
-    setStatusHaveMeeting: (state, { payload: { skypeName, message } }) => {
+    setStatusHaveMeeting: (state, { payload: { message } }) => {
       state.status = haveMeeting;
       state.message = message;
-      state.skypeName = skypeName;
     },
     setStatusComplete: (state) => {
       state.status = complete;
@@ -28,7 +26,6 @@ const teachingSlicer = createSlice({
     clear: (state) => {
       state.status = signup;
       state.message = '';
-      state.skypeName = '';
     },
   },
 });

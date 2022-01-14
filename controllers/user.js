@@ -37,6 +37,7 @@ export const register = async (req, res) => {
   });
   conversation.lastMsg = message._id;
   user.unReadMsgCount += 1;
+  user.conversationWithAdmin = conversation._id;
 
   await user.save();
 
@@ -127,6 +128,18 @@ export const getHeaderUserInfo = async (req, res) => {
     return res
       .status(200)
       .send({ unReadNotificationCount, unReadMsgCount, isInstructor });
+  } else {
+    return res.status(404).json({ message: 'User not found.' });
+  }
+};
+
+export const getConversationWithAdminId = async (req, res) => {
+  await db.connect();
+  const userId = req.user.id;
+  const user = await User.findById(userId);
+  if (user) {
+    const conversationWithAdmin = user.conversationWithAdmin;
+    return res.status(200).send({ conversationWithAdmin });
   } else {
     return res.status(404).json({ message: 'User not found.' });
   }
