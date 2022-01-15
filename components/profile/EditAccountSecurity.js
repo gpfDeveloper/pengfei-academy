@@ -17,7 +17,7 @@ import LoadingButton from '@mui/lab/LoadingButton';
 
 import { Controller, useForm } from 'react-hook-form';
 
-export default function AccountSecurity() {
+export default function EditAccountSecurity() {
   const dispatch = useDispatch();
 
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);

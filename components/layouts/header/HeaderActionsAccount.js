@@ -13,20 +13,24 @@ import { logoutAsync } from 'store/user-async';
 
 export default function HeaderActionsAccount() {
   const router = useRouter();
-  const { isAdmin, name } = useSelector((state) => state.user);
+  const { isAdmin, name, id } = useSelector((state) => state.user);
   const [anchorEl, setAnchorEl] = useState(null);
   const isMenuOpen = Boolean(anchorEl);
-  const menuId = 'account-menu';
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
   };
   const handleMenuClose = () => {
     setAnchorEl(null);
   };
-  const profileHandler = () => {
+  const editProfileHandler = () => {
     setAnchorEl(null);
     router.push('/profile');
   };
+  const publicProfileHandler = () => {
+    setAnchorEl(null);
+    router.push(`/user/${id}`);
+  };
+
   const adminHandler = () => {
     setAnchorEl(null);
     router.push('/admin');
@@ -41,7 +45,6 @@ export default function HeaderActionsAccount() {
         vertical: 'top',
         horizontal: 'right',
       }}
-      id={menuId}
       keepMounted
       transformOrigin={{
         vertical: 'top',
@@ -56,7 +59,15 @@ export default function HeaderActionsAccount() {
         </MenuItem>,
         <Divider key={2} />,
       ]}
-      <MenuItem onClick={profileHandler}>Account</MenuItem>
+      {[
+        <MenuItem key={1} onClick={editProfileHandler}>
+          Edit profile
+        </MenuItem>,
+        <MenuItem key={2} onClick={publicProfileHandler}>
+          Public profile
+        </MenuItem>,
+        <Divider key={3} />,
+      ]}
       <MenuItem
         onClick={() => {
           dispatch(logoutAsync());
@@ -74,9 +85,6 @@ export default function HeaderActionsAccount() {
         <IconButton
           size="large"
           edge="end"
-          aria-label="account of current user"
-          aria-controls={menuId}
-          aria-haspopup="true"
           onClick={handleProfileMenuOpen}
           color="inherit"
         >

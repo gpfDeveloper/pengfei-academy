@@ -13,6 +13,11 @@ const profileSchema = new mongoose.Schema(
     avatar: {
       type: String,
     },
+    website: {
+      type: String,
+      trim: true,
+      maxlength: 100,
+    },
   },
   { timestamps: true }
 );

@@ -8,7 +8,7 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import { Controller, useForm } from 'react-hook-form';
 import axios from 'axios';
 
-export default function ProfileInfo() {
+export default function EditProfileInfo() {
   const dispatch = useDispatch();
 
   const [isSaving, setIsSaving] = useState(false);
@@ -21,11 +21,11 @@ export default function ProfileInfo() {
     setValue,
   } = useForm();
 
-  const onSubmit = ({ name, headline, bio }) => {
+  const onSubmit = ({ name, headline, bio, website }) => {
     setIsSaving(true);
-    dispatch(profileInfoUpdateAsync({ name, headline, bio, token })).then(() =>
-      setIsSaving(false)
-    );
+    dispatch(
+      profileInfoUpdateAsync({ name, headline, bio, token, website })
+    ).then(() => setIsSaving(false));
   };
 
   useEffect(() => {
@@ -35,6 +35,7 @@ export default function ProfileInfo() {
       });
       setValue('headline', data?.data?.headline);
       setValue('bio', data?.data?.bio);
+      setValue('website', data?.data?.website);
     };
     fetchProfile();
   }, [token, setValue]);
@@ -58,6 +59,7 @@ export default function ProfileInfo() {
       <Controller
         name="headline"
         control={control}
+        defaultValue=""
         rules={{ maxLength: 60 }}
         render={({ field }) => (
           <TextField
@@ -72,6 +74,7 @@ export default function ProfileInfo() {
       <Controller
         name="bio"
         control={control}
+        defaultValue=""
         rules={{ maxLength: 6000 }}
         render={({ field }) => (
           <TextField
@@ -80,6 +83,20 @@ export default function ProfileInfo() {
             error={Boolean(errors.bio)}
             helperText={errors.bio && 'Biography has at most 6000 charactors'}
             label="Biography"
+            {...field}
+          />
+        )}
+      />
+      <Controller
+        name="website"
+        control={control}
+        defaultValue=""
+        rules={{ maxLength: 100 }}
+        render={({ field }) => (
+          <TextField
+            error={Boolean(errors.website)}
+            helperText={errors.website && 'website at most 100 charactors'}
+            label="Website"
             {...field}
           />
         )}

@@ -1,20 +1,32 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 
-import { Stack, Typography, Divider } from '@mui/material';
+import { Stack } from '@mui/material';
 
 import Spinner from 'components/UIs/Spinner';
 import PageLayout from 'components/layouts/PageLayout';
+import PublicProfile from 'components/profile/PublicProfile';
+import axios from 'axios';
 
-export default function PublicProfile() {
-  const [loading, setLoading] = useState(false);
+export default function UserProfile() {
+  const [loading, setLoading] = useState(true);
+  const [userInfo, setUserInfo] = useState(null);
   const router = useRouter();
-  console.log(router.params);
+  const { uid } = router.query;
   useEffect(() => {
-    setLoading(true);
-    const fetchProfile = async () => {};
-    fetchProfile();
-  }, []);
+    const fetchProfile = async () => {
+      try {
+        const data = await axios.get(`/api/profile/public/${uid}`);
+        setUserInfo({ ...data?.data });
+        setLoading(false);
+      } catch (err) {
+        setLoading(false);
+      }
+    };
+    if (uid) {
+      fetchProfile();
+    }
+  }, [uid]);
   return (
     <PageLayout>
       {loading && <Spinner />}
@@ -23,12 +35,10 @@ export default function PublicProfile() {
           sx={{
             gap: 4,
             margin: '8rem auto',
+            maxWidth: '960px',
           }}
         >
-          <Typography component="h1" variant="h4">
-            User Public Profile
-          </Typography>
-          <Divider />
+          <PublicProfile userInfo={userInfo} />
         </Stack>
       )}
     </PageLayout>

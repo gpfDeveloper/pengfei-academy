@@ -4,8 +4,8 @@ import Tabs from '@mui/material/Tabs';
 import MuiTab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
-import AccountSecurity from './AccountSecurity';
-import ProfileInfo from './ProfileInfo';
+import EditAccountSecurity from './EditAccountSecurity';
+import EditProfileInfo from './EditProfileInfo';
 
 const Tab = styled(MuiTab)({
   textTransform: 'none',
@@ -27,7 +27,7 @@ TabPanel.propTypes = {
   value: PropTypes.number.isRequired,
 };
 
-export default function ProfilePanel() {
+export default function EditProfilePanel() {
   const [value, setValue] = useState(0);
 
   const handleChange = (event, newValue) => {
@@ -38,19 +38,19 @@ export default function ProfilePanel() {
     <>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs value={value} onChange={handleChange}>
-          <Tab label="Account security" />
-          <Tab label="Profile Information" />
+          <Tab label="Profile information" />
           <Tab label="Profile picture" />
+          <Tab label="Account security" />
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
-        <AccountSecurity />
+        <EditProfileInfo />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        <ProfileInfo />
+        Profile picture
       </TabPanel>
       <TabPanel value={value} index={2}>
-        Profile picture
+        <EditAccountSecurity />
       </TabPanel>
     </>
   );

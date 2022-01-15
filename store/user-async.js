@@ -112,7 +112,7 @@ export const accountSecurityUpdateAsync =
   };
 
 export const profileInfoUpdateAsync =
-  ({ name, bio, headline, token }) =>
+  ({ name, bio, headline, website, token }) =>
   async (dispatch) => {
     try {
       await axios.put(
@@ -121,6 +121,7 @@ export const profileInfoUpdateAsync =
           name,
           bio,
           headline,
+          website,
         },
         { headers: { Authorization: `Bearer ${token}` } }
       );

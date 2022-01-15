@@ -7,7 +7,7 @@ import { Stack, Typography, Divider } from '@mui/material';
 import { useSelector } from 'react-redux';
 import Spinner from 'components/UIs/Spinner';
 import PageLayout from 'components/layouts/PageLayout';
-import ProfilePanel from 'components/profile/ProfilePanel';
+import EditProfilePanel from 'components/profile/EditProfilePanel';
 
 function Profile() {
   const router = useRouter();
@@ -28,10 +28,10 @@ function Profile() {
           }}
         >
           <Typography component="h1" variant="h4">
-            Account &amp; Profile settings
+            Profile &amp; Account settings
           </Typography>
           <Divider />
-          <ProfilePanel />
+          <EditProfilePanel />
         </Stack>
       )}
     </PageLayout>
