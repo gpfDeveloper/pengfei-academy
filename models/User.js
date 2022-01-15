@@ -14,13 +14,9 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
       trim: true,
+      select: false,
       minlength: 6,
       maxlength: 64,
-    },
-    headline: { type: String, trim: true, maxlength: 60 },
-    bio: { type: String, trim: true, maxlength: 400 },
-    avatar: {
-      type: String,
     },
     isAdmin: {
       type: Boolean,
@@ -30,12 +26,19 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    profile: {
+      type: mongoose.Types.ObjectId,
+      unique: true,
+      ref: 'Profile',
+    },
     teachRequest: {
       type: mongoose.Types.ObjectId,
+      unique: true,
       ref: 'TeachRequest',
     },
     notification: {
       type: mongoose.Types.ObjectId,
+      unique: true,
       ref: 'Notification',
     },
     unReadNotificationCount: {
@@ -48,6 +51,7 @@ const userSchema = new mongoose.Schema(
     },
     conversationWithAdmin: {
       type: mongoose.Types.ObjectId,
+      unique: true,
       ref: 'Conversation',
     },
   },

@@ -56,7 +56,7 @@ export const register = async (req, res) => {
 export const login = async (req, res) => {
   await db.connect();
   const { email, password } = req.body;
-  const user = await User.findOne({ email });
+  const user = await User.findOne({ email }).select('+password');
   if (user && bcrypt.compareSync(password, user.password)) {
     const token = signToken(user);
     res.json({
@@ -78,7 +78,7 @@ export const updateAccountSecurity = async (req, res) => {
   await db.connect();
   const userId = req.user.id;
   const { email, newPassword, currentPassword } = req.body;
-  const user = await User.findById(userId);
+  const user = await User.findById(userId).select('+password');
   if (user && bcrypt.compareSync(currentPassword, user.password)) {
     user.email = email;
     if (newPassword.trim()) {
@@ -92,28 +92,6 @@ export const updateAccountSecurity = async (req, res) => {
     }
   } else {
     return res.status(401).json({ message: 'Incorrenct current password.' });
-  }
-};
-
-export const updateProfileInfo = async (req, res) => {
-  await db.connect();
-  const userId = req.user.id;
-  const { name, bio, headline } = req.body;
-  const user = await User.findById(userId);
-  if (user) {
-    user.name = name;
-    user.bio = bio;
-    user.headline = headline;
-    try {
-      await user.save();
-      return res.status(200).send();
-    } catch (err) {
-      return res
-        .status(422)
-        .json({ message: 'Update profile failed, please try again latter' });
-    }
-  } else {
-    return res.status(404).json({ message: 'User not found.' });
   }
 };
 

@@ -4,7 +4,7 @@ import {
   login,
   logout,
   updateEmail,
-  updateProfile,
+  updateName,
   clearUnReadNotificationCount,
   clearUnReadMsgCount,
   getHeaderInfo,
@@ -17,16 +17,13 @@ export const loginAsync =
   async (dispatch) => {
     try {
       const data = await axios.post('/api/user/login', { email, password });
-      const { token, id, name, headline, bio, isAdmin, isInstructor } =
-        data.data;
+      const { token, id, name, isAdmin, isInstructor } = data.data;
       dispatch(
         login({
           token,
           id,
           name,
           email,
-          headline,
-          bio,
           isAdmin,
           isInstructor,
         })
@@ -119,7 +116,7 @@ export const profileInfoUpdateAsync =
   async (dispatch) => {
     try {
       await axios.put(
-        '/api/user/profileInfo',
+        '/api/profile',
         {
           name,
           bio,
@@ -127,7 +124,7 @@ export const profileInfoUpdateAsync =
         },
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      dispatch(updateProfile({ name, headline, bio }));
+      dispatch(updateName({ name }));
       dispatch(setSnackbar({ severity: 'success', message: 'Update success' }));
     } catch (error) {
       console.log(error);

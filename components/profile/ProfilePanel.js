@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useState } from 'react';
 import PropTypes from 'prop-types';
 import Tabs from '@mui/material/Tabs';
 import MuiTab from '@mui/material/Tab';
@@ -12,15 +12,10 @@ const Tab = styled(MuiTab)({
 });
 
 function TabPanel(props) {
-  const { children, value, index, ...other } = props;
+  const { children, value, index } = props;
 
   return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`tabpanel-${index}`}
-      {...other}
-    >
+    <div hidden={value !== index}>
       {value === index && <Box sx={{ p: 4 }}>{children}</Box>}
     </div>
   );
@@ -32,14 +27,8 @@ TabPanel.propTypes = {
   value: PropTypes.number.isRequired,
 };
 
-function a11yProps(index) {
-  return {
-    id: `tab-${index}`,
-  };
-}
-
 export default function ProfilePanel() {
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = useState(0);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -49,9 +38,9 @@ export default function ProfilePanel() {
     <>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs value={value} onChange={handleChange}>
-          <Tab label="Account security" {...a11yProps(0)} />
-          <Tab label="Profile Information" {...a11yProps(1)} />
-          <Tab label="Profile picture" {...a11yProps(2)} />
+          <Tab label="Account security" />
+          <Tab label="Profile Information" />
+          <Tab label="Profile picture" />
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>

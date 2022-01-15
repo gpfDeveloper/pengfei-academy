@@ -8,7 +8,7 @@ const { approved: APPROVED, rejected: REJECTED } = TEACH_REQUEST_STATUS;
 
 export const getUsers = async (req, res) => {
   await db.connect();
-  const users = await User.find().select('-password');
+  const users = await User.find();
   res.status(200).json(users.map((user) => user.toObject({ getters: true })));
 };
 

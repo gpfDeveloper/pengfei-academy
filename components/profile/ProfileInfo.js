@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { profileInfoUpdateAsync } from 'store/user-async';
 
@@ -6,17 +6,19 @@ import { TextField, Button, Stack } from '@mui/material';
 import LoadingButton from '@mui/lab/LoadingButton';
 
 import { Controller, useForm } from 'react-hook-form';
+import axios from 'axios';
 
 export default function ProfileInfo() {
   const dispatch = useDispatch();
 
   const [isSaving, setIsSaving] = useState(false);
-  const { name, headline, bio, token } = useSelector((state) => state.user);
+  const { name, token } = useSelector((state) => state.user);
 
   const {
     formState: { errors },
     handleSubmit,
     control,
+    setValue,
   } = useForm();
 
   const onSubmit = ({ name, headline, bio }) => {
@@ -25,6 +27,18 @@ export default function ProfileInfo() {
       setIsSaving(false)
     );
   };
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      const data = await axios.get('/api/profile', {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setValue('headline', data?.data?.headline);
+      setValue('bio', data?.data?.bio);
+    };
+    fetchProfile();
+  }, [token, setValue]);
+
   return (
     <Stack sx={{ gap: 2 }} component="form" onSubmit={handleSubmit(onSubmit)}>
       <Controller
@@ -43,7 +57,6 @@ export default function ProfileInfo() {
       />
       <Controller
         name="headline"
-        defaultValue={headline}
         control={control}
         rules={{ maxLength: 60 }}
         render={({ field }) => (
@@ -58,15 +71,14 @@ export default function ProfileInfo() {
       />
       <Controller
         name="bio"
-        defaultValue={bio}
         control={control}
-        rules={{ maxLength: 400 }}
+        rules={{ maxLength: 6000 }}
         render={({ field }) => (
           <TextField
             rows={4}
             multiline
             error={Boolean(errors.bio)}
-            helperText={errors.bio && 'Biography has at most 400 charactors'}
+            helperText={errors.bio && 'Biography has at most 6000 charactors'}
             label="Biography"
             {...field}
           />

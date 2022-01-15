@@ -5,16 +5,17 @@ const { draft, approved, rejected } = TEACH_REQUEST_STATUS;
 
 const teachRequestSchema = new mongoose.Schema(
   {
+    user: {
+      type: mongoose.Types.ObjectId,
+      required: true,
+      unique: true,
+      ref: 'User',
+    },
     message: {
       type: String,
       trim: true,
       required: true,
       maxlength: 1000,
-    },
-    user: {
-      type: mongoose.Types.ObjectId,
-      required: true,
-      ref: 'User',
     },
     status: {
       type: String,
@@ -27,6 +28,7 @@ const teachRequestSchema = new mongoose.Schema(
     },
     adminComment: {
       type: String,
+      maxlength: 6000,
       default: '',
     },
   },
