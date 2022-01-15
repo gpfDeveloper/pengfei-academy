@@ -28,17 +28,14 @@ const userSchema = new mongoose.Schema(
     },
     profile: {
       type: mongoose.Types.ObjectId,
-      unique: true,
       ref: 'Profile',
     },
     teachRequest: {
       type: mongoose.Types.ObjectId,
-      unique: true,
       ref: 'TeachRequest',
     },
     notification: {
       type: mongoose.Types.ObjectId,
-      unique: true,
       ref: 'Notification',
     },
     unReadNotificationCount: {
@@ -51,7 +48,6 @@ const userSchema = new mongoose.Schema(
     },
     conversationWithAdmin: {
       type: mongoose.Types.ObjectId,
-      unique: true,
       ref: 'Conversation',
     },
   },
