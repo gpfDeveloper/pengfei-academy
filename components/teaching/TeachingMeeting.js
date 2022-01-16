@@ -28,7 +28,7 @@ export default function TeachingMeeting() {
   return (
     <Stack sx={{ maxWidth: 800, margin: '4rem auto', gap: '4rem' }}>
       <Typography component="h3" variant="h6">
-        {`Hi ${name}, I'm Pengfei and I have received your information. I will contact you back as soon as I'm available. Feel free to message me if you have any question.`}
+        {`Hi ${name}, this is Pengfei and I have received your information. I will contact you back as soon as I'm available. In the meantime, feel free to message me if you have any question.`}
       </Typography>
       {convId && (
         <Button

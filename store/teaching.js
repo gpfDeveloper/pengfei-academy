@@ -2,11 +2,10 @@ import { createSlice } from '@reduxjs/toolkit';
 
 import { TEACHING_STATUS } from 'utils/constants';
 
-const { signup, sendRequest, haveMeeting, complete } = TEACHING_STATUS;
+const { signup, sendRequest, haveMeeting } = TEACHING_STATUS;
 
 let initialState = {
   status: signup,
-  message: '',
 };
 
 const teachingSlicer = createSlice({
@@ -16,25 +15,16 @@ const teachingSlicer = createSlice({
     setStatusSendRequest: (state) => {
       state.status = sendRequest;
     },
-    setStatusHaveMeeting: (state, { payload: { message } }) => {
+    setStatusHaveMeeting: (state) => {
       state.status = haveMeeting;
-      state.message = message;
-    },
-    setStatusComplete: (state) => {
-      state.status = complete;
     },
     clear: (state) => {
       state.status = signup;
-      state.message = '';
     },
   },
 });
 
-export const {
-  setStatusSendRequest,
-  setStatusHaveMeeting,
-  setStatusComplete,
-  clear,
-} = teachingSlicer.actions;
+export const { setStatusSendRequest, setStatusHaveMeeting, clear } =
+  teachingSlicer.actions;
 
 export default teachingSlicer.reducer;

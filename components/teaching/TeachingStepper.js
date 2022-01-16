@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
@@ -15,10 +16,9 @@ const stepMap = {
   [TEACHING_STATUS.signup]: 0,
   [TEACHING_STATUS.sendRequest]: 1,
   [TEACHING_STATUS.haveMeeting]: 2,
-  [TEACHING_STATUS.complete]: 3,
 };
 
-const steps = [
+const STEPS_LABEL = [
   'Sign up',
   'Introduce yourself',
   'Meet Pengfei',
@@ -26,23 +26,32 @@ const steps = [
 ];
 
 export default function TeachingStepper() {
-  const isLogin = useSelector((state) => state.user?.isLogin);
+  const token = useSelector((state) => state.user?.token);
   const currentStatus = useSelector((state) => state.teaching.status);
-  let currentStep;
-  if (!isLogin) {
-    currentStep = 0;
-  } else {
-    currentStep = stepMap[currentStatus];
-  }
+  const [currentStep, setCurrentStep] = useState(stepMap[currentStatus]);
 
-  const [activeStep, setActiveStep] = useState(currentStep);
+  // If user already send teaching request move to next step.
+  useEffect(() => {
+    const fetchRequest = async () => {
+      const data = await axios.get('/api/teaching/sendRequest', {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const status = data?.data?.status;
+      if (status) {
+        setCurrentStep(stepMap[TEACHING_STATUS.haveMeeting]);
+      }
+    };
+    if (token && currentStatus === TEACHING_STATUS.sendRequest) {
+      fetchRequest();
+    }
+  }, [token, currentStatus]);
 
   useEffect(() => {
-    setActiveStep(currentStep);
-  }, [currentStep]);
+    setCurrentStep(stepMap[currentStatus]);
+  }, [currentStatus]);
 
   let content;
-  switch (activeStep) {
+  switch (currentStep) {
     case 0:
       content = <TeachingSignup />;
       break;
@@ -57,14 +66,12 @@ export default function TeachingStepper() {
   }
 
   return (
-    <Box sx={{ width: '100%' }}>
-      <Stepper activeStep={activeStep}>
-        {steps.map((label) => {
-          const stepProps = {};
-          const labelProps = {};
+    <Box>
+      <Stepper activeStep={currentStep}>
+        {STEPS_LABEL.map((label) => {
           return (
-            <Step key={label} {...stepProps}>
-              <StepLabel {...labelProps}>{label}</StepLabel>
+            <Step key={label}>
+              <StepLabel>{label}</StepLabel>
             </Step>
           );
         })}

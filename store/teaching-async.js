@@ -14,7 +14,7 @@ export const sendRequestAsync =
         },
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      dispatch(setStatusHaveMeeting({ message }));
+      dispatch(setStatusHaveMeeting());
     } catch (error) {
       const message = error.response?.data?.message;
       dispatch(

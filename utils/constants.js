@@ -1,14 +1,14 @@
 export const PAGES = [
   { label: 'Home', path: '/' },
   { label: 'Course', path: '/course' },
-  { label: 'Article', path: '/article' },
+  { label: 'Blog', path: '/blog' },
   { label: 'Teach here', path: '/teaching' },
 ];
 
 export const PAGES_INSTRUCTOR = [
   { label: 'Home', path: '/' },
   { label: 'Course', path: '/course' },
-  { label: 'Article', path: '/article' },
+  { label: 'Blog', path: '/blog' },
   { label: 'Instructor', path: '/instructor' },
 ];
 
@@ -18,7 +18,6 @@ export const TEACHING_STATUS = {
   signup: 'signup',
   sendRequest: 'sendRequest',
   haveMeeting: 'haveMeeting',
-  complete: 'complete',
 };
 
 export const TEACH_REQUEST_STATUS = {

@@ -72,6 +72,7 @@ export default function HeaderActionsAccount() {
         onClick={() => {
           dispatch(logoutAsync());
           handleMenuClose();
+          router.replace('/');
         }}
       >
         Logout
