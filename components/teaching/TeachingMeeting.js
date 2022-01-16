@@ -18,7 +18,9 @@ export default function TeachingMeeting() {
       });
       setConvId(data?.data?.conversationWithAdmin);
     };
-    fetchConvId();
+    if (token) {
+      fetchConvId();
+    }
   }, [convId, token]);
 
   const messageHandler = () => {
