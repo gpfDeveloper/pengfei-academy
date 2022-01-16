@@ -1,9 +1,11 @@
 import NextLink from 'next/link';
+import { useRouter } from 'next/router';
 import { AppBar, Toolbar, IconButton, Avatar, Link, Box } from '@mui/material';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import { sliceText } from 'utils';
 
-export default function MessageContentFullViewHeader({ userName }) {
+export default function MessageContentFullViewHeader({ userName, userId }) {
+  const router = useRouter();
   return (
     <AppBar sx={{ position: 'absolute', zIndex: 1000 }}>
       <Toolbar
@@ -24,18 +26,19 @@ export default function MessageContentFullViewHeader({ userName }) {
           </Link>
         </NextLink>
         <Box>
-          <IconButton>
+          <IconButton onClick={() => router.push(`/user/${userId}`)}>
             <Avatar alt={userName} src="/" />
           </IconButton>
-          <Link
-            href="/"
-            sx={{
-              fontSize: 'large',
-              wordBreak: 'break-word',
-            }}
-          >
-            {sliceText(userName, 48)}
-          </Link>
+          <NextLink passHref href={`/user/${userId}`}>
+            <Link
+              sx={{
+                fontSize: 'large',
+                wordBreak: 'break-word',
+              }}
+            >
+              {sliceText(userName, 48)}
+            </Link>
+          </NextLink>
         </Box>
       </Toolbar>
     </AppBar>

@@ -2,6 +2,7 @@ import { Avatar, Box, Button, Divider, Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import LinkIcon from '@mui/icons-material/Link';
+import ReactMarkdown from 'react-markdown';
 
 export default function PublicProfile({ userInfo }) {
   const theme = useTheme();
@@ -44,7 +45,9 @@ export default function PublicProfile({ userInfo }) {
           {Boolean(bio) && (
             <Box mt={2}>
               <Divider />
-              <Box mt={2}>{bio}</Box>
+              <Box mt={2}>
+                <ReactMarkdown>{bio}</ReactMarkdown>
+              </Box>
             </Box>
           )}
         </Box>

@@ -57,7 +57,10 @@ export default function MessageContentFullView({ convId }) {
       {isLoadingMsgs && <Spinner />}
       {!isLoadingMsgs && (
         <>
-          <MessageContentFullViewHeader userName={targetUser.name} />
+          <MessageContentFullViewHeader
+            userName={targetUser.name}
+            userId={targetUser.id}
+          />
           <Box sx={{ mt: 10 }}>
             <MessageContentItems items={msgs} />
           </Box>
