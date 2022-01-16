@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { setStatusHaveMeeting } from 'store/teaching';
 
 import Box from '@mui/material/Box';
 import Stepper from '@mui/material/Stepper';
@@ -27,6 +28,7 @@ const STEPS_LABEL = [
 
 export default function TeachingStepper() {
   const token = useSelector((state) => state.user?.token);
+  const dispatch = useDispatch();
   const currentStatus = useSelector((state) => state.teaching.status);
   const [currentStep, setCurrentStep] = useState(stepMap[currentStatus]);
 
@@ -38,13 +40,13 @@ export default function TeachingStepper() {
       });
       const status = data?.data?.status;
       if (status) {
-        setCurrentStep(stepMap[TEACHING_STATUS.haveMeeting]);
+        dispatch(setStatusHaveMeeting());
       }
     };
     if (token && currentStatus === TEACHING_STATUS.sendRequest) {
       fetchRequest();
     }
-  }, [token, currentStatus]);
+  }, [token, currentStatus, dispatch]);
 
   useEffect(() => {
     setCurrentStep(stepMap[currentStatus]);
