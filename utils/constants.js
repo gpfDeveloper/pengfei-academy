@@ -30,3 +30,10 @@ export const NOTIFICATION_TYPES = {
   system: 'system',
   message: 'message',
 };
+
+export const CREATE_COURSE_STATUS = {
+  draft: 0,
+  review: 1,
+  approved: 2,
+  published: 3,
+};

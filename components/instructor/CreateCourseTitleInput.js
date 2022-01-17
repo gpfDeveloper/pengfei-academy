@@ -1,8 +1,18 @@
 import { Stack, TextField, Typography, Box, Button } from '@mui/material';
+import { useForm, Controller } from 'react-hook-form';
 import AddIcon from '@mui/icons-material/Add';
 
 export default function CreateCourseTitleInput() {
-  const createCourseHandler = () => {};
+  const {
+    formState: { errors },
+    handleSubmit,
+    control,
+  } = useForm();
+
+  const onSubmit = ({ title }) => {
+    console.log(title);
+  };
+
   return (
     <Stack
       sx={{
@@ -21,16 +31,46 @@ export default function CreateCourseTitleInput() {
           }
         </Typography>
       </Box>
-      <TextField placeholder="e.g. Learn Javascript from Scratch." fullWidth />
-      <Button
-        startIcon={<AddIcon />}
-        variant="contained"
-        size="large"
-        fullWidth
-        onClick={createCourseHandler}
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 4,
+          alignSelf: 'stretch',
+        }}
+        component="form"
+        onSubmit={handleSubmit(onSubmit)}
       >
-        Create Course
-      </Button>
+        <Controller
+          name="title"
+          defaultValue=""
+          control={control}
+          rules={{ required: true, maxLength: 60 }}
+          render={({ field }) => (
+            <TextField
+              error={Boolean(errors.title)}
+              fullWidth
+              placeholder="e.g. Learn Javascript from Scratch"
+              helperText={
+                errors.title &&
+                (errors.title.type === 'required'
+                  ? 'Please enter a title'
+                  : 'Title have at most 60 charactor.')
+              }
+              {...field}
+            />
+          )}
+        />
+        <Button
+          startIcon={<AddIcon />}
+          variant="contained"
+          size="large"
+          fullWidth
+          type="submit"
+        >
+          Create Course
+        </Button>
+      </Box>
     </Stack>
   );
 }
