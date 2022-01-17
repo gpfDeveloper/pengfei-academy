@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { setStatusHaveMeeting } from 'store/teaching';
 
@@ -30,7 +30,7 @@ export default function TeachingStepper() {
   const token = useSelector((state) => state.user?.token);
   const dispatch = useDispatch();
   const currentStatus = useSelector((state) => state.teaching.status);
-  const [currentStep, setCurrentStep] = useState(stepMap[currentStatus]);
+  const currentStep = stepMap[currentStatus];
 
   // If user already send teaching request move to next step.
   useEffect(() => {
@@ -47,10 +47,6 @@ export default function TeachingStepper() {
       fetchRequest();
     }
   }, [token, currentStatus, dispatch]);
-
-  useEffect(() => {
-    setCurrentStep(stepMap[currentStatus]);
-  }, [currentStatus]);
 
   let content;
   switch (currentStep) {
