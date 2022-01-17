@@ -8,6 +8,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { logoutAsync } from 'store/user-async';
 
 import Header from './header/Header';
+import HeaderInstructorView from './header/instructorView/HeaderInstructorView';
 import Footer from './Footer';
 import { getTheme } from 'utils/theme';
 import Snackbar from 'components/UIs/Snackbar';
@@ -22,7 +23,8 @@ export default function PageLayout({ children, title, description }) {
 
   const dispatch = useDispatch();
   const isDark = useSelector((state) => state.theme.isDark);
-  const loginExpireAt = useSelector((state) => state.user.expireAt);
+  const user = useSelector((state) => state.user);
+  const { loginExpireAt, isInstructorView } = user;
   const theme = getTheme(isDark);
 
   useEffect(() => {
@@ -50,7 +52,8 @@ export default function PageLayout({ children, title, description }) {
           content={description || defaultDescription}
         ></meta>
       </Head>
-      <Header />
+      {!isInstructorView && <Header />}
+      {isInstructorView && <HeaderInstructorView />}
       <Container component="main" sx={{ minHeight: '100vh', marginTop: 8 }}>
         {children}
       </Container>

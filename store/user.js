@@ -8,6 +8,7 @@ let initialState = {
   isLogin: false,
   isInstructor: false,
   isAdmin: false,
+  isInstructorView: false,
   name: '',
   id: '',
   email: '',
@@ -44,6 +45,7 @@ const userSlice = createSlice({
       state.isLogin = false;
       state.isAdmin = false;
       state.isInstructor = false;
+      state.isInstructorView = false;
       state.id = '';
       state.name = '';
       state.email = '';
@@ -78,6 +80,13 @@ const userSlice = createSlice({
       state.isInstructor = isInstructor;
       Cookies.set(USER_INFO_KEY, JSON.stringify(state));
     },
+    //isInstructorView not store to cookies by design
+    setInstructorView: (state) => {
+      state.isInstructorView = true;
+    },
+    setStudentView: (state) => {
+      state.isInstructorView = false;
+    },
   },
 });
 
@@ -89,6 +98,8 @@ export const {
   clearUnReadNotificationCount,
   clearUnReadMsgCount,
   getHeaderInfo,
+  setInstructorView,
+  setStudentView,
 } = userSlice.actions;
 
 export default userSlice.reducer;
