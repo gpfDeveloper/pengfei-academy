@@ -1,16 +1,26 @@
+import { useRouter } from 'next/router';
+import { useDispatch, useSelector } from 'react-redux';
+import { createAsync as createCourseAsync } from 'store/course-async';
 import { Stack, TextField, Typography, Box, Button } from '@mui/material';
 import { useForm, Controller } from 'react-hook-form';
 import AddIcon from '@mui/icons-material/Add';
 
 export default function CreateCourseTitleInput() {
+  const dispatch = useDispatch();
+  const router = useRouter();
+  const user = useSelector((state) => state.user);
+  const { token } = user;
   const {
     formState: { errors },
     handleSubmit,
     control,
   } = useForm();
 
-  const onSubmit = ({ title }) => {
-    console.log(title);
+  const onSubmit = async ({ title }) => {
+    const course = await dispatch(createCourseAsync({ title, token }));
+    if (course && course.id) {
+      router.replace(`/instructor/course/${course.id}`);
+    }
   };
 
   return (
