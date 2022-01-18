@@ -2,6 +2,7 @@ import jwt from 'jsonwebtoken';
 import db from 'utils/db';
 import User from 'models/User';
 import Conversation from 'models/Conversation';
+import Course from 'models/Course';
 
 export const isLogin = async (req, res, next) => {
   const { authorization } = req.headers;
@@ -70,5 +71,21 @@ export const canViewConversation = async (req, res, next) => {
     next();
   } else {
     res.status(403).json({ message: 'Not authorized to view messages.' });
+  }
+};
+
+export const canViewDraftCourse = async (req, res, next) => {
+  const courseId = req.query.id;
+  if (!courseId) {
+    return res.status(422).json({ message: 'Course id not provide.' });
+  }
+  await db.connect();
+  const user = await User.findById(req.user.id);
+  const course = await Course.findById(courseId);
+  if (user.isAdmin || course.author.toString() === user._id.toString()) {
+    req.course = course;
+    return next();
+  } else {
+    return res.status(403).json({ message: 'Not authorized.' });
   }
 };

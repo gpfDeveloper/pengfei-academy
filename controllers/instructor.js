@@ -32,3 +32,8 @@ export const getMyCourses = async (req, res) => {
     return res.status(404).json({ message: 'User not found.' });
   }
 };
+
+export const getMyCourse = async (req, res) => {
+  const course = req.course;
+  return res.status(200).json({ course: course.toObject({ getters: true }) });
+};

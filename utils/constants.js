@@ -37,3 +37,10 @@ export const CREATE_COURSE_STATUS = {
   approved: 2,
   published: 3,
 };
+
+export const CREATE_COURSE_STATUS_REVERSE = {
+  0: 'draft',
+  1: 'review',
+  2: 'approved',
+  3: 'published',
+};

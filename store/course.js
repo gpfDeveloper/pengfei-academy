@@ -1,19 +1,26 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
+  id: '',
   title: '',
+  status: 0,
 };
 
 const courseSlice = createSlice({
   name: 'course',
   initialState,
   reducers: {
-    create: (state, { payload }) => {
-      state.title = payload;
+    //payload: {field1:'value1', field2: 'value2'}
+    updateCourse: (state, { payload }) => {
+      for (const key in initialState) {
+        if (key in payload) {
+          state[key] = payload[key];
+        }
+      }
     },
   },
 });
 
-export const { create } = courseSlice.actions;
+export const { updateCourse } = courseSlice.actions;
 
 export default courseSlice.reducer;

@@ -9,12 +9,7 @@ import {
   CardActionArea,
 } from '@mui/material';
 
-const statusMap = {
-  0: 'draft',
-  1: 'review',
-  2: 'approved',
-  3: 'published',
-};
+import { CREATE_COURSE_STATUS_REVERSE } from 'utils/constants';
 
 export default function InstructorCourseItem({ item }) {
   const { id, title, thumbnail, status } = item;
@@ -38,7 +33,7 @@ export default function InstructorCourseItem({ item }) {
               {title}
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              {statusMap[status]}
+              {CREATE_COURSE_STATUS_REVERSE[status]}
             </Typography>
           </CardContent>
         </Box>

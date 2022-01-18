@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 import { Box } from '@mui/material';
 import dynamic from 'next/dynamic';
 import PageLayout from 'components/layouts/PageLayout';
+import EditCourseDetailPage from 'components/instructor/EditCourse/EditCourseDetailPage';
 
 function EditCoursePage() {
   const router = useRouter();
@@ -23,7 +24,9 @@ function EditCoursePage() {
   }, [isLogin, router, isInstructor, dispatch]);
   return (
     <PageLayout>
-      <Box sx={{ margin: '8rem auto', maxWidth: '800px' }}>{courseId}</Box>
+      <Box sx={{ margin: '8rem auto', maxWidth: '1200px' }}>
+        {courseId && <EditCourseDetailPage courseId={courseId} />}
+      </Box>
     </PageLayout>
   );
 }
