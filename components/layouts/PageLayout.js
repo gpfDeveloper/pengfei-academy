@@ -12,6 +12,7 @@ import HeaderInstructorView from './header/instructorView/HeaderInstructorView';
 import Footer from './Footer';
 import { getTheme } from 'utils/theme';
 import Snackbar from 'components/UIs/Snackbar';
+import HeaderEditCourse from './header/editCourse/HeaderEditCourse';
 
 let logoutTimer;
 const companyName = 'Pengfei Academy';
@@ -24,7 +25,7 @@ export default function PageLayout({ children, title, description }) {
   const dispatch = useDispatch();
   const isDark = useSelector((state) => state.theme.isDark);
   const user = useSelector((state) => state.user);
-  const { loginExpireAt, isInstructorView } = user;
+  const { loginExpireAt, isInstructorView, isEditCourse } = user;
   const theme = getTheme(isDark);
 
   useEffect(() => {
@@ -53,7 +54,8 @@ export default function PageLayout({ children, title, description }) {
         ></meta>
       </Head>
       {!isInstructorView && <Header />}
-      {isInstructorView && <HeaderInstructorView />}
+      {isInstructorView && !isEditCourse && <HeaderInstructorView />}
+      {isInstructorView && isEditCourse && <HeaderEditCourse />}
       <Container component="main" sx={{ minHeight: '100vh', marginTop: 8 }}>
         {children}
       </Container>

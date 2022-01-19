@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setInstructorView } from 'store/user';
+import { setInstructorView, setIsEditCourse } from 'store/user';
 import { useRouter } from 'next/router';
 import { Box } from '@mui/material';
 import dynamic from 'next/dynamic';
@@ -20,11 +20,24 @@ function EditCoursePage() {
       router.replace('/');
     } else {
       dispatch(setInstructorView());
+      dispatch(setIsEditCourse(true));
     }
   }, [isLogin, router, isInstructor, dispatch]);
+
+  useEffect(() => {
+    const exitingFunction = () => {
+      dispatch(setIsEditCourse(false));
+    };
+
+    router.events.on('routeChangeStart', exitingFunction);
+
+    return () => {
+      router.events.off('routeChangeStart', exitingFunction);
+    };
+  }, [dispatch, router.events]);
   return (
     <PageLayout>
-      <Box sx={{ margin: '8rem auto', maxWidth: '1200px' }}>
+      <Box sx={{ margin: '6rem auto', maxWidth: '1200px' }}>
         {courseId && <EditCourseDetailPage courseId={courseId} />}
       </Box>
     </PageLayout>

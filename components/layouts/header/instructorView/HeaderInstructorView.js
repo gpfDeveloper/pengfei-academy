@@ -35,7 +35,7 @@ export default function HeaderInstructorView() {
       <AppBar>
         <Toolbar sx={{ justifyContent: 'space-between' }}>
           <Drawer />
-          <Brand isLink={false} />
+          <Brand link="/instructor" />
           <HeaderNavsInstructorView />
           <HeaderActionsInstructorView />
           <HeaderActionsMobile />

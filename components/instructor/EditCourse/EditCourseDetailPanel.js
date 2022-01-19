@@ -1,21 +1,19 @@
-import * as React from 'react';
+import { useState } from 'react';
 import PropTypes from 'prop-types';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
-import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
+import { Box, Tabs, Tab as MuiTab, Typography } from '@mui/material';
+import { styled } from '@mui/system';
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
+
+const Tab = styled(MuiTab)({
+  textTransform: 'none',
+});
 
 function TabPanel(props) {
-  const { children, value, index, ...other } = props;
+  const { children, value, index } = props;
 
   return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`vertical-tabpanel-${index}`}
-      aria-labelledby={`vertical-tab-${index}`}
-      {...other}
-    >
+    <div hidden={value !== index}>
       {value === index && (
         <Box sx={{ p: 3 }}>
           <Typography>{children}</Typography>
@@ -31,15 +29,10 @@ TabPanel.propTypes = {
   value: PropTypes.number.isRequired,
 };
 
-function a11yProps(index) {
-  return {
-    id: `vertical-tab-${index}`,
-    'aria-controls': `vertical-tabpanel-${index}`,
-  };
-}
-
 export default function EditCourseDetailPanel() {
-  const [value, setValue] = React.useState(0);
+  const theme = useTheme();
+  const isBelowMd = useMediaQuery(theme.breakpoints.down('md'));
+  const [value, setValue] = useState(0);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -50,23 +43,22 @@ export default function EditCourseDetailPanel() {
       sx={{
         bgcolor: 'background.paper',
         display: 'flex',
+        flexDirection: isBelowMd ? 'column' : 'row',
       }}
     >
       <Tabs
-        orientation="vertical"
+        orientation={isBelowMd ? 'horizontal' : 'vertical'}
         variant="scrollable"
         value={value}
         onChange={handleChange}
-        aria-label="Vertical tabs example"
         sx={{ borderRight: 1, borderColor: 'divider' }}
       >
-        <Tab label="Item One" {...a11yProps(0)} />
-        <Tab label="Item Two" {...a11yProps(1)} />
-        <Tab label="Item Three" {...a11yProps(2)} />
-        <Tab label="Item Four" {...a11yProps(3)} />
-        <Tab label="Item Five" {...a11yProps(4)} />
-        <Tab label="Item Six" {...a11yProps(5)} />
-        <Tab label="Item Seven" {...a11yProps(6)} />
+        <Tab label="Intended learners" />
+        <Tab label="Curriculum" />
+        <Tab label="Course landing page" />
+        <Tab label="Course messages" />
+        <Tab label="Pricing" />
+        <Tab label="Setting" />
       </Tabs>
       <TabPanel value={value} index={0}>
         Item One
@@ -85,9 +77,6 @@ export default function EditCourseDetailPanel() {
       </TabPanel>
       <TabPanel value={value} index={5}>
         Item Six
-      </TabPanel>
-      <TabPanel value={value} index={6}>
-        Item Seven
       </TabPanel>
     </Box>
   );

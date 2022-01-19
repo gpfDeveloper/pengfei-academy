@@ -1,37 +1,27 @@
+import { useSelector } from 'react-redux';
 import NextLink from 'next/link';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import {
-  AppBar,
-  Toolbar,
-  IconButton,
-  Link,
-  Box,
-  Typography,
-  Button,
-} from '@mui/material';
+import { AppBar, Toolbar, Link, Box, Typography, Button } from '@mui/material';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-import SettingsIcon from '@mui/icons-material/Settings';
 import { CREATE_COURSE_STATUS_REVERSE } from 'utils/constants';
 import { sliceText } from 'utils';
 
-export default function EditCourseDetailHeader({ title, status }) {
+export default function HeaderEditCourse() {
+  const course = useSelector((state) => state.course);
+  const { title, status } = course;
   const theme = useTheme();
-  let titleSlice = title.length;
-  const isBelowlg = useMediaQuery(theme.breakpoints.down('lg'));
   const isBelowMd = useMediaQuery(theme.breakpoints.down('md'));
   const isBelowSm = useMediaQuery(theme.breakpoints.down('sm'));
-  if (isBelowlg) {
-    titleSlice = 48;
-  }
+  let titleSlice = title.length;
   if (isBelowMd) {
-    titleSlice = 24;
+    titleSlice = 36;
   }
   if (isBelowSm) {
     titleSlice = 12;
   }
   return (
-    <AppBar sx={{ position: 'static', zIndex: 1000, mb: '2rem' }}>
+    <AppBar>
       <Toolbar
         sx={{
           gap: 2,
@@ -74,9 +64,6 @@ export default function EditCourseDetailHeader({ title, status }) {
         <Box sx={{ display: 'flex', gap: 2 }}>
           <Button variant="contained">Save</Button>
           <Button variant="outlined">Preview</Button>
-          <IconButton>
-            <SettingsIcon />
-          </IconButton>
         </Box>
       </Toolbar>
     </AppBar>

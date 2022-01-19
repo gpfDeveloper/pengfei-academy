@@ -9,6 +9,7 @@ let initialState = {
   isInstructor: false,
   isAdmin: false,
   isInstructorView: false,
+  isEditCourse: false,
   name: '',
   id: '',
   email: '',
@@ -87,6 +88,9 @@ const userSlice = createSlice({
     setStudentView: (state) => {
       state.isInstructorView = false;
     },
+    setIsEditCourse: (state, { payload }) => {
+      state.isEditCourse = payload;
+    },
   },
 });
 
@@ -100,6 +104,7 @@ export const {
   getHeaderInfo,
   setInstructorView,
   setStudentView,
+  setIsEditCourse,
 } = userSlice.actions;
 
 export default userSlice.reducer;
