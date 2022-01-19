@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Box, Tabs, Tab as MuiTab, Typography } from '@mui/material';
+import { Box, Tabs, Tab as MuiTab, Typography, Card } from '@mui/material';
 import { styled } from '@mui/system';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import IntendedLearner from './Panels/IntentLearner/IntendedLearner';
 
 const Tab = styled(MuiTab)({
   textTransform: 'none',
@@ -51,33 +52,43 @@ export default function EditCourseDetailPanel() {
         variant="scrollable"
         value={value}
         onChange={handleChange}
-        sx={{ borderRight: 1, borderColor: 'divider' }}
+        sx={{
+          borderRight: 1,
+          borderColor: 'divider',
+          flex: isBelowMd ? undefined : '0 0 180px',
+        }}
       >
         <Tab label="Intended learners" />
         <Tab label="Curriculum" />
         <Tab label="Course landing page" />
         <Tab label="Course messages" />
         <Tab label="Pricing" />
+        <Tab label="Publish" />
         <Tab label="Setting" />
       </Tabs>
-      <TabPanel value={value} index={0}>
-        Item One
-      </TabPanel>
-      <TabPanel value={value} index={1}>
-        Item Two
-      </TabPanel>
-      <TabPanel value={value} index={2}>
-        Item Three
-      </TabPanel>
-      <TabPanel value={value} index={3}>
-        Item Four
-      </TabPanel>
-      <TabPanel value={value} index={4}>
-        Item Five
-      </TabPanel>
-      <TabPanel value={value} index={5}>
-        Item Six
-      </TabPanel>
+      <Card sx={{ flexGrow: 1, margin: '0 2rem' }}>
+        <TabPanel value={value} index={0}>
+          <IntendedLearner />
+        </TabPanel>
+        <TabPanel value={value} index={1}>
+          Item Two
+        </TabPanel>
+        <TabPanel value={value} index={2}>
+          Item Three
+        </TabPanel>
+        <TabPanel value={value} index={3}>
+          Item Four
+        </TabPanel>
+        <TabPanel value={value} index={4}>
+          Item Five
+        </TabPanel>
+        <TabPanel value={value} index={5}>
+          Item Six
+        </TabPanel>
+        <TabPanel value={value} index={6}>
+          Item Seven
+        </TabPanel>
+      </Card>
     </Box>
   );
 }

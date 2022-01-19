@@ -47,6 +47,7 @@ const userSlice = createSlice({
       state.isAdmin = false;
       state.isInstructor = false;
       state.isInstructorView = false;
+      state.isEditCourse = false;
       state.id = '';
       state.name = '';
       state.email = '';
@@ -88,6 +89,7 @@ const userSlice = createSlice({
     setStudentView: (state) => {
       state.isInstructorView = false;
     },
+    //isEditCourse not store to cookies by design
     setIsEditCourse: (state, { payload }) => {
       state.isEditCourse = payload;
     },
