@@ -61,10 +61,7 @@ export default function HeaderEditCourse() {
             {CREATE_COURSE_STATUS_REVERSE[status]}
           </Typography>
         </Box>
-        <Box sx={{ display: 'flex', gap: 2 }}>
-          <Button variant="contained">Save</Button>
-          <Button variant="outlined">Preview</Button>
-        </Box>
+        <Button variant="outlined">Preview</Button>
       </Toolbar>
     </AppBar>
   );

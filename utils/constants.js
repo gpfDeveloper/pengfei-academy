@@ -44,3 +44,16 @@ export const CREATE_COURSE_STATUS_REVERSE = {
   2: 'approved',
   3: 'published',
 };
+
+export const COURSE_CATEGORY = {
+  Development: { id: 0 },
+  Business: { id: 1 },
+  'Finance & Accounting': { id: 2 },
+  'IT & Software': { id: 3 },
+  'Office Productivity': { id: 4 },
+  'Personal Development': { id: 5 },
+  Design: { id: 6 },
+  Marketing: { id: 7 },
+  'Health & Fitness': { id: 8 },
+  Music: { id: 9 },
+};

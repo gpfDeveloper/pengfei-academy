@@ -3,7 +3,7 @@ import { Box, Divider, TextField, Typography } from '@mui/material';
 export default function CourseMsg() {
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
-      <Typography variant="h4">Course landing page</Typography>
+      <Typography variant="h4">Course messages</Typography>
       <Divider />
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
         <Typography>
