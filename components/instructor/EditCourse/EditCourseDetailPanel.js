@@ -5,6 +5,12 @@ import { styled } from '@mui/system';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import IntendedLearner from './Panels/IntentLearner/IntendedLearner';
+import Curriculum from './Panels/Curriculum/Curriculum';
+import LandingPage from './Panels/LandingPage/LandingPage';
+import CourseMsg from './Panels/CourseMsg/CourseMsg';
+import Pricing from './Panels/Pricing/Pricing';
+import Publishing from './Panels/Publishing/Publishing';
+import Settings from './Panels/Settings/Settings';
 
 const Tab = styled(MuiTab)({
   textTransform: 'none',
@@ -63,30 +69,30 @@ export default function EditCourseDetailPanel() {
         <Tab label="Course landing page" />
         <Tab label="Course messages" />
         <Tab label="Pricing" />
-        <Tab label="Publish" />
-        <Tab label="Setting" />
+        <Tab label="Publishing" />
+        <Tab label="Settings" />
       </Tabs>
       <Card sx={{ flexGrow: 1, margin: '0 2rem' }}>
         <TabPanel value={value} index={0}>
           <IntendedLearner />
         </TabPanel>
         <TabPanel value={value} index={1}>
-          Item Two
+          <Curriculum />
         </TabPanel>
         <TabPanel value={value} index={2}>
-          Item Three
+          <LandingPage />
         </TabPanel>
         <TabPanel value={value} index={3}>
-          Item Four
+          <CourseMsg />
         </TabPanel>
         <TabPanel value={value} index={4}>
-          Item Five
+          <Pricing />
         </TabPanel>
         <TabPanel value={value} index={5}>
-          Item Six
+          <Publishing />
         </TabPanel>
         <TabPanel value={value} index={6}>
-          Item Seven
+          <Settings />
         </TabPanel>
       </Card>
     </Box>
