@@ -1,6 +1,7 @@
 import User from 'models/User';
 import Course from 'models/Course';
 import db from 'utils/db';
+import { isValidCategory } from 'utils';
 
 export const createCourse = async (req, res) => {
   const userId = req.user.id;
@@ -43,7 +44,17 @@ export const updateBasicInfo = async (req, res) => {
   const course = req.course;
   const { title, subtitle, description, language, category, subcategory } =
     req.body;
-  console.log(course);
-  console.log(title, subtitle, description, language, category, subcategory);
+  if (!isValidCategory(category, subcategory)) {
+    res.status(422).json({
+      message: `Invalid category ${category} or subcategory ${subcategory}`,
+    });
+  }
+  course.category = category;
+  course.subcategory = subcategory;
+  course.title = title;
+  course.subtitle = subtitle;
+  course.description = description;
+  course.language = language;
+  await course.save();
   res.status(200).send();
 };

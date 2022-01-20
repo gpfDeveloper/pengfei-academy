@@ -23,9 +23,14 @@ const courseSlice = createSlice({
         }
       }
     },
+    resetCourse: (state) => {
+      for (const key in initialState) {
+        state[key] = initialState[key];
+      }
+    },
   },
 });
 
-export const { updateCourse } = courseSlice.actions;
+export const { updateCourse, resetCourse } = courseSlice.actions;
 
 export default courseSlice.reducer;

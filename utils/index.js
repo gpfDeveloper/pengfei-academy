@@ -18,23 +18,24 @@ export const getAllCourseCategories = () => {
 
 export const getAllCourseSubcategories = () => {
   const ret = [];
-  for (const category in COURSE_CATEGORY) {
-    for (const sub in category) {
+  for (const key in COURSE_CATEGORY) {
+    const category = COURSE_CATEGORY[key];
+    for (const sub in category.subcategory) {
       ret.push(sub);
     }
   }
   return ret;
 };
 
-export const isValidCategory = (category) => {
-  return category in COURSE_CATEGORY;
+export const isValidCategory = (category, subcategory) => {
+  if (!(category in COURSE_CATEGORY)) return false;
+  return subcategory in COURSE_CATEGORY[category].subcategory;
 };
 
-export const isValidSubcategory = (subcategory) => {
-  for (const category in COURSE_CATEGORY) {
-    if (subcategory in category) {
-      return true;
-    }
-  }
-  return false;
-};
+// export const isValidSubcategory = (subcategory) => {
+//   for (const key in COURSE_CATEGORY) {
+//     const category = COURSE_CATEGORY[key];
+//     if (subcategory in category.subcategory) return true;
+//   }
+//   return false;
+// };

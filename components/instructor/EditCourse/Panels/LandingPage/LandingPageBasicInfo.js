@@ -42,17 +42,24 @@ export default function LandingPageBasicInfo() {
     setValue,
   } = useForm();
 
-  const [category] = watch(['category']);
+  const [category, subcategory] = watch(['category', 'subcategory']);
   if (category) {
     subcategories = Object.keys(COURSE_CATEGORY[category].subcategory);
-    setValue('subcategory', subcategories[0]);
+    if (subcategory && subcategories.indexOf(subcategory) === -1) {
+      setValue('subcategory', '');
+    }
   }
 
   useEffect(() => {
     setValue('title', course.title);
+    setValue('subtitle', course.subtitle);
+    setValue('description', course.description);
+    setValue('language', course.langugae);
+    setValue('category', course.category);
+    setValue('subcategory', course.subcategory);
   }, []);
 
-  const onSubmit = ({
+  const onSubmit = async ({
     title,
     subtitle,
     description,
@@ -60,8 +67,8 @@ export default function LandingPageBasicInfo() {
     category,
     subcategory,
   }) => {
-    console.log(title, subtitle, description, language, category, subcategory);
-    dispatch(
+    setIsSaving(true);
+    await dispatch(
       updateMyCourseBasicInfoAsync({
         courseId,
         token,
@@ -73,6 +80,7 @@ export default function LandingPageBasicInfo() {
         subcategory,
       })
     );
+    setIsSaving(false);
   };
   return (
     <Stack sx={{ gap: 2 }} component="form" onSubmit={handleSubmit(onSubmit)}>

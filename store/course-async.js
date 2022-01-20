@@ -59,20 +59,32 @@ export const updateMyCourseBasicInfoAsync =
   }) =>
   async (dispatch) => {
     try {
-      const data = await axios.put(
+      await axios.put(
         `/api/instructor/course/${courseId}/updateBasicInfo`,
         { title, subtitle, description, language, category, subcategory },
         {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-      // dispatch(updateCourse(data.data.course));
+      dispatch(
+        updateCourse({
+          title,
+          subtitle,
+          description,
+          language,
+          category,
+          subcategory,
+        })
+      );
+      dispatch(
+        setSnackbar({ severity: 'success', message: 'Update success.' })
+      );
     } catch (error) {
       const message = error.response?.data?.message;
       dispatch(
         setSnackbar({
           severity: 'error',
-          message: message || 'Get course failed, please try again later.',
+          message: message || 'Update failed, please try again later.',
         })
       );
     }

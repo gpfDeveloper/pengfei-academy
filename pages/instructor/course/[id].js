@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setInstructorView, setIsEditCourse } from 'store/user';
+import { resetCourse } from 'store/course';
 import { useRouter } from 'next/router';
 import { Box } from '@mui/material';
 import dynamic from 'next/dynamic';
@@ -27,6 +28,7 @@ function EditCoursePage() {
   useEffect(() => {
     const exitingFunction = () => {
       dispatch(setIsEditCourse(false));
+      dispatch(resetCourse());
     };
 
     router.events.on('routeChangeStart', exitingFunction);
