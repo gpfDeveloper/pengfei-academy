@@ -46,6 +46,29 @@ export const getMyCourseAsync =
     }
   };
 
+export const deleteMyCourseAsync =
+  ({ courseId, token }) =>
+  async (dispatch) => {
+    try {
+      await axios.delete(`/api/instructor/course/${courseId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      dispatch(
+        setSnackbar({ severity: 'success', message: 'Delete success.' })
+      );
+      return true;
+    } catch (error) {
+      const message = error.response?.data?.message;
+      dispatch(
+        setSnackbar({
+          severity: 'error',
+          message: message || 'Delete course failed, please try again later.',
+        })
+      );
+      return false;
+    }
+  };
+
 export const updateMyCourseBasicInfoAsync =
   ({
     courseId,

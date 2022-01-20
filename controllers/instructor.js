@@ -58,3 +58,10 @@ export const updateBasicInfo = async (req, res) => {
   await course.save();
   res.status(200).send();
 };
+
+//to do courses cannot be deleted after students have enrolled.
+export const deleteCourse = async (req, res) => {
+  const course = req.course;
+  await Course.findByIdAndDelete(course._id);
+  res.status(200).send();
+};
