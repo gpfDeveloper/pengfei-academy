@@ -8,6 +8,8 @@ const initialState = {
   language: '',
   category: '',
   subcategory: '',
+  welcomeMsg: '',
+  congratulationMsg: '',
   status: 0,
 };
 

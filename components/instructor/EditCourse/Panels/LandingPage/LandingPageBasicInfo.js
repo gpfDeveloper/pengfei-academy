@@ -213,12 +213,17 @@ export default function LandingPageBasicInfo() {
         </FormControl>
       </Box>
       {!isSaving && (
-        <Button size="large" variant="contained" type="submit">
+        <Button
+          size="large"
+          variant="contained"
+          type="submit"
+          sx={{ alignSelf: 'flex-start' }}
+        >
           Save
         </Button>
       )}
       {isSaving && (
-        <LoadingButton loading size="large">
+        <LoadingButton loading size="large" sx={{ alignSelf: 'flex-start' }}>
           Save
         </LoadingButton>
       )}

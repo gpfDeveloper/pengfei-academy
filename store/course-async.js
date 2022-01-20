@@ -112,3 +112,34 @@ export const updateMyCourseBasicInfoAsync =
       );
     }
   };
+
+export const updateMyCourseMsgAsync =
+  ({ courseId, token, welcomeMsg, congratulationMsg }) =>
+  async (dispatch) => {
+    try {
+      await axios.put(
+        `/api/instructor/course/${courseId}/updateMsg`,
+        { welcomeMsg, congratulationMsg },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      dispatch(
+        updateCourse({
+          welcomeMsg,
+          congratulationMsg,
+        })
+      );
+      dispatch(
+        setSnackbar({ severity: 'success', message: 'Update success.' })
+      );
+    } catch (error) {
+      const message = error.response?.data?.message;
+      dispatch(
+        setSnackbar({
+          severity: 'error',
+          message: message || 'Update failed, please try again later.',
+        })
+      );
+    }
+  };

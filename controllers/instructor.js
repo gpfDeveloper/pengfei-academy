@@ -40,7 +40,7 @@ export const getMyCourse = async (req, res) => {
 };
 
 //couse title, subtile, description, language, category, subcategory
-export const updateBasicInfo = async (req, res) => {
+export const updateCourseBasicInfo = async (req, res) => {
   const course = req.course;
   const { title, subtitle, description, language, category, subcategory } =
     req.body;
@@ -55,6 +55,15 @@ export const updateBasicInfo = async (req, res) => {
   course.subtitle = subtitle;
   course.description = description;
   course.language = language;
+  await course.save();
+  res.status(200).send();
+};
+
+export const updateCourseMsg = async (req, res) => {
+  const course = req.course;
+  const { welcomeMsg, congratulationMsg } = req.body;
+  course.welcomeMsg = welcomeMsg;
+  course.congratulationMsg = congratulationMsg;
   await course.save();
   res.status(200).send();
 };

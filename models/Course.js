@@ -32,6 +32,8 @@ const CourseSchema = new mongoose.Schema(
     },
     category: { type: String, enum: [...courseCategories] },
     subcategory: { type: String, enum: [...courseSubcategories] },
+    welcomeMsg: { type: String, trim: true, maxlength: 1000 },
+    congratulationMsg: { type: String, trim: true, maxlength: 1000 },
   },
   { timestamps: true }
 );
