@@ -1,6 +1,8 @@
 import mongoose from 'mongoose';
-import { CREATE_COURSE_STATUS } from 'utils/constants';
-const { draft, review, approved, published } = CREATE_COURSE_STATUS;
+import { CREATE_COURSE_STATUS, COURSE_LANGUAGE } from 'utils/constants';
+const { draft, review, published } = CREATE_COURSE_STATUS;
+
+const courseLanguages = Object.keys(COURSE_LANGUAGE);
 
 const CourseSchema = new mongoose.Schema(
   {
@@ -14,8 +16,18 @@ const CourseSchema = new mongoose.Schema(
       type: Number,
       required: true,
       default: draft,
-      enum: [draft, review, approved, published],
+      enum: [draft, review, published],
     },
+    subtitle: { type: String, trim: true, maxlength: 120 },
+    description: { type: String, trim: true, maxlength: 6000 },
+    language: {
+      type: String,
+      required: true,
+      default: 'English',
+      enum: [...courseLanguages],
+    },
+    category: { type: String, trim: true, maxlength: 30 },
+    subcategory: { type: String, trim: true, maxlength: 30 },
   },
   { timestamps: true }
 );

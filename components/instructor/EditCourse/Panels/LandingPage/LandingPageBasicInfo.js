@@ -1,4 +1,7 @@
 import { useState, useEffect } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import { useDispatch, useSelector } from 'react-redux';
+import { updateMyCourseBasicInfoAsync } from 'store/course-async';
 
 import {
   TextField,
@@ -8,30 +11,68 @@ import {
   MenuItem,
   Typography,
   Box,
+  InputLabel,
+  FormControl,
+  FormHelperText,
 } from '@mui/material';
-
-import { COURSE_CATEGORY } from 'utils/constants';
-
 import LoadingButton from '@mui/lab/LoadingButton';
 
-import { Controller, useForm } from 'react-hook-form';
-
-import { useDispatch } from 'react-redux';
+import { COURSE_CATEGORY, COURSE_LANGUAGE } from 'utils/constants';
 
 export default function LandingPageBasicInfo() {
   const dispatch = useDispatch();
+  const user = useSelector((state) => state.user);
+  const { token } = user;
+  const course = useSelector((state) => state.course);
+  const { id: courseId } = course;
 
   const [isSaving, setIsSaving] = useState(false);
 
   const allCategories = Object.keys(COURSE_CATEGORY);
+  const allLanguages = Object.keys(COURSE_LANGUAGE);
+  let subcategories = Object.keys(
+    COURSE_CATEGORY[allCategories[0]].subcategory
+  );
 
   const {
     formState: { errors },
     handleSubmit,
     control,
+    watch,
+    setValue,
   } = useForm();
-  const onSubmit = async ({ title, subtitle, description, category }) => {
-    console.log(title, subtitle, description, category);
+
+  const [category] = watch(['category']);
+  if (category) {
+    subcategories = Object.keys(COURSE_CATEGORY[category].subcategory);
+    setValue('subcategory', subcategories[0]);
+  }
+
+  useEffect(() => {
+    setValue('title', course.title);
+  }, []);
+
+  const onSubmit = ({
+    title,
+    subtitle,
+    description,
+    language,
+    category,
+    subcategory,
+  }) => {
+    console.log(title, subtitle, description, language, category, subcategory);
+    dispatch(
+      updateMyCourseBasicInfoAsync({
+        courseId,
+        token,
+        title,
+        subtitle,
+        description,
+        language,
+        category,
+        subcategory,
+      })
+    );
   };
   return (
     <Stack sx={{ gap: 2 }} component="form" onSubmit={handleSubmit(onSubmit)}>
@@ -77,7 +118,7 @@ export default function LandingPageBasicInfo() {
         name="description"
         defaultValue=""
         control={control}
-        rules={{ required: true, maxLength: 4000 }}
+        rules={{ required: true, maxLength: 6000 }}
         render={({ field }) => (
           <TextField
             error={Boolean(errors.description)}
@@ -87,31 +128,81 @@ export default function LandingPageBasicInfo() {
               errors.description &&
               (errors.description.type === 'required'
                 ? 'Course description is required'
-                : 'Course description at most have 4000 charactors.')
+                : 'Course description at most have 6000 charactors.')
             }
             label="Course description"
             {...field}
           />
         )}
       />
-      <Box>
-        <Typography sx={{ color: 'text.secondary', mb: 1 }}>
-          Select a category
-        </Typography>
-        <Controller
-          name="category"
-          defaultValue={allCategories[0]}
-          control={control}
-          render={({ field }) => (
-            <Select {...field}>
-              {allCategories.map((k) => (
-                <MenuItem value={k} key={k}>
-                  {k}
-                </MenuItem>
-              ))}
-            </Select>
+      <Typography sx={{ mt: 2, color: 'text.secondary' }}>
+        Basic Info
+      </Typography>
+      <Box sx={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', mb: 4 }}>
+        <FormControl sx={{ width: 120 }}>
+          <InputLabel id="Language">Language</InputLabel>
+          <Controller
+            name="language"
+            defaultValue={allLanguages[0]}
+            control={control}
+            render={({ field }) => (
+              <Select {...field} label="Language" labelId="Language">
+                {allLanguages.map((k) => (
+                  <MenuItem value={k} key={k}>
+                    {k}
+                  </MenuItem>
+                ))}
+              </Select>
+            )}
+          />
+        </FormControl>
+        <FormControl sx={{ minWidth: 160 }} error={Boolean(errors.category)}>
+          <InputLabel id="Category">Category</InputLabel>
+          <Controller
+            name="category"
+            defaultValue={''}
+            control={control}
+            rules={{ required: true }}
+            render={({ field }) => (
+              <Select {...field} label="Category" labelId="Category">
+                {allCategories.map((k) => (
+                  <MenuItem value={k} key={k}>
+                    {k}
+                  </MenuItem>
+                ))}
+              </Select>
+            )}
+          />
+          {Boolean(errors.category) && (
+            <FormHelperText>Please enter category</FormHelperText>
           )}
-        />
+        </FormControl>
+        <FormControl sx={{ minWidth: 160 }} error={Boolean(errors.subcategory)}>
+          <InputLabel id="Subcategory">Subcategory</InputLabel>
+          <Controller
+            name="subcategory"
+            defaultValue={''}
+            control={control}
+            rules={{ required: true }}
+            render={({ field }) => (
+              <Select
+                {...field}
+                label="Subcategory"
+                labelId="Subcategory"
+                error={Boolean(errors.subcategory)}
+              >
+                {subcategories.map((k) => (
+                  <MenuItem value={k} key={k}>
+                    {k}
+                  </MenuItem>
+                ))}
+              </Select>
+            )}
+          />
+          {Boolean(errors.subcategory) && (
+            <FormHelperText>Please enter subcategory</FormHelperText>
+          )}
+        </FormControl>
       </Box>
       {!isSaving && (
         <Button size="large" variant="contained" type="submit">

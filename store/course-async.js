@@ -45,3 +45,35 @@ export const getMyCourseAsync =
       );
     }
   };
+
+export const updateMyCourseBasicInfoAsync =
+  ({
+    courseId,
+    token,
+    title,
+    subtitle,
+    description,
+    language,
+    category,
+    subcategory,
+  }) =>
+  async (dispatch) => {
+    try {
+      const data = await axios.put(
+        `/api/instructor/course/${courseId}/updateBasicInfo`,
+        { title, subtitle, description, language, category, subcategory },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      // dispatch(updateCourse(data.data.course));
+    } catch (error) {
+      const message = error.response?.data?.message;
+      dispatch(
+        setSnackbar({
+          severity: 'error',
+          message: message || 'Get course failed, please try again later.',
+        })
+      );
+    }
+  };

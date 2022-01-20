@@ -34,8 +34,7 @@ export const NOTIFICATION_TYPES = {
 export const CREATE_COURSE_STATUS = {
   draft: 0,
   review: 1,
-  approved: 2,
-  published: 3,
+  published: 2,
 };
 
 export const CREATE_COURSE_STATUS_REVERSE = {
@@ -46,14 +45,118 @@ export const CREATE_COURSE_STATUS_REVERSE = {
 };
 
 export const COURSE_CATEGORY = {
-  Development: { id: 0 },
-  Business: { id: 1 },
-  'Finance & Accounting': { id: 2 },
-  'IT & Software': { id: 3 },
-  'Office Productivity': { id: 4 },
-  'Personal Development': { id: 5 },
-  Design: { id: 6 },
-  Marketing: { id: 7 },
-  'Health & Fitness': { id: 8 },
-  Music: { id: 9 },
+  Development: {
+    id: 0,
+    subcategory: {
+      'Web Development': true,
+      'Data Science': true,
+      'Mobile Development': true,
+      'Programming Languages': true,
+      'Game Development': true,
+      'Database Design & Development': true,
+      'Software Testing': true,
+      'Software Engineering': true,
+      'Software Development Tools': true,
+      'No-Code Development': true,
+    },
+  },
+  Business: {
+    id: 1,
+    subcategory: {
+      Entrepreneurship: true,
+      Communication: true,
+      Management: true,
+      Sales: true,
+      'Business Strategy': true,
+      Operations: true,
+      'Project Management': true,
+      'Business Law': true,
+      'Business Analytics & Intelligence': true,
+      'Human Resources': true,
+      Industry: true,
+      'E-Commerce': true,
+      Media: true,
+      'Real Estate': true,
+      'Other Business': true,
+    },
+  },
+  'Finance & Accounting': {
+    id: 2,
+    subcategory: {
+      'Accounting & Bookkeeping': true,
+      Compliance: true,
+      'Cryptocurrency & Blockchain': true,
+      Economics: true,
+      Finance: true,
+      'Finace Cert & Exam Prep': true,
+      'Financial Modeling & Analysis': true,
+      'Investing & Trading': true,
+      'Money Management Tools': true,
+      Taxes: true,
+      'Other Finance & Accounting': true,
+    },
+  },
+  'IT & Software': {
+    id: 3,
+    subcategory: {
+      'IT Certifications': true,
+      'Network & Security': true,
+      Hardware: true,
+      'Operating Systems & Servers': true,
+      'Other IT & Software': true,
+    },
+  },
+  'Office Productivity': {
+    id: 4,
+    subcategory: {
+      Microsoft: true,
+      Apple: true,
+      Google: true,
+      SAP: true,
+      Oracle: true,
+      'Other Office Productivity': true,
+    },
+  },
+  'Personal Development': {
+    id: 5,
+    subcategory: {
+      'Personal Transformation': true,
+      'Personal Productivity': true,
+      Leadership: true,
+      'Career Development': true,
+      'Parenting & Relationships': true,
+      Happiness: true,
+      'Esoteric Practices': true,
+      'Religion & Spirituality': true,
+      'Personal Brand Building': true,
+      Creativity: true,
+      Influence: true,
+      'Self Esteem & Confidence': true,
+      'Stress Management': true,
+      'Memory & Study Skills': true,
+      Motivation: true,
+      'Other Personal Development': true,
+    },
+  },
+  Design: {
+    id: 6,
+    subcategory: {
+      'Web Design': true,
+      'Graphic Design & Illustration': true,
+      'Design Tools': true,
+      'User Experience Design': true,
+      'Game Design': true,
+      '3D & Animation': true,
+      'Fashion Design': true,
+      'Architectual Design': true,
+      'Interior Design': true,
+      'Other Design': true,
+    },
+  },
+};
+
+export const COURSE_LANGUAGE = {
+  English: 0,
+  日本語: 1,
+  中文: 2,
 };

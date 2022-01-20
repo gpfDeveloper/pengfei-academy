@@ -37,3 +37,13 @@ export const getMyCourse = async (req, res) => {
   const course = req.course;
   return res.status(200).json({ course: course.toObject({ getters: true }) });
 };
+
+//couse title, subtile, description, language, category, subcategory
+export const updateBasicInfo = async (req, res) => {
+  const course = req.course;
+  const { title, subtitle, description, language, category, subcategory } =
+    req.body;
+  console.log(course);
+  console.log(title, subtitle, description, language, category, subcategory);
+  res.status(200).send();
+};

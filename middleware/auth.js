@@ -74,7 +74,7 @@ export const canViewConversation = async (req, res, next) => {
   }
 };
 
-export const canViewDraftCourse = async (req, res, next) => {
+export const canViewEditCourse = async (req, res, next) => {
   const courseId = req.query.id;
   if (!courseId) {
     return res.status(422).json({ message: 'Course id not provide.' });

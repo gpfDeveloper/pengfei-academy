@@ -3,6 +3,11 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
   id: '',
   title: '',
+  subtitle: '',
+  description: '',
+  language: '',
+  category: '',
+  subcategory: '',
   status: 0,
 };
 
