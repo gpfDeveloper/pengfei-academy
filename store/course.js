@@ -10,6 +10,7 @@ const initialState = {
   subcategory: '',
   welcomeMsg: '',
   congratulationMsg: '',
+  learningObjectives: [],
   status: 0,
 };
 

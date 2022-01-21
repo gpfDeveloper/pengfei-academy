@@ -65,19 +65,17 @@ const DragableItem = ({
         helperText={hasError && `Input at most have ${MAX_LENGTH} charactors.`}
         error={hasError}
       />
-      <Tooltip title="Delete item">
-        <IconButton
-          disabled={disableDelete}
-          sx={{
-            border: '1px solid',
-            borderColor: 'text.disabled',
-            borderRadius: 0,
-          }}
-          onClick={deleteHandler}
-        >
-          <DeleteIcon color="" fontSize="large" />
-        </IconButton>
-      </Tooltip>
+      <IconButton
+        disabled={disableDelete}
+        sx={{
+          border: '1px solid',
+          borderColor: 'text.disabled',
+          borderRadius: 0,
+        }}
+        onClick={deleteHandler}
+      >
+        <DeleteIcon color="" fontSize="large" />
+      </IconButton>
       <Tooltip title="Drag to reorder">
         <IconButton
           sx={{
@@ -106,7 +104,7 @@ export default function DragableInputListForm({
 }) {
   let initialItems = [];
   if (inputItems) {
-    initialItems = [...inputItems];
+    initialItems = inputItems.map((item) => ({ id: uuid(), text: item }));
   }
   const offset = minItemCount - initialItems.length;
   if (offset > 0) {
@@ -146,7 +144,7 @@ export default function DragableInputListForm({
     const ret = [];
     for (const item of items) {
       if (item.text.trim().length === 0) continue;
-      ret.push(item);
+      ret.push(item.text);
     }
     return ret;
   };
