@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { v4 as uuid } from 'uuid';
 import {
   Box,
   TextField,
@@ -15,7 +16,14 @@ import AddIcon from '@mui/icons-material/Add';
 
 const MAX_LENGTH = 160;
 
-const DragableItem = ({ idx, onDrag, onDrop, items, setItems }) => {
+const DragableItem = ({
+  idx,
+  onDrag,
+  onDrop,
+  items,
+  setItems,
+  disableDelete,
+}) => {
   const [value, setValue] = useState(items[idx].text);
   const [hasError, setHasError] = useState(false);
   useEffect(() => {
@@ -59,6 +67,7 @@ const DragableItem = ({ idx, onDrag, onDrop, items, setItems }) => {
       />
       <Tooltip title="Delete item">
         <IconButton
+          disabled={disableDelete}
           sx={{
             border: '1px solid',
             borderColor: 'text.disabled',
@@ -66,7 +75,7 @@ const DragableItem = ({ idx, onDrag, onDrop, items, setItems }) => {
           }}
           onClick={deleteHandler}
         >
-          <DeleteIcon fontSize="large" />
+          <DeleteIcon color="" fontSize="large" />
         </IconButton>
       </Tooltip>
       <Tooltip title="Drag to reorder">
@@ -91,10 +100,20 @@ const DragableItem = ({ idx, onDrag, onDrop, items, setItems }) => {
 
 export default function DragableInputListForm({
   onSubmit = () => {},
-  addText,
-  inputItems = [{ text: '' }],
+  addBtnText,
+  inputItems,
+  minItemCount = 1,
 }) {
-  const [items, setItems] = useState(inputItems);
+  let initialItems = [];
+  if (inputItems) {
+    initialItems = [...inputItems];
+  }
+  const offset = minItemCount - initialItems.length;
+  if (offset > 0) {
+    for (let i = 0; i < offset; i++)
+      initialItems.push({ id: uuid(), text: '' });
+  }
+  const [items, setItems] = useState(initialItems);
 
   const dragHandler = (e, dragIdx) => {
     e.dataTransfer.setData('dragIdx', dragIdx);
@@ -111,7 +130,7 @@ export default function DragableInputListForm({
   };
 
   const addMoreHandler = () => {
-    const newItem = { text: '' };
+    const newItem = { text: '', id: uuid() };
     setItems((pre) => [...pre, newItem]);
   };
 
@@ -134,7 +153,6 @@ export default function DragableInputListForm({
   const submitHandler = (e) => {
     e.preventDefault();
     if (checkItems()) {
-      console.log(items);
       const submitItems = removeEmptyItems();
       onSubmit(submitItems);
     }
@@ -144,7 +162,8 @@ export default function DragableInputListForm({
       <List onDragOver={(e) => e.preventDefault()}>
         {items.map((item, idx) => (
           <DragableItem
-            key={idx}
+            disableDelete={items.length <= minItemCount}
+            key={item.id}
             onDrag={dragHandler}
             onDrop={dropHandler}
             idx={idx}
@@ -161,7 +180,7 @@ export default function DragableInputListForm({
           >
             <AddIcon fontSize="large" color="primary" />
             <Typography fontWeight="bold" color="primary.main">
-              {addText ? addText : 'Add more'}
+              {addBtnText ? addBtnText : 'Add more'}
             </Typography>
           </IconButton>
         </ListItem>

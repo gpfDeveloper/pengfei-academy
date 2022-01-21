@@ -17,8 +17,8 @@ export default function IntendedLearner() {
           What will students learn in your course?
         </Typography>
         <Typography color="text.secondary">
-          You must enter 4 learning objectives or outcomes that learners can
-          expect to achieve after completing your course.
+          You must enter at least 4 learning objectives or outcomes that
+          learners can expect to achieve after completing your course.
         </Typography>
         <LearningObjective />
       </Box>
