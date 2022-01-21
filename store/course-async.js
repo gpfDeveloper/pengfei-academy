@@ -233,3 +233,33 @@ export const updateMyCourseForWhoAsync =
       );
     }
   };
+
+export const updateMyCoursePriceAsync =
+  ({ courseId, token, price }) =>
+  async (dispatch) => {
+    try {
+      await axios.put(
+        `/api/instructor/course/${courseId}/updatePrice`,
+        { price },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      dispatch(
+        updateCourse({
+          price,
+        })
+      );
+      dispatch(
+        setSnackbar({ severity: 'success', message: 'Update success.' })
+      );
+    } catch (error) {
+      const message = error.response?.data?.message;
+      dispatch(
+        setSnackbar({
+          severity: 'error',
+          message: message || 'Update failed, please try again later.',
+        })
+      );
+    }
+  };

@@ -1,7 +1,6 @@
 import mongoose from 'mongoose';
 import { CREATE_COURSE_STATUS, COURSE_LANGUAGE } from 'utils/constants';
-import { getAllCourseCategories } from 'utils';
-import { getAllCourseSubcategories } from 'utils';
+import { getAllCourseCategories, getAllCourseSubcategories } from 'utils';
 const { draft, review, published } = CREATE_COURSE_STATUS;
 
 const courseLanguages = Object.keys(COURSE_LANGUAGE);
@@ -30,6 +29,7 @@ const CourseSchema = new mongoose.Schema(
       default: 'English',
       enum: [...courseLanguages],
     },
+    price: { type: Number, max: 1000, min: 0 },
     category: { type: String, enum: [...courseCategories] },
     subcategory: { type: String, enum: [...courseSubcategories] },
     welcomeMsg: { type: String, trim: true, maxlength: 1000 },

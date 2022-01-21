@@ -32,10 +32,15 @@ export const isValidCategory = (category, subcategory) => {
   return subcategory in COURSE_CATEGORY[category].subcategory;
 };
 
-// export const isValidSubcategory = (subcategory) => {
-//   for (const key in COURSE_CATEGORY) {
-//     const category = COURSE_CATEGORY[key];
-//     if (subcategory in category.subcategory) return true;
-//   }
-//   return false;
-// };
+const PRICE_MIN = 4.99;
+const PRICE_MAX = 999.99;
+const PRICE_INTERVEL = 5;
+export const getAvaliableCoursePrices = () => {
+  const ret = [0];
+  let current = PRICE_MIN;
+  while (current <= PRICE_MAX) {
+    ret.push(current.toFixed(2));
+    current += PRICE_INTERVEL;
+  }
+  return ret;
+};

@@ -14,6 +14,7 @@ const initialState = {
   prerequisites: [],
   courseForWho: [],
   status: 0,
+  price: '',
 };
 
 const courseSlice = createSlice({
