@@ -173,3 +173,63 @@ export const updateMyCourseLearningObjectivesAsync =
       );
     }
   };
+
+export const updateMyCoursePrerequisitesAsync =
+  ({ courseId, token, prerequisites }) =>
+  async (dispatch) => {
+    try {
+      await axios.put(
+        `/api/instructor/course/${courseId}/updatePrerequisites`,
+        { prerequisites },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      dispatch(
+        updateCourse({
+          prerequisites,
+        })
+      );
+      dispatch(
+        setSnackbar({ severity: 'success', message: 'Update success.' })
+      );
+    } catch (error) {
+      const message = error.response?.data?.message;
+      dispatch(
+        setSnackbar({
+          severity: 'error',
+          message: message || 'Update failed, please try again later.',
+        })
+      );
+    }
+  };
+
+export const updateMyCourseForWhoAsync =
+  ({ courseId, token, courseForWho }) =>
+  async (dispatch) => {
+    try {
+      await axios.put(
+        `/api/instructor/course/${courseId}/updateCourseForWho`,
+        { courseForWho },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      dispatch(
+        updateCourse({
+          courseForWho,
+        })
+      );
+      dispatch(
+        setSnackbar({ severity: 'success', message: 'Update success.' })
+      );
+    } catch (error) {
+      const message = error.response?.data?.message;
+      dispatch(
+        setSnackbar({
+          severity: 'error',
+          message: message || 'Update failed, please try again later.',
+        })
+      );
+    }
+  };

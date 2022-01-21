@@ -76,6 +76,22 @@ export const updateCourseLearningObjectives = async (req, res) => {
   res.status(200).send();
 };
 
+export const updateCoursePrerequisites = async (req, res) => {
+  const course = req.course;
+  const { prerequisites } = req.body;
+  course.prerequisites = prerequisites;
+  await course.save();
+  res.status(200).send();
+};
+
+export const updateCourseForWho = async (req, res) => {
+  const course = req.course;
+  const { courseForWho } = req.body;
+  course.courseForWho = courseForWho;
+  await course.save();
+  res.status(200).send();
+};
+
 //to do courses cannot be deleted after students have enrolled.
 export const deleteCourse = async (req, res) => {
   const course = req.course;

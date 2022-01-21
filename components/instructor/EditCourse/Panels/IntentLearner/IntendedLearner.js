@@ -1,4 +1,6 @@
-import { Box, Divider, TextField, Typography } from '@mui/material';
+import { Box, Divider, Typography } from '@mui/material';
+import CourseForWho from './CourseForWho';
+import CoursePrerequisites from './CoursePrerequisites';
 import LearningObjective from './LearningObjective';
 
 export default function IntendedLearner() {
@@ -31,7 +33,7 @@ export default function IntendedLearner() {
           should have prior to taking your course. If there are no requirements,
           use this space as an opportunity to lower the barrier for beginners.
         </Typography>
-        <TextField fullWidth />
+        <CoursePrerequisites />
       </Box>
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
         <Typography variant="h6">Who is this course for?</Typography>
@@ -40,7 +42,7 @@ export default function IntendedLearner() {
           will find your course content valuable. This will help you attract the
           right learners to your course.
         </Typography>
-        <TextField fullWidth />
+        <CourseForWho />
       </Box>
     </Box>
   );

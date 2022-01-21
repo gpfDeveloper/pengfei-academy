@@ -11,6 +11,8 @@ const initialState = {
   welcomeMsg: '',
   congratulationMsg: '',
   learningObjectives: [],
+  prerequisites: [],
+  courseForWho: [],
   status: 0,
 };
 
