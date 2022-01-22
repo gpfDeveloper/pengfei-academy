@@ -3,16 +3,8 @@ import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteMyCourseAsync } from 'store/course-async';
 
-import {
-  Box,
-  Typography,
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-} from '@mui/material';
+import { Box, Typography, Button } from '@mui/material';
+import DialogConfirmDelete from 'components/UIs/DialogConfirmDelete';
 
 export default function SettingsDeleteCourse() {
   const router = useRouter();
@@ -56,27 +48,14 @@ export default function SettingsDeleteCourse() {
           after students have enrolled.
         </Typography>
       </Box>
-      <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>{'Delete Your Course?'}</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            Are you sure you want to delete this course? This is permanent and
-            cannot be undone.
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button variant="contained" onClick={handleClose} autoFocus>
-            No
-          </Button>
-          <Button
-            variant="outlined"
-            color="error"
-            onClick={deleteCourseHandler}
-          >
-            Yes
-          </Button>
-        </DialogActions>
-      </Dialog>
+      <DialogConfirmDelete
+        isOpen={open}
+        onClose={handleClose}
+        onDelete={deleteCourseHandler}
+        title="Delete Your Course?"
+        content="Are you sure you want to delete this course? This is permanent and
+            cannot be undone."
+      />
     </>
   );
 }

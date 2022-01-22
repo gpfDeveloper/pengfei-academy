@@ -32,8 +32,8 @@ export const isValidCategory = (category, subcategory) => {
   return subcategory in COURSE_CATEGORY[category].subcategory;
 };
 
-const PRICE_MIN = 4.99;
-const PRICE_MAX = 999.99;
+const PRICE_MIN = 9.99;
+const PRICE_MAX = 300;
 const PRICE_INTERVEL = 5;
 export const getAvaliableCoursePrices = () => {
   const ret = [0];

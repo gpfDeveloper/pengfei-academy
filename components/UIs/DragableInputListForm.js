@@ -74,7 +74,7 @@ const DragableItem = ({
         }}
         onClick={deleteHandler}
       >
-        <DeleteIcon color="" fontSize="large" />
+        <DeleteIcon fontSize="large" />
       </IconButton>
       <Tooltip title="Drag to reorder">
         <IconButton
