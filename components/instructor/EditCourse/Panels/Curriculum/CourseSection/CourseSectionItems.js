@@ -6,8 +6,26 @@ import AddIcon from '@mui/icons-material/Add';
 import CourseSectionItem from './CourseSectionItem';
 import AddEditSectionDialog from './AddEditSectionDialog';
 
-export default function CourseSections() {
-  let initialItems = [{ id: uuid(), title: 'Introduction' }];
+export default function CourseSectionItems() {
+  let initialItems = [
+    {
+      id: uuid(),
+      title: 'Getting Started',
+      lectures: [
+        { id: uuid(), title: 'Welcome to the Course!' },
+        { id: uuid(), title: 'What is Next.js? And Why Would you Use it?' },
+        { id: uuid(), title: 'Key Features: Sever-side Page (Pre-)Rendering' },
+        { id: uuid(), title: 'Key Feature: File-based Routing.' },
+        { id: uuid(), title: 'Key Feature: Build Fullstack React Apps!' },
+      ],
+    },
+    {
+      id: uuid(),
+      title:
+        'Project Time2: Page Pre-rendering & Data Fetching,Pre-rendering & Data Fetching',
+    },
+    { id: uuid(), title: 'Project Time3: Page Pre-rendering & Data Fetching' },
+  ];
 
   const [items, setItems] = useState(initialItems);
   const [isAddSectionDialogOpen, setIsAddSectionDialogOpen] = useState(false);
@@ -26,22 +44,25 @@ export default function CourseSections() {
     });
   };
 
-  const addSectionHandler = () => {
-    // const newItem = { title: '', id: uuid() };
-    // setItems((pre) => [...pre, newItem]);
-    // setAddSectionDialogOpen(true);
-  };
+  // const addSectionHandler = () => {
+  //   const newItem = { title: '', id: uuid() };
+  //   setItems((pre) => [...pre, newItem]);
+  //   setAddSectionDialogOpen(true);
+  // };
 
   return (
     <>
-      <List onDragOver={(e) => e.preventDefault()}>
+      <List
+        onDragOver={(e) => e.preventDefault()}
+        sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}
+      >
         {items.map((item, idx) => (
           <CourseSectionItem
             key={item.id}
             onDrag={dragHandler}
             onDrop={dropHandler}
             idx={idx}
-            items={items}
+            sectionItems={items}
             setItems={setItems}
           />
         ))}

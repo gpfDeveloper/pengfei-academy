@@ -11,13 +11,13 @@ import {
 
 const TITLE_MAX_LENGTH = 80;
 
-export default function AddEditSectionDialog({
+export default function AddEditLectureDialog({
   isOpen,
   onSave,
   onCancel,
   title,
 }) {
-  const dialogTitle = title ? 'Edit Section' : 'Create Section';
+  const dialogTitle = title ? 'Edit Lecture' : 'Create Lecture';
   const [hasError, setHasError] = useState(false);
   const [inputTitle, setInputTitle] = useState(title || '');
   const saveHandler = () => {
@@ -27,7 +27,7 @@ export default function AddEditSectionDialog({
   };
   const cancelHandler = () => {
     setHasError(false);
-    setInputTitle('');
+    setInputTitle(title || '');
     onCancel();
   };
   useEffect(() => {
@@ -43,17 +43,17 @@ export default function AddEditSectionDialog({
     <Dialog open={isOpen} onClose={onCancel} fullWidth>
       <DialogTitle>{dialogTitle}</DialogTitle>
       <DialogContent>
-        <DialogContentText>Please enter a section title</DialogContentText>
+        <DialogContentText>Please enter a lecture title</DialogContentText>
         <TextField
           autoFocus
           margin="dense"
-          label="Section title"
+          label="Lecture title"
           fullWidth
           variant="standard"
           error={hasError}
           helperText={
             hasError &&
-            `Section title at most have ${TITLE_MAX_LENGTH} charactors.`
+            `Lecture title at most have ${TITLE_MAX_LENGTH} charactors.`
           }
           value={inputTitle}
           onChange={(e) => setInputTitle(e.target.value)}

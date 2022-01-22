@@ -1,5 +1,5 @@
 import { Box, Divider, Typography } from '@mui/material';
-import CourseSections from './CourseSections';
+import CourseSectionItems from './CourseSection/CourseSectionItems';
 
 export default function Curriculum() {
   return (
@@ -9,7 +9,7 @@ export default function Curriculum() {
       <Typography color="text.secondary">
         Here’s where you add course content—like lectures, course sections.
       </Typography>
-      <CourseSections />
+      <CourseSectionItems />
     </Box>
   );
 }
