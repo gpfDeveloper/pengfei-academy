@@ -26,6 +26,7 @@ const DragableItem = ({
 }) => {
   const [value, setValue] = useState(items[idx].text);
   const [hasError, setHasError] = useState(false);
+  const [draggable, setDraggable] = useState(true);
   useEffect(() => {
     if (value.length > MAX_LENGTH) {
       setHasError(true);
@@ -56,8 +57,24 @@ const DragableItem = ({
     });
   };
 
+  const setCanDrag = (e) => {
+    const tagName = e.target.tagName;
+    if (tagName === 'INPUT') {
+      setDraggable(false);
+    } else {
+      setDraggable(true);
+    }
+  };
+
   return (
-    <ListItem key={idx} sx={{ pl: 0 }}>
+    <ListItem
+      key={idx}
+      sx={{ pl: 0 }}
+      draggable={draggable}
+      onMouseDown={setCanDrag}
+      onDragStart={(e) => onDrag(e, idx)}
+      onDrop={(e) => onDrop(e, idx)}
+    >
       <TextField
         fullWidth
         value={value}
@@ -85,9 +102,6 @@ const DragableItem = ({
             borderColor: 'text.disabled',
             borderRadius: 0,
           }}
-          draggable
-          onDragStart={(e) => onDrag(e, idx)}
-          onDrop={(e) => onDrop(e, idx)}
         >
           <DragHandleIcon fontSize="large" />
         </IconButton>

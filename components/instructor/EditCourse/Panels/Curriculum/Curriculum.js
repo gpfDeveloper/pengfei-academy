@@ -1,6 +1,6 @@
 import { Box, Divider, Typography } from '@mui/material';
+import Tips from 'components/UIs/Tips';
 import CourseSectionItems from './CourseSection/CourseSectionItems';
-import CurriculumTip from './CurriculumTip';
 
 export default function Curriculum() {
   return (
@@ -10,7 +10,14 @@ export default function Curriculum() {
       <Typography color="text.secondary">
         Here’s where you add course content—like lectures, course sections.
       </Typography>
-      <CurriculumTip />
+      <Tips
+        content={
+          <>
+            You can <strong>Drag and Drop</strong> to reorder the sections and
+            lectures.
+          </>
+        }
+      />
 
       <CourseSectionItems />
     </Box>
