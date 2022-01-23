@@ -11,6 +11,7 @@ import DescriptionIcon from '@mui/icons-material/Description';
 import DeleteIcon from '@mui/icons-material/Delete';
 // import DragHandleIcon from '@mui/icons-material/DragHandle';
 import EditIcon from '@mui/icons-material/Edit';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
 import DialogConfirmDelete from 'components/UIs/DialogConfirmDelete';
 import AddEditLectureDialog from './AddEditLectureDialog';
@@ -27,8 +28,7 @@ export default function CourseLectureItem({
   const lecture = section.lectures[lectureIdx];
   const lectureTitle = lecture.title;
   const lectureLabel = `Lecture ${lectureIdx + 1}:`;
-  const [isEditLectureTitleDialogOpen, setIsEditLectureTitleDialogOpen] =
-    useState(false);
+  const [isEditLectureDialogOpen, setIsEditLectureDialogOpen] = useState(false);
   const [isConfirmDeleteDialogOpen, setIsConfirmDeleteDialogOpen] =
     useState(false);
   const editLectureTitleHandler = (inputTitle) => {
@@ -86,7 +86,8 @@ export default function CourseLectureItem({
               width: '100%',
             }}
           >
-            <Typography variant="h6" sx={{ flex: '0 0 92px' }}>
+            <CheckCircleIcon fontSize="small" />
+            <Typography sx={{ flex: '0 0 78px', fontWeight: 'bold' }}>
               {lectureLabel}
             </Typography>
             <Box sx={{ display: 'flex', gap: 1, flexGrow: 1 }}>
@@ -94,10 +95,10 @@ export default function CourseLectureItem({
               <Typography>{lectureTitle}</Typography>
             </Box>
             <Box>
-              <Tooltip title="Edit lecture title">
+              <Tooltip title="Edit lecture">
                 <IconButton
                   sx={{}}
-                  onClick={() => setIsEditLectureTitleDialogOpen(true)}
+                  onClick={() => setIsEditLectureDialogOpen(true)}
                 >
                   <EditIcon fontSize="small" />
                 </IconButton>
@@ -115,9 +116,9 @@ export default function CourseLectureItem({
         </ListItem>
       </Paper>
       <AddEditLectureDialog
-        isOpen={isEditLectureTitleDialogOpen}
+        isOpen={isEditLectureDialogOpen}
         title={lectureTitle}
-        onCancel={() => setIsEditLectureTitleDialogOpen(false)}
+        onCancel={() => setIsEditLectureDialogOpen(false)}
         onSave={editLectureTitleHandler}
       />
       <DialogConfirmDelete

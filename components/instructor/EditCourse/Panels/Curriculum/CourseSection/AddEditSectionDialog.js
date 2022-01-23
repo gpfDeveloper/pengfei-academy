@@ -5,7 +5,6 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogContentText,
   DialogTitle,
 } from '@mui/material';
 
@@ -43,11 +42,11 @@ export default function AddEditSectionDialog({
     <Dialog open={isOpen} onClose={onCancel} fullWidth>
       <DialogTitle>{dialogTitle}</DialogTitle>
       <DialogContent>
-        <DialogContentText>Please enter a section title</DialogContentText>
         <TextField
           autoFocus
           margin="dense"
           label="Section title"
+          placeholder="Enter a title"
           fullWidth
           variant="standard"
           error={hasError}

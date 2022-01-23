@@ -160,3 +160,8 @@ export const COURSE_LANGUAGE = {
   日本語: 1,
   中文: 2,
 };
+
+export const COURSE_CONTENT_TYPE = {
+  video: 'Video',
+  article: 'Article',
+};
