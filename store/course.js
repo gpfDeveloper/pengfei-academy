@@ -15,6 +15,7 @@ const initialState = {
   courseForWho: [],
   status: 0,
   price: '',
+  sections: [],
 };
 
 const courseSlice = createSlice({
