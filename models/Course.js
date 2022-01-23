@@ -37,6 +37,7 @@ const CourseSchema = new mongoose.Schema(
     learningObjectives: [{ type: String, trim: true, maxlength: 160 }],
     prerequisites: [{ type: String, trim: true, maxlength: 160 }],
     courseForWho: [{ type: String, trim: true, maxlength: 160 }],
+    sections: [{ type: mongoose.Types.ObjectId, ref: 'CourseSection' }],
   },
   { timestamps: true }
 );

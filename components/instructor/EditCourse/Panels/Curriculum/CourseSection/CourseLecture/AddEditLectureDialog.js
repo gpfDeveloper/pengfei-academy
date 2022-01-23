@@ -122,6 +122,7 @@ export default function AddEditLectureDialog({
           <TextField
             name="video"
             label="Video"
+            variant="filled"
             // value={imageURL}
             disabled
           />
