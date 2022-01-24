@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { deleteLectureAsync } from 'store/course-async';
 import {
   Box,
   ListItem,
@@ -24,6 +26,9 @@ export default function CourseLectureItem({
   // onDrop,
 }) {
   // const [title, setTitle] = useState(items[idx].title);
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user);
+  const { token } = user;
   const section = sectionItems[sectionIdx];
   const lecture = section.lectures[lectureIdx];
   const lectureTitle = lecture.title;
@@ -35,7 +40,13 @@ export default function CourseLectureItem({
     console.log(inputTitle);
   };
 
-  const deleteLecutureHandler = () => {};
+  const deleteLecutureHandler = () => {
+    setIsConfirmDeleteDialogOpen(false);
+    const courseId = section.course;
+    const lectureId = lecture.id;
+    const sectionId = section.id;
+    dispatch(deleteLectureAsync({ courseId, lectureId, sectionId, token }));
+  };
 
   // const changeHandler = (e) => {
   //   const value = e.target.value;

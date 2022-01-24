@@ -272,3 +272,43 @@ export const createLecture = async (req, res) => {
 
   res.status(200).json({ lecture: lecture.toObject({ getters: true }) });
 };
+
+export const deleteLecture = async (req, res) => {
+  const { sectionId, lectureId } = req.query;
+  if (!sectionId || !lectureId)
+    return res
+      .status(422)
+      .json({ message: 'sectionId or lectureId not provided.' });
+
+  await db.connect();
+  await Lecture.findByIdAndDelete(lectureId);
+  const courseSection = await CourseSection.findById(sectionId);
+  if (courseSection) {
+    courseSection.lectures = courseSection.lectures.filter(
+      (id) => id.toString() !== lectureId
+    );
+    await courseSection.save();
+    res.status(200).send();
+  } else {
+    res.status(404).json({ message: 'Course section not found.' });
+  }
+};
+
+export const editLecture = async (req, res) => {
+  const { sectionId } = req.query;
+  const { title } = req.body;
+  if (!sectionId || !title)
+    return res
+      .status(422)
+      .json({ message: 'Section Id or title not provided.' });
+
+  await db.connect();
+  const courseSection = await CourseSection.findById(sectionId);
+  if (courseSection) {
+    courseSection.title = title;
+    await courseSection.save();
+    res.status(200).send();
+  } else {
+    res.status(404).json({ message: 'Course section not found.' });
+  }
+};

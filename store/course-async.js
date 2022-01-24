@@ -356,3 +356,24 @@ export const createLectureAsync =
       );
     }
   };
+
+export const deleteLectureAsync =
+  ({ courseId, sectionId, lectureId, token }) =>
+  async (dispatch) => {
+    try {
+      await axios.delete(
+        `/api/instructor/course/${courseId}/section/${sectionId}/lecture/${lectureId}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+    } catch (error) {
+      const message = error.response?.data?.message;
+      dispatch(
+        setSnackbar({
+          severity: 'error',
+          message: message || 'Delete lecture failed, please try again later.',
+        })
+      );
+    }
+  };
