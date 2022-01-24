@@ -309,3 +309,27 @@ export const deleteCourseSectionAsync =
       );
     }
   };
+
+export const editCourseSectionTitleAsync =
+  ({ courseId, sectionId, token, title }) =>
+  async (dispatch) => {
+    try {
+      await axios.put(
+        `/api/instructor/course/${courseId}/section/${sectionId}`,
+        { title },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+    } catch (error) {
+      const message = error.response?.data?.message;
+      dispatch(
+        setSnackbar({
+          severity: 'error',
+          message:
+            message ||
+            'Edit course section title failed, please try again later.',
+        })
+      );
+    }
+  };
