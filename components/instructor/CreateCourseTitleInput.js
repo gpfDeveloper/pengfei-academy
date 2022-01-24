@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
-import { createAsync as createCourseAsync } from 'store/course-async';
+import { createCourseAsync } from 'store/course-async';
 import { Stack, TextField, Typography, Box, Button } from '@mui/material';
 import { useForm, Controller } from 'react-hook-form';
 import AddIcon from '@mui/icons-material/Add';

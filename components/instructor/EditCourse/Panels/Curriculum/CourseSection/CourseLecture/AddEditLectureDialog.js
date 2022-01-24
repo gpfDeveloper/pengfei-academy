@@ -32,7 +32,8 @@ export default function AddEditLectureDialog({
   title,
   contentType,
 }) {
-  const dialogTitle = title ? 'Edit Lecture' : 'Create Lecture';
+  const isEdit = Boolean(title);
+  const dialogTitle = isEdit ? 'Edit Lecture' : 'Create Lecture';
   const [hasError, setHasError] = useState(false);
   const [inputTitle, setInputTitle] = useState(title || '');
   const [inputContentType, setInputContentType] = useState(contentType || '');
@@ -75,87 +76,89 @@ export default function AddEditLectureDialog({
           value={inputTitle}
           onChange={(e) => setInputTitle(e.target.value)}
         />
-        <FormControl sx={{ mt: 2, width: 200 }}>
-          <InputLabel id="content-type">Content type</InputLabel>
-          <Select
-            labelId="content-type"
-            label="Content type"
-            value={inputContentType}
-            onChange={(e) => setInputContentType(e.target.value)}
+        <Box display={isEdit ? 'block' : 'none'}>
+          <FormControl sx={{ mt: 2, width: 200 }}>
+            <InputLabel id="content-type">Content type</InputLabel>
+            <Select
+              labelId="content-type"
+              label="Content type"
+              value={inputContentType}
+              onChange={(e) => setInputContentType(e.target.value)}
+            >
+              {contentTypes.map((t) => (
+                <MenuItem key={t} value={t}>
+                  {COURSE_CONTENT_TYPE[t]}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          <Box
+            sx={{
+              mt: 2,
+              display: inputContentType === 'article' ? 'block' : 'none',
+            }}
           >
-            {contentTypes.map((t) => (
-              <MenuItem key={t} value={t}>
-                {COURSE_CONTENT_TYPE[t]}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-        <Box
-          sx={{
-            mt: 2,
-            display: inputContentType === 'article' ? 'block' : 'none',
-          }}
-        >
-          <TextField
-            autoFocus
-            multiline
-            rows={4}
-            label="article"
-            fullWidth
-            error={hasError}
-            helperText={
-              hasError &&
-              `Lecture title at most have ${TITLE_MAX_LENGTH} charactors.`
-            }
-            value={inputTitle}
-            onChange={(e) => setInputTitle(e.target.value)}
-          />
-        </Box>
-        <Box
-          sx={{
-            display: inputContentType === 'video' ? 'flex' : 'none',
-            flexDirection: 'column',
-            gap: 1,
-            mt: 2,
-          }}
-        >
-          <TextField
-            name="video"
-            label="Video"
-            variant="filled"
-            // value={imageURL}
-            disabled
-          />
-          <label htmlFor="contained-button-file">
-            <Input
-              // onChange={uploadHandler}
-              id="contained-button-file"
-              accept="image/*"
-              type="file"
-              // disabled={loading}
+            <TextField
+              autoFocus
+              multiline
+              rows={4}
+              label="article"
+              fullWidth
+              error={hasError}
+              helperText={
+                hasError &&
+                `Lecture title at most have ${TITLE_MAX_LENGTH} charactors.`
+              }
+              value={inputTitle}
+              onChange={(e) => setInputTitle(e.target.value)}
             />
-            {!loading && (
-              <Button
-                variant="contained"
-                size="large"
-                component="span"
+          </Box>
+          <Box
+            sx={{
+              display: inputContentType === 'video' ? 'flex' : 'none',
+              flexDirection: 'column',
+              gap: 1,
+              mt: 2,
+            }}
+          >
+            <TextField
+              name="video"
+              label="Video"
+              variant="filled"
+              // value={imageURL}
+              disabled
+            />
+            <label htmlFor="contained-button-file">
+              <Input
+                // onChange={uploadHandler}
+                id="contained-button-file"
+                accept="image/*"
+                type="file"
+                // disabled={loading}
+              />
+              {!loading && (
+                <Button
+                  variant="contained"
+                  size="large"
+                  component="span"
+                  startIcon={<VideocamIcon />}
+                >
+                  Upload Video
+                </Button>
+              )}
+            </label>
+            {loading && (
+              <LoadingButton
                 startIcon={<VideocamIcon />}
+                loading
+                loadingPosition="start"
+                variant="outlined"
+                size="large"
               >
                 Upload Video
-              </Button>
+              </LoadingButton>
             )}
-          </label>
-          {loading && (
-            <LoadingButton
-              startIcon={<VideocamIcon />}
-              loading
-              loadingPosition="start"
-              variant="outlined"
-              size="large"
-            >
-              Upload Video
-            </LoadingButton>
-          )}
+          </Box>
         </Box>
       </DialogContent>
       <DialogActions>

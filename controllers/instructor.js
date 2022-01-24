@@ -187,3 +187,23 @@ export const deleteCourse = async (req, res) => {
   await Course.findByIdAndDelete(course._id);
   res.status(200).send();
 };
+
+export const createCourseSection = async (req, res) => {
+  const course = req.course;
+  const { title } = req.body;
+  if (!title) return res.status(422).json({ message: 'Title not provided.' });
+  await db.connect();
+
+  const courseSection = new CourseSection({
+    course: course._id,
+    title,
+  });
+  course.sections.push(courseSection._id);
+
+  await course.save();
+  await courseSection.save();
+
+  res
+    .status(200)
+    .json({ courseSection: courseSection.toObject({ getters: true }) });
+};

@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { createCourseSectionAsync } from 'store/course-async';
 import { List, ListItem, IconButton, Typography } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 
@@ -8,7 +9,10 @@ import AddEditSectionDialog from './AddEditSectionDialog';
 
 export default function CourseSectionItems() {
   const course = useSelector((state) => state.course);
-  const { sections } = course;
+  const user = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+  const { token } = user;
+  const { sections, id: courseId } = course;
 
   // const [items, setItems] = useState(initialItems);
   const [isAddSectionDialogOpen, setIsAddSectionDialogOpen] = useState(false);
@@ -32,6 +36,11 @@ export default function CourseSectionItems() {
   //   setItems((pre) => [...pre, newItem]);
   //   setAddSectionDialogOpen(true);
   // };
+
+  const addSectionHandler = async (title) => {
+    setIsAddSectionDialogOpen(false);
+    dispatch(createCourseSectionAsync({ token, courseId, title }));
+  };
 
   return (
     <>
@@ -66,6 +75,7 @@ export default function CourseSectionItems() {
       <AddEditSectionDialog
         isOpen={isAddSectionDialogOpen}
         onCancel={() => setIsAddSectionDialogOpen(false)}
+        onSave={addSectionHandler}
       />
     </>
   );

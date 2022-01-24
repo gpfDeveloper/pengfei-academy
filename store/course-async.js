@@ -3,12 +3,12 @@ import axios from 'axios';
 import { updateCourse } from './course';
 import { setSnackbar } from './snackbar';
 
-export const createAsync =
+export const createCourseAsync =
   ({ title, token }) =>
   async (dispatch) => {
     try {
       const data = await axios.post(
-        '/api/instructor/course/create',
+        '/api/instructor/course',
         {
           title,
         },
@@ -259,6 +259,30 @@ export const updateMyCoursePriceAsync =
         setSnackbar({
           severity: 'error',
           message: message || 'Update failed, please try again later.',
+        })
+      );
+    }
+  };
+
+export const createCourseSectionAsync =
+  ({ courseId, token, title }) =>
+  async (dispatch) => {
+    try {
+      const data = await axios.post(
+        `/api/instructor/course/${courseId}/section`,
+        { title },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      console.log(data);
+    } catch (error) {
+      const message = error.response?.data?.message;
+      dispatch(
+        setSnackbar({
+          severity: 'error',
+          message:
+            message || 'Create course section failed, please try again later.',
         })
       );
     }
