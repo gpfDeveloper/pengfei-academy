@@ -27,6 +27,7 @@ const DragableItem = ({
   const [value, setValue] = useState(items[idx].text);
   const [hasError, setHasError] = useState(false);
   const [draggable, setDraggable] = useState(true);
+  const [showActions, setShowActions] = useState(false);
   useEffect(() => {
     if (value.length > MAX_LENGTH) {
       setHasError(true);
@@ -71,6 +72,8 @@ const DragableItem = ({
       key={idx}
       sx={{ pl: 0 }}
       draggable={draggable}
+      onMouseOver={() => setShowActions(true)}
+      onMouseLeave={() => setShowActions(false)}
       onMouseDown={setCanDrag}
       onDragStart={(e) => onDrag(e, idx)}
       onDrop={(e) => onDrop(e, idx)}
@@ -82,30 +85,34 @@ const DragableItem = ({
         helperText={hasError && `Input at most have ${MAX_LENGTH} charactors.`}
         error={hasError}
       />
-      <IconButton
-        disabled={disableDelete}
-        sx={{
-          border: '1px solid',
-          borderColor: 'text.disabled',
-          borderRadius: 0,
-        }}
-        onClick={deleteHandler}
+      <Box
+        sx={{ display: 'flex', visibility: showActions ? 'init' : 'hidden' }}
       >
-        <DeleteIcon fontSize="large" />
-      </IconButton>
-      <Tooltip title="Drag to reorder">
         <IconButton
+          disabled={disableDelete}
           sx={{
-            '&:hover': { backgroundColor: 'transparent' },
-            cursor: 'move',
             border: '1px solid',
             borderColor: 'text.disabled',
             borderRadius: 0,
           }}
+          onClick={deleteHandler}
         >
-          <DragHandleIcon fontSize="large" />
+          <DeleteIcon fontSize="large" />
         </IconButton>
-      </Tooltip>
+        <Tooltip title="Drag to reorder">
+          <IconButton
+            sx={{
+              '&:hover': { backgroundColor: 'transparent' },
+              cursor: 'move',
+              border: '1px solid',
+              borderColor: 'text.disabled',
+              borderRadius: 0,
+            }}
+          >
+            <DragHandleIcon fontSize="large" />
+          </IconButton>
+        </Tooltip>
+      </Box>
     </ListItem>
   );
 };
