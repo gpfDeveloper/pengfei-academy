@@ -31,16 +31,18 @@ export default function AddEditLectureDialog({
   onCancel,
   title,
   contentType,
+  // article,
 }) {
   const isEdit = Boolean(title);
   const dialogTitle = isEdit ? 'Edit Lecture' : 'Create Lecture';
   const [hasError, setHasError] = useState(false);
   const [inputTitle, setInputTitle] = useState(title || '');
   const [inputContentType, setInputContentType] = useState(contentType || '');
+  // const [inputArticle, setInputArticle] = useState(article || '');
   const [loading, setLoading] = useState(false);
   const saveHandler = () => {
     if (inputTitle && !hasError) {
-      onSave(inputTitle);
+      onSave({ title: inputTitle, contentType: inputContentType });
     }
   };
   const cancelHandler = () => {

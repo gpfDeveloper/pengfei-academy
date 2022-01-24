@@ -20,7 +20,8 @@ const LectureSchema = new mongoose.Schema(
       enum: [...contentTypes],
     },
     article: { type: String, trim: true, maxlength: 6000 },
-    video: {},
+    //todo video
+    // video: {},
   },
   { timestamps: true }
 );

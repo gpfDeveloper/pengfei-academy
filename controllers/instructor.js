@@ -290,25 +290,30 @@ export const deleteLecture = async (req, res) => {
     await courseSection.save();
     res.status(200).send();
   } else {
-    res.status(404).json({ message: 'Course section not found.' });
+    return res.status(404).json({ message: 'Course section not found.' });
   }
 };
 
 export const editLecture = async (req, res) => {
-  const { sectionId } = req.query;
-  const { title } = req.body;
-  if (!sectionId || !title)
+  const { lectureId } = req.query;
+  const { title, contentType, article } = req.body;
+  if (!lectureId || !title)
     return res
       .status(422)
-      .json({ message: 'Section Id or title not provided.' });
+      .json({ message: 'Lecture Id or title not provided.' });
 
   await db.connect();
-  const courseSection = await CourseSection.findById(sectionId);
-  if (courseSection) {
-    courseSection.title = title;
-    await courseSection.save();
-    res.status(200).send();
+  const lecture = await Lecture.findById(lectureId);
+  if (lecture) {
+    lecture.title = title;
+    if (contentType) {
+      lecture.contentType = contentType;
+    }
+    if (article) {
+      lecture.article = article;
+    }
+    await lecture.save();
   } else {
-    res.status(404).json({ message: 'Course section not found.' });
+    return res.status(404).json({ message: 'Lecture not found.' });
   }
 };

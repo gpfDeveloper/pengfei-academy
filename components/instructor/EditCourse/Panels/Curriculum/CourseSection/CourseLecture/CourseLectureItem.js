@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { deleteLectureAsync } from 'store/course-async';
+import { deleteLectureAsync, editLectureAsync } from 'store/course-async';
 import {
   Box,
   ListItem,
@@ -36,8 +36,21 @@ export default function CourseLectureItem({
   const [isEditLectureDialogOpen, setIsEditLectureDialogOpen] = useState(false);
   const [isConfirmDeleteDialogOpen, setIsConfirmDeleteDialogOpen] =
     useState(false);
-  const editLectureTitleHandler = (inputTitle) => {
-    console.log(inputTitle);
+  const editLectureTitleHandler = ({ title, contentType }) => {
+    setIsEditLectureDialogOpen(false);
+    const courseId = section.course;
+    const lectureId = lecture.id;
+    const sectionId = section.id;
+    dispatch(
+      editLectureAsync({
+        courseId,
+        lectureId,
+        sectionId,
+        token,
+        title,
+        contentType,
+      })
+    );
   };
 
   const deleteLecutureHandler = () => {

@@ -377,3 +377,25 @@ export const deleteLectureAsync =
       );
     }
   };
+
+export const editLectureAsync =
+  ({ courseId, sectionId, lectureId, token, title, contentType, article }) =>
+  async (dispatch) => {
+    try {
+      await axios.put(
+        `/api/instructor/course/${courseId}/section/${sectionId}/lecture/${lectureId}`,
+        { title, contentType, article },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+    } catch (error) {
+      const message = error.response?.data?.message;
+      dispatch(
+        setSnackbar({
+          severity: 'error',
+          message: message || 'Update lecture failed, please try again later.',
+        })
+      );
+    }
+  };
