@@ -2,6 +2,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import {
   deleteCourseSectionAsync,
   editCourseSectionTitleAsync,
+  createLectureAsync,
 } from 'store/course-async';
 import { useState } from 'react';
 import {
@@ -41,12 +42,12 @@ export default function CourseSectionItem({
   const [isConfirmDeleteDialogOpen, setIsConfirmDeleteDialogOpen] =
     useState(false);
   const [isAddLectureDialogOpen, setIsAddLectureDialogOpen] = useState(false);
-  const editSectionHandler = (inputTitle) => {
+  const editSectionHandler = (sectionTitle) => {
     setIsEditSectionDialogOpen(false);
     dispatch(
       editCourseSectionTitleAsync({
         token,
-        title: inputTitle,
+        title: sectionTitle,
         sectionId: section.id,
         courseId: section.course,
       })
@@ -65,7 +66,15 @@ export default function CourseSectionItem({
   };
 
   const addLectureHandler = (lectureTitle) => {
-    console.log(lectureTitle);
+    setIsAddLectureDialogOpen(false);
+    dispatch(
+      createLectureAsync({
+        token,
+        courseId: section.course,
+        sectionId: section.id,
+        title: lectureTitle,
+      })
+    );
   };
 
   // const changeHandler = (e) => {

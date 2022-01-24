@@ -248,3 +248,27 @@ export const editCourseSectionTitle = async (req, res) => {
     res.status(404).json({ message: 'Course section not found.' });
   }
 };
+
+export const createLecture = async (req, res) => {
+  const { id: courseId, sectionId } = req.query;
+  const { title } = req.body;
+  if (!title || !sectionId || !courseId)
+    return res
+      .status(422)
+      .json({ message: 'Title or sectionId or courseId not provided.' });
+
+  await db.connect();
+
+  const courseSection = await CourseSection.findById(sectionId);
+  if (!courseSection) {
+    return res.status(404).json({ message: 'Course section not found' });
+  }
+
+  const lecture = new Lecture({ title, course: courseId, section: sectionId });
+  courseSection.lectures.push(lecture._id);
+
+  await courseSection.save();
+  await lecture.save();
+
+  res.status(200).json({ lecture: lecture.toObject({ getters: true }) });
+};

@@ -333,3 +333,26 @@ export const editCourseSectionTitleAsync =
       );
     }
   };
+
+export const createLectureAsync =
+  ({ courseId, sectionId, token, title }) =>
+  async (dispatch) => {
+    try {
+      const data = await axios.post(
+        `/api/instructor/course/${courseId}/section/${sectionId}/lecture`,
+        { title },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      console.log(data);
+    } catch (error) {
+      const message = error.response?.data?.message;
+      dispatch(
+        setSnackbar({
+          severity: 'error',
+          message: message || 'Create lecture failed, please try again later.',
+        })
+      );
+    }
+  };
