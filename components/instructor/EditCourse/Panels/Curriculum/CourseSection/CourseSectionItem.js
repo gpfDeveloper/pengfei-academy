@@ -1,3 +1,5 @@
+import { useSelector, useDispatch } from 'react-redux';
+import { deleteCourseSectionAsync } from 'store/course-async';
 import { useState } from 'react';
 import {
   Box,
@@ -26,6 +28,9 @@ export default function CourseSectionItem({
   // setItems,
 }) {
   // const [title, setTitle] = useState(items[idx].title);
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user);
+  const { token } = user;
   const section = sectionItems[idx];
   const sectionTitle = section.title;
   const sectionLabel = `Section ${idx + 1}:`;
@@ -37,7 +42,16 @@ export default function CourseSectionItem({
     console.log(inputTitle);
   };
 
-  const deleteSectionHandler = () => {};
+  const deleteSectionHandler = async () => {
+    setIsConfirmDeleteDialogOpen(false);
+    await dispatch(
+      deleteCourseSectionAsync({
+        token,
+        courseId: section.course,
+        sectionId: section.id,
+      })
+    );
+  };
 
   const addLectureHandler = (lectureTitle) => {
     console.log(lectureTitle);
@@ -151,8 +165,9 @@ export default function CourseSectionItem({
         onClose={() => setIsConfirmDeleteDialogOpen(false)}
         onDelete={deleteSectionHandler}
         title="Delete This Section?"
-        content="Are you sure you want to delete this section? This is permanent and
-            cannot be undone."
+        content="Are you sure you want to delete this section? 
+        All the lectures in this section will also be deleted. 
+        This is permanent and cannot be undone."
       />
     </>
   );

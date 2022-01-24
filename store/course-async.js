@@ -287,3 +287,25 @@ export const createCourseSectionAsync =
       );
     }
   };
+
+export const deleteCourseSectionAsync =
+  ({ courseId, sectionId, token }) =>
+  async (dispatch) => {
+    try {
+      await axios.delete(
+        `/api/instructor/course/${courseId}/section/${sectionId}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+    } catch (error) {
+      const message = error.response?.data?.message;
+      dispatch(
+        setSnackbar({
+          severity: 'error',
+          message:
+            message || 'Delete course section failed, please try again later.',
+        })
+      );
+    }
+  };

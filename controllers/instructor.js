@@ -184,6 +184,8 @@ export const updateCoursePrice = async (req, res) => {
 //to do courses cannot be deleted after students have enrolled.
 export const deleteCourse = async (req, res) => {
   const course = req.course;
+  await CourseSection.deleteMany({ course: course._id });
+  await Lecture.deleteMany({ course: course._id });
   await Course.findByIdAndDelete(course._id);
   res.status(200).send();
 };
@@ -206,4 +208,24 @@ export const createCourseSection = async (req, res) => {
   res
     .status(200)
     .json({ courseSection: courseSection.toObject({ getters: true }) });
+};
+
+export const deleteCourseSection = async (req, res) => {
+  const course = req.course;
+  const { sectionId } = req.query;
+  if (!sectionId)
+    return res.status(422).json({ message: 'sectionId not provided.' });
+  await db.connect();
+
+  const courseSection = await CourseSection.findByIdAndDelete(sectionId);
+  if (courseSection) {
+    course.sections = course.sections.filter(
+      (id) => id.toString() !== sectionId
+    );
+    await Lecture.deleteMany({ section: sectionId });
+    await course.save();
+    res.status(200).send();
+  } else {
+    res.status(404).json({ message: 'Course section not found.' });
+  }
 };
