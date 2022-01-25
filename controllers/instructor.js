@@ -4,6 +4,7 @@ import CourseSection from 'models/CourseSection';
 import Lecture from 'models/Lecture';
 import db from 'utils/db';
 import { isValidCategory } from 'utils';
+import mongoose from 'mongoose';
 
 export const createCourse = async (req, res) => {
   const userId = req.user.id;
@@ -27,9 +28,12 @@ export const createCourse = async (req, res) => {
     course.sections = [courseSection._id];
     courseSection.lectures = [lecture._id];
 
-    await course.save();
-    await courseSection.save();
-    await lecture.save();
+    const session = await mongoose.startSession();
+    session.startTransaction();
+    await course.save({ session });
+    await courseSection.save({ session });
+    await lecture.save({ session });
+    await session.commitTransaction();
 
     res.status(200).json({ course: course.toObject({ getters: true }) });
   } else {
@@ -184,9 +188,12 @@ export const updateCoursePrice = async (req, res) => {
 //to do courses cannot be deleted after students have enrolled.
 export const deleteCourse = async (req, res) => {
   const course = req.course;
-  await CourseSection.deleteMany({ course: course._id });
-  await Lecture.deleteMany({ course: course._id });
-  await Course.findByIdAndDelete(course._id);
+  const session = await mongoose.startSession();
+  session.startTransaction();
+  await CourseSection.deleteMany({ course: course._id }, { session: session });
+  await Lecture.deleteMany({ course: course._id }, { session: session });
+  await Course.findByIdAndDelete(course._id, { session: session });
+  await session.commitTransaction();
   res.status(200).send();
 };
 
@@ -202,8 +209,11 @@ export const createCourseSection = async (req, res) => {
   });
   course.sections.push(courseSection._id);
 
-  await course.save();
-  await courseSection.save();
+  const session = await mongoose.startSession();
+  session.startTransaction();
+  await courseSection.save({ session });
+  await course.save({ session });
+  await session.commitTransaction();
 
   res
     .status(200)
@@ -217,17 +227,15 @@ export const deleteCourseSection = async (req, res) => {
     return res.status(422).json({ message: 'sectionId not provided.' });
   await db.connect();
 
-  const courseSection = await CourseSection.findByIdAndDelete(sectionId);
-  if (courseSection) {
-    course.sections = course.sections.filter(
-      (id) => id.toString() !== sectionId
-    );
-    await Lecture.deleteMany({ section: sectionId });
-    await course.save();
-    res.status(200).send();
-  } else {
-    res.status(404).json({ message: 'Course section not found.' });
-  }
+  const session = await mongoose.startSession();
+  session.startTransaction();
+  await CourseSection.findByIdAndDelete(sectionId, { session });
+  course.sections = course.sections.filter((id) => id.toString() !== sectionId);
+  await Lecture.deleteMany({ section: sectionId }, { session });
+  await course.save({ session });
+  await session.commitTransaction();
+
+  res.status(200).send();
 };
 
 export const editCourseSection = async (req, res) => {
@@ -267,8 +275,12 @@ export const createLecture = async (req, res) => {
   const lecture = new Lecture({ title, course: courseId, section: sectionId });
   courseSection.lectures.push(lecture._id);
 
-  await courseSection.save();
-  await lecture.save();
+  const session = await mongoose.startSession();
+  session.startTransaction();
+
+  await courseSection.save({ session });
+  await lecture.save({ session });
+  await session.commitTransaction();
 
   res.status(200).json({ lecture: lecture.toObject({ getters: true }) });
 };

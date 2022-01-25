@@ -51,6 +51,12 @@ const courseSlice = createSlice({
         return section;
       });
     },
+    createLecture: (state, { payload: { lecture, sectionId } }) => {
+      const sectionIdx = state.sections.indexOf(
+        (section) => section.id === sectionId
+      );
+      state.sections[sectionIdx].push(lecture);
+    },
   },
 });
 
@@ -60,6 +66,7 @@ export const {
   createCourseSection,
   deleteCourseSection,
   editCourseSection,
+  createLecture,
 } = courseSlice.actions;
 
 export default courseSlice.reducer;

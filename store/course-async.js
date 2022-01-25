@@ -5,6 +5,7 @@ import {
   createCourseSection,
   deleteCourseSection,
   editCourseSection,
+  createLecture,
 } from './course';
 import { setSnackbar } from './snackbar';
 
@@ -352,6 +353,7 @@ export const createLectureAsync =
         }
       );
       console.log(data);
+      dispatch(createLecture({ sectionId, lecture: data.data.lecture }));
     } catch (error) {
       const message = error.response?.data?.message;
       dispatch(
