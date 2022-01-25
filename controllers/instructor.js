@@ -293,17 +293,17 @@ export const deleteLecture = async (req, res) => {
       .json({ message: 'sectionId or lectureId not provided.' });
 
   await db.connect();
-  await Lecture.findByIdAndDelete(lectureId);
+
+  const session = await mongoose.startSession();
+  session.startTransaction();
+  await Lecture.findByIdAndDelete(lectureId, { session });
   const courseSection = await CourseSection.findById(sectionId);
-  if (courseSection) {
-    courseSection.lectures = courseSection.lectures.filter(
-      (id) => id.toString() !== lectureId
-    );
-    await courseSection.save();
-    res.status(200).send();
-  } else {
-    return res.status(404).json({ message: 'Course section not found.' });
-  }
+  courseSection.lectures = courseSection.lectures.filter(
+    (id) => id.toString() !== lectureId
+  );
+  await courseSection.save({ session });
+  await session.commitTransaction();
+  res.status(200).send();
 };
 
 export const editLecture = async (req, res) => {

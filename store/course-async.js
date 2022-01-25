@@ -6,6 +6,7 @@ import {
   deleteCourseSection,
   editCourseSection,
   createLecture,
+  deleteLecture,
 } from './course';
 import { setSnackbar } from './snackbar';
 
@@ -374,6 +375,7 @@ export const deleteLectureAsync =
           headers: { Authorization: `Bearer ${token}` },
         }
       );
+      dispatch(deleteLecture({ sectionId, lectureId }));
     } catch (error) {
       const message = error.response?.data?.message;
       dispatch(
