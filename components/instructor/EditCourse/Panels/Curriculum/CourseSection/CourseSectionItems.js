@@ -1,6 +1,9 @@
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { createCourseSectionAsync } from 'store/course-async';
+import {
+  createCourseSectionAsync,
+  dragDropCourseSectionAsync,
+} from 'store/course-async';
 import { List, ListItem, IconButton, Typography } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 
@@ -17,18 +20,27 @@ export default function CourseSectionItems() {
   // const [items, setItems] = useState(initialItems);
   const [isAddSectionDialogOpen, setIsAddSectionDialogOpen] = useState(false);
 
-  const dragHandler = (e, dragIdx) => {
-    // e.dataTransfer.setData('dragIdx', dragIdx);
+  const sectionDragHandler = (e, sectionDragIdx) => {
+    e.dataTransfer.setData('sectionDragIdx', sectionDragIdx);
   };
-  const dropHandler = (e, dropIdx) => {
-    // const dragIdx = +e.dataTransfer.getData('dragIdx');
-    // setItems((pre) => {
-    //   const ret = [...pre];
-    //   const tmp = ret[dragIdx];
-    //   ret[dragIdx] = ret[dropIdx];
-    //   ret[dropIdx] = tmp;
-    //   return ret;
-    // });
+  const sectionDropHandler = (e, sectionDropIdx) => {
+    const sectionLength = sections.length;
+    if (sectionLength <= 1) return;
+    const sectionDragIdx = +e.dataTransfer.getData('sectionDragIdx');
+    if (sectionDragIdx === sectionDropIdx) return;
+    if (
+      sectionDragIdx === sectionLength - 1 &&
+      sectionDropIdx === sectionLength
+    )
+      return;
+    dispatch(
+      dragDropCourseSectionAsync({
+        sectionDragIdx,
+        sectionDropIdx,
+        courseId,
+        token,
+      })
+    );
   };
 
   // const addSectionHandler = () => {
@@ -51,8 +63,8 @@ export default function CourseSectionItems() {
         {sections.map((item, idx) => (
           <CourseSectionItem
             key={item.id}
-            onDrag={dragHandler}
-            onDrop={dropHandler}
+            onDrag={sectionDragHandler}
+            onDrop={sectionDropHandler}
             idx={idx}
             sectionItems={sections}
             // setItems={setItems}

@@ -332,3 +332,18 @@ export const editLecture = async (req, res) => {
     return res.status(404).json({ message: 'Lecture not found.' });
   }
 };
+
+export const dragDropCourseSection = async (req, res) => {
+  const course = req.course;
+  const { sectionDragIdx, sectionDropIdx } = req.body;
+  if (!course || sectionDragIdx === undefined || sectionDropIdx === undefined) {
+    return res
+      .status(422)
+      .json({ message: 'Course or dragIdx or dropIdx not provided.' });
+  }
+  const sectionId = course.sections[sectionDragIdx];
+  course.sections.splice(sectionDragIdx, 1);
+  course.sections.splice(sectionDropIdx, 0, sectionId);
+  await course.save();
+  return res.status(200).send();
+};

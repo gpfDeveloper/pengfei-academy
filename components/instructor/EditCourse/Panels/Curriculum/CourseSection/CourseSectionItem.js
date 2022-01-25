@@ -161,8 +161,12 @@ export default function CourseSectionItem({
                 borderRadius: 0,
               }}
             >
-              <AddIcon fontSize="large" color="primary" />
-              <Typography fontWeight="bold" color="primary.main">
+              <AddIcon fontSize="small" color="primary" />
+              <Typography
+                fontWeight="bold"
+                color="primary.main"
+                variant="body2"
+              >
                 Add a new lecture
               </Typography>
             </IconButton>
