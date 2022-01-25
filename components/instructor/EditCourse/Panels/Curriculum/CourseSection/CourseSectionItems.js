@@ -37,7 +37,7 @@ export default function CourseSectionItems() {
   //   setAddSectionDialogOpen(true);
   // };
 
-  const addSectionHandler = async (title) => {
+  const addSectionHandler = (title) => {
     setIsAddSectionDialogOpen(false);
     dispatch(createCourseSectionAsync({ token, courseId, title }));
   };

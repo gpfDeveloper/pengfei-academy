@@ -230,7 +230,7 @@ export const deleteCourseSection = async (req, res) => {
   }
 };
 
-export const editCourseSectionTitle = async (req, res) => {
+export const editCourseSection = async (req, res) => {
   const { sectionId } = req.query;
   const { title } = req.body;
   if (!sectionId || !title)

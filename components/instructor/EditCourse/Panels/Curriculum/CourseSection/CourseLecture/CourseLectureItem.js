@@ -89,7 +89,7 @@ export default function CourseLectureItem({
         // variant="outlined"
         sx={{
           cursor: 'move',
-          '&:hover': { backgroundColor: 'transparent' },
+          '&:hover': { backgroundColor: 'rgba(0,0,0,0.02)' },
         }}
         draggable
         // onDragStart={(e) => onDrag(e, idx)}

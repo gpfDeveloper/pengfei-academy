@@ -1,7 +1,7 @@
 import { useSelector, useDispatch } from 'react-redux';
 import {
   deleteCourseSectionAsync,
-  editCourseSectionTitleAsync,
+  editCourseSectionAsync,
   createLectureAsync,
 } from 'store/course-async';
 import { useState } from 'react';
@@ -45,7 +45,7 @@ export default function CourseSectionItem({
   const editSectionHandler = (sectionTitle) => {
     setIsEditSectionDialogOpen(false);
     dispatch(
-      editCourseSectionTitleAsync({
+      editCourseSectionAsync({
         token,
         title: sectionTitle,
         sectionId: section.id,
@@ -54,9 +54,9 @@ export default function CourseSectionItem({
     );
   };
 
-  const deleteSectionHandler = async () => {
+  const deleteSectionHandler = () => {
     setIsConfirmDeleteDialogOpen(false);
-    await dispatch(
+    dispatch(
       deleteCourseSectionAsync({
         token,
         courseId: section.course,

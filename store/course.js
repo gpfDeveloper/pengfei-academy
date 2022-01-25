@@ -35,9 +35,31 @@ const courseSlice = createSlice({
         state[key] = initialState[key];
       }
     },
+    createCourseSection: (state, { payload }) => {
+      state.sections.push(payload);
+    },
+    deleteCourseSection: (state, { payload }) => {
+      state.sections = state.sections.filter(
+        (section) => section.id !== payload
+      );
+    },
+    editCourseSection: (state, { payload: { sectionId, title } }) => {
+      state.sections = state.sections.map((section) => {
+        if (section.id === sectionId) {
+          section.title = title;
+        }
+        return section;
+      });
+    },
   },
 });
 
-export const { updateCourse, resetCourse } = courseSlice.actions;
+export const {
+  updateCourse,
+  resetCourse,
+  createCourseSection,
+  deleteCourseSection,
+  editCourseSection,
+} = courseSlice.actions;
 
 export default courseSlice.reducer;

@@ -1,6 +1,11 @@
 import axios from 'axios';
 
-import { updateCourse } from './course';
+import {
+  updateCourse,
+  createCourseSection,
+  deleteCourseSection,
+  editCourseSection,
+} from './course';
 import { setSnackbar } from './snackbar';
 
 export const createCourseAsync =
@@ -275,7 +280,7 @@ export const createCourseSectionAsync =
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-      console.log(data);
+      dispatch(createCourseSection(data.data.courseSection));
     } catch (error) {
       const message = error.response?.data?.message;
       dispatch(
@@ -298,6 +303,7 @@ export const deleteCourseSectionAsync =
           headers: { Authorization: `Bearer ${token}` },
         }
       );
+      dispatch(deleteCourseSection(sectionId));
     } catch (error) {
       const message = error.response?.data?.message;
       dispatch(
@@ -310,7 +316,7 @@ export const deleteCourseSectionAsync =
     }
   };
 
-export const editCourseSectionTitleAsync =
+export const editCourseSectionAsync =
   ({ courseId, sectionId, token, title }) =>
   async (dispatch) => {
     try {
@@ -321,14 +327,14 @@ export const editCourseSectionTitleAsync =
           headers: { Authorization: `Bearer ${token}` },
         }
       );
+      dispatch(editCourseSection({ title, sectionId }));
     } catch (error) {
       const message = error.response?.data?.message;
       dispatch(
         setSnackbar({
           severity: 'error',
           message:
-            message ||
-            'Edit course section title failed, please try again later.',
+            message || 'Edit course section failed, please try again later.',
         })
       );
     }
