@@ -65,14 +65,14 @@ export default function CourseSectionItem({
     );
   };
 
-  const addLectureHandler = (lectureTitle) => {
+  const addLectureHandler = ({ title }) => {
     setIsAddLectureDialogOpen(false);
     dispatch(
       createLectureAsync({
         token,
         courseId: section.course,
         sectionId: section.id,
-        title: lectureTitle,
+        title,
       })
     );
   };

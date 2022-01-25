@@ -52,10 +52,10 @@ const courseSlice = createSlice({
       });
     },
     createLecture: (state, { payload: { lecture, sectionId } }) => {
-      const sectionIdx = state.sections.indexOf(
+      const sectionIdx = state.sections.findIndex(
         (section) => section.id === sectionId
       );
-      state.sections[sectionIdx].push(lecture);
+      state.sections[sectionIdx].lectures.push(lecture);
     },
   },
 });

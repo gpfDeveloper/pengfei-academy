@@ -352,7 +352,6 @@ export const createLectureAsync =
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-      console.log(data);
       dispatch(createLecture({ sectionId, lecture: data.data.lecture }));
     } catch (error) {
       const message = error.response?.data?.message;
