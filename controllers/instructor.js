@@ -325,6 +325,9 @@ export const editLecture = async (req, res) => {
       lecture.article = article;
     }
     await lecture.save();
+    return res
+      .status(200)
+      .json({ lecture: lecture.toObject({ getters: true }) });
   } else {
     return res.status(404).json({ message: 'Lecture not found.' });
   }

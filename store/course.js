@@ -61,10 +61,18 @@ const courseSlice = createSlice({
       const sectionIdx = state.sections.findIndex(
         (section) => section.id === sectionId
       );
-
       state.sections[sectionIdx].lectures = state.sections[
         sectionIdx
       ].lectures.filter((lecture) => lecture.id !== lectureId);
+    },
+    editLecture: (state, { payload: { lectureId, sectionId, lecture } }) => {
+      const sectionIdx = state.sections.findIndex(
+        (section) => section.id === sectionId
+      );
+      const lectureIdx = state.sections[sectionIdx].lectures.findIndex(
+        (_lecture) => _lecture.id === lectureId
+      );
+      state.sections[sectionIdx].lectures[lectureIdx] = lecture;
     },
   },
 });
@@ -77,6 +85,7 @@ export const {
   editCourseSection,
   createLecture,
   deleteLecture,
+  editLecture,
 } = courseSlice.actions;
 
 export default courseSlice.reducer;

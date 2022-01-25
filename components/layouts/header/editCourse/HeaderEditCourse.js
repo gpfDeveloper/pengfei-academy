@@ -2,7 +2,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { AppBar, Toolbar, Link, Box, Typography, Button } from '@mui/material';
+import { AppBar, Toolbar, Box, Typography, Button } from '@mui/material';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import { CREATE_COURSE_STATUS_REVERSE } from 'utils/constants';
 import { sliceText } from 'utils';
@@ -50,16 +50,9 @@ export default function HeaderEditCourse() {
             alignItems: 'center',
           }}
         >
-          <Link
-            sx={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              cursor: 'pointer',
-            }}
-            onClick={clickBackHandler}
-          >
-            <ArrowBackIosIcon /> <Box component="span">Back to courses</Box>
-          </Link>
+          <Button startIcon={<ArrowBackIosIcon />} onClick={clickBackHandler}>
+            Back to courses
+          </Button>
           <Typography fontWeight="bold">
             {sliceText(title, titleSlice)}
           </Typography>

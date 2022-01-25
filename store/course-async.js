@@ -7,6 +7,7 @@ import {
   editCourseSection,
   createLecture,
   deleteLecture,
+  editLecture,
 } from './course';
 import { setSnackbar } from './snackbar';
 
@@ -391,12 +392,15 @@ export const editLectureAsync =
   ({ courseId, sectionId, lectureId, token, title, contentType, article }) =>
   async (dispatch) => {
     try {
-      await axios.put(
+      const data = await axios.put(
         `/api/instructor/course/${courseId}/section/${sectionId}/lecture/${lectureId}`,
         { title, contentType, article },
         {
           headers: { Authorization: `Bearer ${token}` },
         }
+      );
+      dispatch(
+        editLecture({ sectionId, lectureId, lecture: data.data.lecture })
       );
     } catch (error) {
       const message = error.response?.data?.message;
