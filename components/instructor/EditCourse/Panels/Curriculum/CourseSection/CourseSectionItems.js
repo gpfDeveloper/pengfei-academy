@@ -28,11 +28,6 @@ export default function CourseSectionItems() {
     if (sectionLength <= 1) return;
     const sectionDragIdx = +e.dataTransfer.getData('sectionDragIdx');
     if (sectionDragIdx === sectionDropIdx) return;
-    if (
-      sectionDragIdx === sectionLength - 1 &&
-      sectionDropIdx === sectionLength
-    )
-      return;
     dispatch(
       dragDropCourseSectionAsync({
         sectionDragIdx,
@@ -84,11 +79,13 @@ export default function CourseSectionItems() {
           </IconButton>
         </ListItem>
       </List>
-      <AddEditSectionDialog
-        isOpen={isAddSectionDialogOpen}
-        onCancel={() => setIsAddSectionDialogOpen(false)}
-        onSave={addSectionHandler}
-      />
+      {isAddSectionDialogOpen && (
+        <AddEditSectionDialog
+          isOpen={isAddSectionDialogOpen}
+          onCancel={() => setIsAddSectionDialogOpen(false)}
+          onSave={addSectionHandler}
+        />
+      )}
     </>
   );
 }

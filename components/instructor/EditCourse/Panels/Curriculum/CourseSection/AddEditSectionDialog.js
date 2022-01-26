@@ -26,7 +26,6 @@ export default function AddEditSectionDialog({
   };
   const cancelHandler = () => {
     setHasError(false);
-    setInputTitle(title || '');
     onCancel();
   };
   useEffect(() => {
@@ -37,6 +36,7 @@ export default function AddEditSectionDialog({
       setHasError(false);
     }
   }, [inputTitle, hasError]);
+  // useEffect(() => {}, [title, isOpen]);
 
   return (
     <Dialog open={isOpen} onClose={onCancel} fullWidth>

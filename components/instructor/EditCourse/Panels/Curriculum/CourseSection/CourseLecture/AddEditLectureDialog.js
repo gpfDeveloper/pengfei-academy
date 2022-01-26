@@ -47,7 +47,6 @@ export default function AddEditLectureDialog({
   };
   const cancelHandler = () => {
     setHasError(false);
-    setInputTitle(title || '');
     onCancel();
   };
   useEffect(() => {

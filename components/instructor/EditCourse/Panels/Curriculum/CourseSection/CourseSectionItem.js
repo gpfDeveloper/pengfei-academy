@@ -173,17 +173,21 @@ export default function CourseSectionItem({
           </Box>
         </ListItem>
       </Paper>
-      <AddEditSectionDialog
-        isOpen={isEditSectionDialogOpen}
-        title={sectionTitle}
-        onCancel={() => setIsEditSectionDialogOpen(false)}
-        onSave={editSectionHandler}
-      />
-      <AddEditLectureDialog
-        isOpen={isAddLectureDialogOpen}
-        onCancel={() => setIsAddLectureDialogOpen(false)}
-        onSave={addLectureHandler}
-      />
+      {isEditSectionDialogOpen && (
+        <AddEditSectionDialog
+          isOpen={isEditSectionDialogOpen}
+          title={sectionTitle}
+          onCancel={() => setIsEditSectionDialogOpen(false)}
+          onSave={editSectionHandler}
+        />
+      )}
+      {isAddLectureDialogOpen && (
+        <AddEditLectureDialog
+          isOpen={isAddLectureDialogOpen}
+          onCancel={() => setIsAddLectureDialogOpen(false)}
+          onSave={addLectureHandler}
+        />
+      )}
       <DialogConfirmDelete
         isOpen={isConfirmDeleteDialogOpen}
         onClose={() => setIsConfirmDeleteDialogOpen(false)}
