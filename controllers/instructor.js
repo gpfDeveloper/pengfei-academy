@@ -347,3 +347,22 @@ export const dragDropCourseSection = async (req, res) => {
   await course.save();
   return res.status(200).send();
 };
+
+export const dragDropLectureSameSection = async (req, res) => {
+  const { sectionId, lectureDragIdx, lectureDropIdx } = req.body;
+  if (
+    lectureDragIdx === undefined ||
+    lectureDropIdx === undefined ||
+    sectionId === undefined
+  ) {
+    return res.status(422).json({
+      message: 'SectionId or dragIdx or dropIdx not provided.',
+    });
+  }
+  const section = await CourseSection.findById(sectionId);
+  const lectureId = section.lectures[lectureDragIdx];
+  section.lectures.splice(lectureDragIdx, 1);
+  section.lectures.splice(lectureDropIdx, 0, lectureId);
+  await section.save();
+  return res.status(200).send();
+};

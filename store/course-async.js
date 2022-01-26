@@ -9,6 +9,7 @@ import {
   deleteLecture,
   editLecture,
   dragDropSection,
+  dragDropLectureSameSection,
 } from './course';
 import { setSnackbar } from './snackbar';
 
@@ -433,6 +434,43 @@ export const dragDropCourseSectionAsync =
         setSnackbar({
           severity: 'error',
           message: message || 'Reorder section failed, please try again later.',
+        })
+      );
+    }
+  };
+
+export const dragDropLectureSameSectionAsync =
+  ({
+    sectionIdx,
+    sectionId,
+    lectureDragIdx,
+    lectureDropIdx,
+    courseId,
+    token,
+  }) =>
+  async (dispatch) => {
+    try {
+      await axios.put(
+        `/api/instructor/course/${courseId}/section/dragDropLectureSameSection`,
+        { sectionId, lectureDragIdx, lectureDropIdx },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
+      dispatch(
+        dragDropLectureSameSection({
+          sectionIdx,
+          lectureDragIdx,
+          lectureDropIdx,
+        })
+      );
+    } catch (error) {
+      const message = error.response?.data?.message;
+      dispatch(
+        setSnackbar({
+          severity: 'error',
+          message: message || 'Reorder lecture failed, please try again later.',
         })
       );
     }

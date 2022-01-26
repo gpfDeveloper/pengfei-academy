@@ -27,7 +27,7 @@ export default function CourseSectionItems() {
     const sectionLength = sections.length;
     if (sectionLength <= 1) return;
     let sectionDragIdx = e.dataTransfer.getData('sectionDragIdx');
-    if (sectionDragIdx === undefined || sectionDragIdx === '') return;
+    if (sectionDragIdx === '') return;
     sectionDragIdx = +sectionDragIdx;
     if (sectionDragIdx === sectionDropIdx) return;
     dispatch(

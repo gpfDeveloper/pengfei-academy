@@ -1,6 +1,10 @@
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { deleteLectureAsync, editLectureAsync } from 'store/course-async';
+import {
+  deleteLectureAsync,
+  editLectureAsync,
+  dragDropLectureSameSectionAsync,
+} from 'store/course-async';
 import {
   Box,
   ListItem,
@@ -63,12 +67,42 @@ export default function CourseLectureItem({
 
   const lectureDragHandler = (e) => {
     e.stopPropagation();
-    console.log(sectionIdx, lectureIdx);
+    e.dataTransfer.setData('lectureSectionDragIdx', sectionIdx);
+    e.dataTransfer.setData('lectureLectureDragIdx', lectureIdx);
   };
 
   const lectureDropHandler = (e) => {
     e.stopPropagation();
-    console.log(sectionIdx, lectureIdx);
+    if (sectionItems.length <= 1 && section.lectures.length <= 1) return;
+    const sectionDropIdx = sectionIdx;
+    const lectureDropIdx = lectureIdx;
+    let sectionDragIdx = e.dataTransfer.getData('lectureSectionDragIdx');
+    let lectureDragIdx = e.dataTransfer.getData('lectureLectureDragIdx');
+    if (sectionDragIdx === '' || lectureDragIdx === '') {
+      return;
+    }
+    sectionDragIdx = +sectionDragIdx;
+    lectureDragIdx = +lectureDragIdx;
+    if (sectionDragIdx === sectionDropIdx) {
+      if (lectureDragIdx === lectureDropIdx) return;
+      dispatch(
+        dragDropLectureSameSectionAsync({
+          token,
+          courseId: section.course,
+          sectionId: section.id,
+          lectureDragIdx,
+          lectureDropIdx,
+          sectionIdx: sectionDropIdx,
+        })
+      );
+    } else {
+      console.log(
+        sectionDragIdx,
+        lectureDragIdx,
+        sectionDropIdx,
+        lectureDropIdx
+      );
+    }
   };
 
   return (
