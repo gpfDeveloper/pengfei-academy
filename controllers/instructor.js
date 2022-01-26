@@ -344,6 +344,7 @@ export const dragDropCourseSection = async (req, res) => {
   const sectionId = course.sections[sectionDragIdx];
   course.sections.splice(sectionDragIdx, 1);
   course.sections.splice(sectionDropIdx, 0, sectionId);
+  await db.connect();
   await course.save();
   return res.status(200).send();
 };
@@ -359,10 +360,39 @@ export const dragDropLectureSameSection = async (req, res) => {
       message: 'SectionId or dragIdx or dropIdx not provided.',
     });
   }
+  await db.connect();
   const section = await CourseSection.findById(sectionId);
   const lectureId = section.lectures[lectureDragIdx];
   section.lectures.splice(lectureDragIdx, 1);
   section.lectures.splice(lectureDropIdx, 0, lectureId);
   await section.save();
+  return res.status(200).send();
+};
+
+export const dragDropLectureOtherSection = async (req, res) => {
+  const { sectionDragId, sectionDropId, lectureDragIdx, lectureDropIdx } =
+    req.body;
+  if (
+    lectureDragIdx === undefined ||
+    lectureDropIdx === undefined ||
+    sectionDragId === undefined ||
+    sectionDropId === undefined
+  ) {
+    return res.status(422).json({
+      message: 'SectionId or dragIdx or dropIdx not provided.',
+    });
+  }
+  await db.connect();
+  const sectionDrag = await CourseSection.findById(sectionDragId);
+  const sectionDrop = await CourseSection.findById(sectionDropId);
+  const lectureId = sectionDrag.lectures[lectureDragIdx];
+  sectionDrag.lectures.splice(lectureDragIdx, 1);
+  sectionDrop.lectures.splice(lectureDropIdx, 0, lectureId);
+  const session = await mongoose.startSession();
+  session.startTransaction();
+  await sectionDrag.save({ session });
+  await sectionDrop.save({ session });
+  await session.commitTransaction();
+
   return res.status(200).send();
 };

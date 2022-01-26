@@ -10,6 +10,7 @@ import {
   editLecture,
   dragDropSection,
   dragDropLectureSameSection,
+  dragDropLectureOtherSection,
 } from './course';
 import { setSnackbar } from './snackbar';
 
@@ -426,7 +427,6 @@ export const dragDropCourseSectionAsync =
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-
       dispatch(dragDropSection({ sectionDragIdx, sectionDropIdx }));
     } catch (error) {
       const message = error.response?.data?.message;
@@ -457,10 +457,48 @@ export const dragDropLectureSameSectionAsync =
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-
       dispatch(
         dragDropLectureSameSection({
           sectionIdx,
+          lectureDragIdx,
+          lectureDropIdx,
+        })
+      );
+    } catch (error) {
+      const message = error.response?.data?.message;
+      dispatch(
+        setSnackbar({
+          severity: 'error',
+          message: message || 'Reorder lecture failed, please try again later.',
+        })
+      );
+    }
+  };
+
+export const dragDropLectureOtherSectionAsync =
+  ({
+    sectionDragId,
+    sectionDropId,
+    sectionDragIdx,
+    sectionDropIdx,
+    lectureDragIdx,
+    lectureDropIdx,
+    courseId,
+    token,
+  }) =>
+  async (dispatch) => {
+    try {
+      await axios.put(
+        `/api/instructor/course/${courseId}/section/dragDropLectureOtherSection`,
+        { sectionDragId, sectionDropId, lectureDragIdx, lectureDropIdx },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      dispatch(
+        dragDropLectureOtherSection({
+          sectionDragIdx,
+          sectionDropIdx,
           lectureDragIdx,
           lectureDropIdx,
         })

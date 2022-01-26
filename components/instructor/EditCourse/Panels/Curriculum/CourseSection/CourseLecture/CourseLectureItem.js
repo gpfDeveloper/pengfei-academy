@@ -4,6 +4,7 @@ import {
   deleteLectureAsync,
   editLectureAsync,
   dragDropLectureSameSectionAsync,
+  dragDropLectureOtherSectionAsync,
 } from 'store/course-async';
 import {
   Box,
@@ -96,11 +97,19 @@ export default function CourseLectureItem({
         })
       );
     } else {
-      console.log(
-        sectionDragIdx,
-        lectureDragIdx,
-        sectionDropIdx,
-        lectureDropIdx
+      const sectionDragId = sectionItems[sectionDragIdx].id;
+      const sectionDropId = section.id;
+      dispatch(
+        dragDropLectureOtherSectionAsync({
+          token,
+          courseId: section.course,
+          sectionDragId,
+          sectionDropId,
+          sectionDragIdx,
+          lectureDragIdx,
+          sectionDropIdx,
+          lectureDropIdx,
+        })
       );
     }
   };

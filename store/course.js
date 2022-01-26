@@ -91,6 +91,23 @@ const courseSlice = createSlice({
       lectures.splice(lectureDragIdx, 1);
       lectures.splice(lectureDropIdx, 0, lecuture);
     },
+    dragDropLectureOtherSection: (
+      state,
+      {
+        payload: {
+          sectionDragIdx,
+          sectionDropIdx,
+          lectureDragIdx,
+          lectureDropIdx,
+        },
+      }
+    ) => {
+      const lecturesDrag = state.sections[sectionDragIdx].lectures;
+      const lecturesDrop = state.sections[sectionDropIdx].lectures;
+      const lecuture = lecturesDrag[lectureDragIdx];
+      lecturesDrag.splice(lectureDragIdx, 1);
+      lecturesDrop.splice(lectureDropIdx, 0, lecuture);
+    },
   },
 });
 
@@ -105,6 +122,7 @@ export const {
   editLecture,
   dragDropSection,
   dragDropLectureSameSection,
+  dragDropLectureOtherSection,
 } = courseSlice.actions;
 
 export default courseSlice.reducer;
