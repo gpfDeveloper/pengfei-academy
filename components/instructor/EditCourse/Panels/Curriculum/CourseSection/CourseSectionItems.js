@@ -49,10 +49,47 @@ export default function CourseSectionItems() {
     dispatch(createCourseSectionAsync({ token, courseId, title }));
   };
 
+  //Window scroll
+  const onDrag = (e) => {
+    const windowHeight = window.innerHeight;
+    const disToTop = e.clientY;
+    let disToBottom = windowHeight - disToTop;
+
+    let speed = 1;
+    if (disToTop < 120 || disToBottom < 120) {
+      speed = 2;
+    }
+    if (disToTop < 80 || disToBottom < 80) {
+      speed = 4;
+    }
+    if (disToTop < 40 || disToBottom < 40) {
+      speed = 8;
+    }
+    if (disToTop < 20 || disToBottom < 20) {
+      speed = 16;
+    }
+    if (disToTop < 10 || disToBottom < 10) {
+      speed = 32;
+    }
+
+    if (disToTop < 150) {
+      scrollBy({
+        top: -6 * speed,
+        behavior: 'smooth',
+      });
+    } else if (disToTop > windowHeight - 150) {
+      scrollBy({
+        top: 6 * speed,
+        behavior: 'smooth',
+      });
+    }
+  };
+
   return (
     <>
       <List
         onDragOver={(e) => e.preventDefault()}
+        onDrag={onDrag}
         sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}
       >
         {sections.map((item, idx) => (

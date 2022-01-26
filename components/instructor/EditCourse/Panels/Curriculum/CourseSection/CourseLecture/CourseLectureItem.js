@@ -61,26 +61,15 @@ export default function CourseLectureItem({
     dispatch(deleteLectureAsync({ courseId, lectureId, sectionId, token }));
   };
 
-  // const changeHandler = (e) => {
-  //   const value = e.target.value;
-  //   setTitle(value);
-  //   setItems((pre) => {
-  //     const newItems = [...pre];
-  //     newItems[idx].title = value;
-  //     return newItems;
-  //   });
-  // };
+  const lectureDragHandler = (e) => {
+    e.stopPropagation();
+    console.log(sectionIdx, lectureIdx);
+  };
 
-  // const deleteHandler = () => {
-  //   setItems((pre) => {
-  //     const ret = [];
-  //     for (let i = 0; i < pre.length; i++) {
-  //       if (i === idx) continue;
-  //       ret.push(pre[i]);
-  //     }
-  //     return ret;
-  //   });
-  // };
+  const lectureDropHandler = (e) => {
+    e.stopPropagation();
+    console.log(sectionIdx, lectureIdx);
+  };
 
   return (
     <>
@@ -94,6 +83,8 @@ export default function CourseLectureItem({
         draggable
         // onDragStart={(e) => onDrag(e, idx)}
         // onDrop={(e) => onDrop(e, idx)}
+        onDragStart={lectureDragHandler}
+        onDrop={lectureDropHandler}
       >
         <ListItem
           sx={{
