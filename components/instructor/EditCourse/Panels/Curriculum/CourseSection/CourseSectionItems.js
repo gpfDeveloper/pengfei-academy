@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import {
   createCourseSectionAsync,
   dragDropCourseSectionAsync,
+  dragDropLectureOtherSectionAsync,
 } from 'store/course-async';
 import { List, ListItem, IconButton, Typography } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
@@ -23,21 +24,51 @@ export default function CourseSectionItems() {
   const sectionDragHandler = (e, sectionDragIdx) => {
     e.dataTransfer.setData('sectionDragIdx', sectionDragIdx);
   };
-  const sectionDropHandler = (e, sectionDropIdx) => {
+  const sectionOrLectureDropHandler = (e, sectionDropIdx) => {
     const sectionLength = sections.length;
     if (sectionLength <= 1) return;
     let sectionDragIdx = e.dataTransfer.getData('sectionDragIdx');
-    if (sectionDragIdx === '') return;
-    sectionDragIdx = +sectionDragIdx;
-    if (sectionDragIdx === sectionDropIdx) return;
-    dispatch(
-      dragDropCourseSectionAsync({
-        sectionDragIdx,
-        sectionDropIdx,
-        courseId,
-        token,
-      })
-    );
+    //Section Drag / Drop
+    if (sectionDragIdx !== '') {
+      sectionDragIdx = +sectionDragIdx;
+      if (sectionDragIdx === sectionDropIdx) return;
+      dispatch(
+        dragDropCourseSectionAsync({
+          sectionDragIdx,
+          sectionDropIdx,
+          courseId,
+          token,
+        })
+      );
+    }
+    //Lecture Drag / Drop into an empty section.
+    else {
+      let sectionDragIdx = e.dataTransfer.getData('lectureSectionDragIdx');
+      let lectureDragIdx = e.dataTransfer.getData('lectureLectureDragIdx');
+      if (
+        sectionDragIdx === '' ||
+        lectureDragIdx === '' ||
+        sections[sectionDropIdx].lectures.length !== 0
+      )
+        return;
+      sectionDragIdx = +sectionDragIdx;
+      lectureDragIdx = +lectureDragIdx;
+      const sectionDragId = sections[sectionDragIdx].id;
+      const sectionDropId = sections[sectionDropIdx].id;
+      const lectureDropIdx = 0;
+      dispatch(
+        dragDropLectureOtherSectionAsync({
+          token,
+          courseId,
+          sectionDragId,
+          sectionDropId,
+          sectionDragIdx,
+          sectionDropIdx,
+          lectureDragIdx,
+          lectureDropIdx,
+        })
+      );
+    }
   };
 
   // const addSectionHandler = () => {
@@ -98,7 +129,7 @@ export default function CourseSectionItems() {
           <CourseSectionItem
             key={item.id}
             onDrag={sectionDragHandler}
-            onDrop={sectionDropHandler}
+            onDrop={sectionOrLectureDropHandler}
             idx={idx}
             sectionItems={sections}
             // setItems={setItems}

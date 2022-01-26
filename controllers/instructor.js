@@ -386,12 +386,15 @@ export const dragDropLectureOtherSection = async (req, res) => {
   const sectionDrag = await CourseSection.findById(sectionDragId);
   const sectionDrop = await CourseSection.findById(sectionDropId);
   const lectureId = sectionDrag.lectures[lectureDragIdx];
+  const lecture = await Lecture.findById(lectureId);
+  lecture.section = sectionDrop._id;
   sectionDrag.lectures.splice(lectureDragIdx, 1);
   sectionDrop.lectures.splice(lectureDropIdx, 0, lectureId);
   const session = await mongoose.startSession();
   session.startTransaction();
   await sectionDrag.save({ session });
   await sectionDrop.save({ session });
+  await lecture.save({ session });
   await session.commitTransaction();
 
   return res.status(200).send();
