@@ -26,7 +26,9 @@ export default function CourseSectionItems() {
   const sectionDropHandler = (e, sectionDropIdx) => {
     const sectionLength = sections.length;
     if (sectionLength <= 1) return;
-    const sectionDragIdx = +e.dataTransfer.getData('sectionDragIdx');
+    let sectionDragIdx = e.dataTransfer.getData('sectionDragIdx');
+    if (sectionDragIdx === undefined || sectionDragIdx === '') return;
+    sectionDragIdx = +sectionDragIdx;
     if (sectionDragIdx === sectionDropIdx) return;
     dispatch(
       dragDropCourseSectionAsync({
