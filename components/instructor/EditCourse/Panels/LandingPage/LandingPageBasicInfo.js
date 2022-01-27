@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { Controller, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateMyCourseBasicInfoAsync } from 'store/course-async';
@@ -213,14 +214,23 @@ export default function LandingPageBasicInfo() {
         </FormControl>
       </Box>
       {!isSaving && (
-        <Button
-          size="large"
-          variant="contained"
-          type="submit"
-          sx={{ alignSelf: 'flex-start' }}
-        >
-          Save
-        </Button>
+        <Box sx={{ display: 'flex', gap: 2 }}>
+          <Button
+            size="large"
+            variant="contained"
+            type="submit"
+            sx={{ alignSelf: 'flex-start' }}
+          >
+            Save
+          </Button>
+          <Link href={`/course/draft/${courseId}`} passHref>
+            <a target="_blank">
+              <Button size="large" variant="outlined">
+                Preview
+              </Button>
+            </a>
+          </Link>
+        </Box>
       )}
       {isSaving && (
         <LoadingButton loading size="large" sx={{ alignSelf: 'flex-start' }}>

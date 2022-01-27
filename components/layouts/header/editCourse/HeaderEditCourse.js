@@ -64,7 +64,6 @@ export default function HeaderEditCourse() {
             {CREATE_COURSE_STATUS_REVERSE[status]}
           </Typography>
         </Box>
-        <Button variant="outlined">Preview</Button>
       </Toolbar>
     </AppBar>
   );
