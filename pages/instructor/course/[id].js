@@ -39,7 +39,7 @@ function EditCoursePage() {
   }, [dispatch, router.events]);
   return (
     <PageLayout>
-      <Box sx={{ margin: '6rem auto', maxWidth: '1200px' }}>
+      <Box sx={{ margin: '6rem auto' }}>
         {courseId && <EditCourseDetailPage courseId={courseId} />}
       </Box>
     </PageLayout>

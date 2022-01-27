@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import { useEffect } from 'react';
 
-import { Container, CssBaseline } from '@mui/material';
+import { Container, CssBaseline, Box } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
 
 import { useSelector, useDispatch } from 'react-redux';
@@ -27,6 +27,11 @@ export default function PageLayout({ children, title, description }) {
   const user = useSelector((state) => state.user);
   const { loginExpireAt, isInstructorView, isEditCourse } = user;
   const theme = getTheme(isDark);
+
+  let isContentFullWidth = false;
+  if (isInstructorView && isEditCourse) {
+    isContentFullWidth = true;
+  }
 
   useEffect(() => {
     if (loginExpireAt) {
@@ -56,9 +61,16 @@ export default function PageLayout({ children, title, description }) {
       {!isInstructorView && <Header />}
       {isInstructorView && !isEditCourse && <HeaderInstructorView />}
       {isInstructorView && isEditCourse && <HeaderEditCourse />}
-      <Container component="main" sx={{ minHeight: '100vh', marginTop: 8 }}>
-        {children}
-      </Container>
+      {!isContentFullWidth && (
+        <Container component="main" sx={{ minHeight: '100vh', marginTop: 8 }}>
+          {children}
+        </Container>
+      )}
+      {isContentFullWidth && (
+        <Box component="main" sx={{ minHeight: '100vh', marginTop: 8 }}>
+          {children}
+        </Box>
+      )}
       <Footer />
       <Snackbar />
     </ThemeProvider>

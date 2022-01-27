@@ -131,7 +131,7 @@ export default function LandingPageBasicInfo() {
           <TextField
             error={Boolean(errors.description)}
             multiline
-            rows={4}
+            minRows={4}
             helperText={
               errors.description &&
               (errors.description.type === 'required'
