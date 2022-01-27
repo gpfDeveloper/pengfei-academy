@@ -19,6 +19,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 // import DragHandleIcon from '@mui/icons-material/DragHandle';
 import EditIcon from '@mui/icons-material/Edit';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import PlayCircleIcon from '@mui/icons-material/PlayCircle';
 
 import DialogConfirmDelete from 'components/UIs/DialogConfirmDelete';
 import AddEditLectureDialog from './AddEditLectureDialog';
@@ -37,11 +38,14 @@ export default function CourseLectureItem({
   const section = sectionItems[sectionIdx];
   const lecture = section.lectures[lectureIdx];
   const lectureTitle = lecture.title;
+  const contentType = lecture.contentType;
+  const isVideo = contentType === 'video';
+  const article = lecture.article;
   const lectureLabel = `Lecture ${lectureIdx + 1}:`;
   const [isEditLectureDialogOpen, setIsEditLectureDialogOpen] = useState(false);
   const [isConfirmDeleteDialogOpen, setIsConfirmDeleteDialogOpen] =
     useState(false);
-  const editLectureTitleHandler = ({ title, contentType }) => {
+  const editLectureTitleHandler = ({ title, contentType, article }) => {
     setIsEditLectureDialogOpen(false);
     const courseId = section.course;
     const lectureId = lecture.id;
@@ -54,6 +58,7 @@ export default function CourseLectureItem({
         token,
         title,
         contentType,
+        article,
       })
     );
   };
@@ -150,7 +155,11 @@ export default function CourseLectureItem({
               {lectureLabel}
             </Typography>
             <Box sx={{ display: 'flex', gap: 1, flexGrow: 1 }}>
-              <DescriptionIcon fontSize="small" />
+              {isVideo ? (
+                <PlayCircleIcon fontSize="small" />
+              ) : (
+                <DescriptionIcon fontSize="small" />
+              )}
               <Typography>{lectureTitle}</Typography>
             </Box>
             <Box>
@@ -178,6 +187,8 @@ export default function CourseLectureItem({
         <AddEditLectureDialog
           isOpen={isEditLectureDialogOpen}
           title={lectureTitle}
+          contentType={contentType}
+          article={article}
           onCancel={() => setIsEditLectureDialogOpen(false)}
           onSave={editLectureTitleHandler}
         />
