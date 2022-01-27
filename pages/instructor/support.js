@@ -1,16 +1,14 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { setInstructorView } from 'store/user';
+import { useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 import { Stack, Button, Typography } from '@mui/material';
 import MailIcon from '@mui/icons-material/Mail';
 import dynamic from 'next/dynamic';
-import PageLayout from 'components/layouts/PageLayout';
+import PageLayoutInstructor from 'components/layouts/PageLayoutInstructor';
 
 function InstructorSupportPage() {
   const router = useRouter();
-  const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
   const { isLogin, isInstructor, name, token } = user;
   useEffect(() => {
@@ -18,10 +16,8 @@ function InstructorSupportPage() {
       router.replace('/login');
     } else if (!isInstructor) {
       router.replace('/');
-    } else {
-      dispatch(setInstructorView());
     }
-  }, [isLogin, router, isInstructor, dispatch]);
+  }, [isLogin, router, isInstructor]);
   const [convId, setConvId] = useState(null);
 
   useEffect(() => {
@@ -39,7 +35,7 @@ function InstructorSupportPage() {
     router.push(`/message/${convId}`);
   };
   return (
-    <PageLayout>
+    <PageLayoutInstructor>
       {isLogin && isInstructor && (
         <Stack sx={{ maxWidth: 800, margin: '10rem auto', gap: '4rem' }}>
           <Typography component="h3" variant="h6">
@@ -58,7 +54,7 @@ function InstructorSupportPage() {
           )}
         </Stack>
       )}
-    </PageLayout>
+    </PageLayoutInstructor>
   );
 }
 

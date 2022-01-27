@@ -1,4 +1,4 @@
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
@@ -6,11 +6,9 @@ import { AppBar, Toolbar, Box, Typography, Button } from '@mui/material';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import { CREATE_COURSE_STATUS_REVERSE } from 'utils/constants';
 import { sliceText } from 'utils';
-import { setIsEditCourse } from 'store/user';
 
 export default function HeaderEditCourse() {
   const router = useRouter();
-  const dispatch = useDispatch();
   const course = useSelector((state) => state.course);
   const { title, status } = course;
   const theme = useTheme();
@@ -25,7 +23,6 @@ export default function HeaderEditCourse() {
   }
   const clickBackHandler = () => {
     router.push('/instructor');
-    dispatch(setIsEditCourse(false));
   };
 
   return (

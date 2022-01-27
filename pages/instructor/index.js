@@ -1,14 +1,12 @@
 import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { setInstructorView } from 'store/user';
+import { useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 import dynamic from 'next/dynamic';
-import PageLayout from 'components/layouts/PageLayout';
 import InstructorDashboard from 'components/instructor/InstructorDashboard';
+import PageLayoutInstructor from 'components/layouts/PageLayoutInstructor';
 
 function InstructorPage() {
   const router = useRouter();
-  const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
   const { isLogin, isInstructor } = user;
   useEffect(() => {
@@ -16,14 +14,12 @@ function InstructorPage() {
       router.replace('/login');
     } else if (!isInstructor) {
       router.replace('/');
-    } else {
-      dispatch(setInstructorView());
     }
-  }, [isLogin, router, isInstructor, dispatch]);
+  }, [isLogin, router, isInstructor]);
   return (
-    <PageLayout>
+    <PageLayoutInstructor>
       {isLogin && isInstructor && <InstructorDashboard />}
-    </PageLayout>
+    </PageLayoutInstructor>
   );
 }
 

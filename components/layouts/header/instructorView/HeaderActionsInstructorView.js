@@ -7,7 +7,6 @@ import LightModeIcon from '@mui/icons-material/LightMode';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { setDark, setLight } from 'store/theme';
-import { setStudentView } from 'store/user';
 
 import HeaderActionsAccount from '../HeaderActionsAccount';
 import HeaderActionsNotification from '../HeaderActionsNotification';
@@ -18,7 +17,6 @@ function HeaderActionsInstructorView() {
   const isDark = useSelector((state) => state.theme.isDark);
   const dispatch = useDispatch();
   const studentViewHandler = () => {
-    dispatch(setStudentView());
     router.push('/');
   };
   return (

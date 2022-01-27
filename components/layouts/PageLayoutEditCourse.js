@@ -1,21 +1,21 @@
 import Head from 'next/head';
 import { useEffect } from 'react';
 
-import { Container, CssBaseline } from '@mui/material';
+import { CssBaseline, Box } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { logoutAsync } from 'store/user-async';
 
-import Header from './header/Header';
 import Footer from './Footer';
 import { getTheme } from 'utils/theme';
 import Snackbar from 'components/UIs/Snackbar';
+import HeaderEditCourse from './header/editCourse/HeaderEditCourse';
 
 let logoutTimer;
 const companyName = 'Pengfei Academy';
 
-export default function PageLayout({ children, title, description }) {
+export default function PageLayoutEditCourse({ children, title, description }) {
   const defaultTitle = `Online Courses - Learn Anything On Your Schedule  | ${companyName}`;
   const defaultDescription =
     'Pengfei Acadamy is an online learning and teaching marketplace. Learn web development, algorithm, programming in general and more.';
@@ -51,10 +51,10 @@ export default function PageLayout({ children, title, description }) {
           content={description || defaultDescription}
         ></meta>
       </Head>
-      <Header />
-      <Container component="main" sx={{ minHeight: '100vh', marginTop: 8 }}>
+      <HeaderEditCourse />
+      <Box component="main" sx={{ minHeight: '100vh', marginTop: 8 }}>
         {children}
-      </Container>
+      </Box>
       <Footer />
       <Snackbar />
     </ThemeProvider>
