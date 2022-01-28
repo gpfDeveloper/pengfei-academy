@@ -1,4 +1,5 @@
 import { Box } from '@mui/material';
+import CourseLandingPageContent from './CourseLandingPageContent';
 import CourseLandingPageHeader from './CourseLandingPageHeader';
 
 export default function CourseLandingPage({ course }) {
@@ -6,7 +7,8 @@ export default function CourseLandingPage({ course }) {
     return <></>;
   }
   console.log(course);
-  const { author, title, subtitle, language, updatedAt, price } = course;
+  const { author, title, subtitle, language, updatedAt, price, sections } =
+    course;
   return (
     <Box sx={{ mt: 12 }}>
       <CourseLandingPageHeader
@@ -17,6 +19,7 @@ export default function CourseLandingPage({ course }) {
         updatedAt={updatedAt}
         price={price}
       />
+      <CourseLandingPageContent sections={sections} />
     </Box>
   );
 }
