@@ -1,5 +1,5 @@
 import NextLink from 'next/link';
-import { Avatar, Box, Divider, Typography, Link } from '@mui/material';
+import { Avatar, Box, Typography, Link } from '@mui/material';
 import ReactMarkdown from 'react-markdown';
 
 export default function CourseLandingPageInstructor({ instructor }) {
@@ -34,11 +34,8 @@ export default function CourseLandingPageInstructor({ instructor }) {
           <Typography color="text.secondary">{headline}</Typography>
         </Box>
       </Box>
-      <Box mt={2}>
-        <Divider />
-        <Box mt={2}>
-          <ReactMarkdown>{bio}</ReactMarkdown>
-        </Box>
+      <Box>
+        <ReactMarkdown>{bio}</ReactMarkdown>
       </Box>
     </Box>
   );

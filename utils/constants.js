@@ -1,14 +1,12 @@
 export const PAGES = [
   { label: 'Home', path: '/' },
   { label: 'Course', path: '/course' },
-  { label: 'Blog', path: '/blog' },
   { label: 'Teach here', path: '/teaching' },
 ];
 
 export const PAGES_INSTRUCTOR = [
   { label: 'Home', path: '/' },
   { label: 'Course', path: '/course' },
-  { label: 'Blog', path: '/blog' },
   { label: 'Instructor', path: '/instructor' },
 ];
 
