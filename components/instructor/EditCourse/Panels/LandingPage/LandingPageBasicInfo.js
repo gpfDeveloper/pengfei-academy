@@ -223,7 +223,10 @@ export default function LandingPageBasicInfo() {
           >
             Save
           </Button>
-          <Link href={`/course/draft/${courseId}`} passHref>
+          <Link
+            href={{ pathname: '/course/draft/[courseId]', query: { courseId } }}
+            passHref
+          >
             <a target="_blank">
               <Button size="large" variant="outlined">
                 Preview

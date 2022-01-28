@@ -1,15 +1,28 @@
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { setDark, setLight } from 'store/theme';
 import { useRouter } from 'next/router';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { AppBar, Toolbar, Box, Typography, Button } from '@mui/material';
+import {
+  AppBar,
+  Toolbar,
+  Box,
+  Typography,
+  Button,
+  Tooltip,
+  IconButton,
+} from '@mui/material';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import DarkModeIcon from '@mui/icons-material/DarkMode';
+import LightModeIcon from '@mui/icons-material/LightMode';
 import { CREATE_COURSE_STATUS_REVERSE } from 'utils/constants';
 import { sliceText } from 'utils';
 
 export default function HeaderEditCourse() {
   const router = useRouter();
+  const dispatch = useDispatch();
   const course = useSelector((state) => state.course);
+  const isDark = useSelector((state) => state.theme.isDark);
   const { title, status } = course;
   const theme = useTheme();
   const isBelowMd = useMediaQuery(theme.breakpoints.down('md'));
@@ -63,6 +76,22 @@ export default function HeaderEditCourse() {
           >
             {CREATE_COURSE_STATUS_REVERSE[status]}
           </Typography>
+        </Box>
+        <Box>
+          {!isDark && (
+            <Tooltip title="Dark mode">
+              <IconButton color="inherit" onClick={() => dispatch(setDark())}>
+                <DarkModeIcon />
+              </IconButton>
+            </Tooltip>
+          )}
+          {isDark && (
+            <Tooltip title="Light mode">
+              <IconButton color="inherit" onClick={() => dispatch(setLight())}>
+                <LightModeIcon />
+              </IconButton>
+            </Tooltip>
+          )}
         </Box>
       </Toolbar>
     </AppBar>
