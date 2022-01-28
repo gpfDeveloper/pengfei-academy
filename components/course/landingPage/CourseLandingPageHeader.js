@@ -44,7 +44,7 @@ export default function CourseLandingPageHeader({
         <Box>
           <Typography>
             Created by{' '}
-            <NextLink href={`/user/${author.id}`} passHref>
+            <NextLink href={'#course-landing-page-instructor'} passHref>
               <Link>{author.name}</Link>
             </NextLink>
           </Typography>

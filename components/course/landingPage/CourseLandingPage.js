@@ -3,6 +3,7 @@ import CourseLandingPageContent from './CourseLandingPageContent';
 import CourseLandingPageDesc from './CourseLandingPageDesc';
 import CourseLandingPageForWho from './CourseLandingPageForWho';
 import CourseLandingPageHeader from './CourseLandingPageHeader';
+import CourseLandingPageInstructor from './CourseLandingPageInstructor';
 import CourseLandingPageLearnObjs from './CourseLandingPageLearnObjs';
 import CourseLandingPagePreReqs from './CourseLandingPagePreReqs';
 
@@ -39,6 +40,7 @@ export default function CourseLandingPage({ course }) {
       <CourseLandingPagePreReqs preReqs={prerequisites} />
       <CourseLandingPageDesc description={description} />
       <CourseLandingPageForWho forWho={courseForWho} />
+      <CourseLandingPageInstructor instructor={author} />
     </Box>
   );
 }
