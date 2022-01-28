@@ -2,6 +2,7 @@ import { Box } from '@mui/material';
 import CourseLandingPageContent from './CourseLandingPageContent';
 import CourseLandingPageHeader from './CourseLandingPageHeader';
 import CourseLandingPageLearnObjs from './CourseLandingPageLearnObjs';
+import CourseLandingPagePreReqs from './CourseLandingPagePreReqs';
 
 export default function CourseLandingPage({ course }) {
   if (!course) {
@@ -17,6 +18,7 @@ export default function CourseLandingPage({ course }) {
     price,
     sections,
     learningObjectives,
+    prerequisites,
   } = course;
   return (
     <Box sx={{ mt: 12, display: 'flex', flexDirection: 'column', gap: 4 }}>
@@ -30,6 +32,7 @@ export default function CourseLandingPage({ course }) {
       />
       <CourseLandingPageLearnObjs objectives={learningObjectives} />
       <CourseLandingPageContent sections={sections} />
+      <CourseLandingPagePreReqs preReqs={prerequisites} />
     </Box>
   );
 }
