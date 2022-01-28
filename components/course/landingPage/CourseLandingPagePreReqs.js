@@ -1,4 +1,4 @@
-import { Paper, Typography, List, ListItem, Box } from '@mui/material';
+import { Typography, List, ListItem, Box } from '@mui/material';
 
 const PreReqItem = ({ item }) => {
   return (
@@ -26,7 +26,7 @@ const PreReqItem = ({ item }) => {
 
 export default function CourseLandingPagePreReqs({ preReqs }) {
   return (
-    <Paper sx={{ padding: 2 }}>
+    <Box sx={{ padding: 2 }}>
       <Typography variant="h4" mb={2}>
         Requirements
       </Typography>
@@ -35,6 +35,6 @@ export default function CourseLandingPagePreReqs({ preReqs }) {
           <PreReqItem key={item} item={item} />
         ))}
       </List>
-    </Paper>
+    </Box>
   );
 }
