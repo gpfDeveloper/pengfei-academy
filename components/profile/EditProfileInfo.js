@@ -78,7 +78,7 @@ export default function EditProfileInfo() {
         rules={{ maxLength: 6000 }}
         render={({ field }) => (
           <TextField
-            rows={4}
+            minRows={4}
             multiline
             error={Boolean(errors.bio)}
             helperText={errors.bio && 'Biography has at most 6000 charactors'}

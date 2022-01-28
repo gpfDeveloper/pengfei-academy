@@ -25,10 +25,21 @@ function CourseLandingScreenDraft() {
     const fetchCourse = async () => {
       setLoading(true);
       try {
-        const data = await axios.get(`/api/instructor/course/${courseId}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        setCourse(data.data.course);
+        const courseData = await axios.get(
+          `/api/instructor/course/${courseId}`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+        const _course = courseData.data.course;
+        const authorId = _course.author;
+        const instructorData = await axios.get(
+          `/api/profile/public/${authorId}`,
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+        _course.author = instructorData.data;
+        _course.author.id = authorId;
+        setCourse(_course);
         setLoading(false);
       } catch (err) {
         setLoading(false);
