@@ -1,6 +1,7 @@
 import { Box } from '@mui/material';
 import CourseLandingPageContent from './CourseLandingPageContent';
 import CourseLandingPageDesc from './CourseLandingPageDesc';
+import CourseLandingPageForWho from './CourseLandingPageForWho';
 import CourseLandingPageHeader from './CourseLandingPageHeader';
 import CourseLandingPageLearnObjs from './CourseLandingPageLearnObjs';
 import CourseLandingPagePreReqs from './CourseLandingPagePreReqs';
@@ -21,6 +22,7 @@ export default function CourseLandingPage({ course }) {
     learningObjectives,
     prerequisites,
     description,
+    courseForWho,
   } = course;
   return (
     <Box sx={{ mt: 12, display: 'flex', flexDirection: 'column', gap: 4 }}>
@@ -36,6 +38,7 @@ export default function CourseLandingPage({ course }) {
       <CourseLandingPageContent sections={sections} />
       <CourseLandingPagePreReqs preReqs={prerequisites} />
       <CourseLandingPageDesc description={description} />
+      <CourseLandingPageForWho forWho={courseForWho} />
     </Box>
   );
 }

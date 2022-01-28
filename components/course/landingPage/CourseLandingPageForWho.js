@@ -1,6 +1,6 @@
 import { Typography, List, ListItem, Box } from '@mui/material';
 
-const PreReqItem = ({ item }) => {
+const ForWhoItem = ({ item }) => {
   return (
     <ListItem
       sx={{
@@ -24,15 +24,15 @@ const PreReqItem = ({ item }) => {
   );
 };
 
-export default function CourseLandingPagePreReqs({ preReqs }) {
+export default function CourseLandingPageForWho({ forWho }) {
   return (
     <Box>
       <Typography variant="h4" mb={1}>
-        Requirements
+        Who this course is for:
       </Typography>
       <List>
-        {preReqs.map((item) => (
-          <PreReqItem key={item} item={item} />
+        {forWho.map((item) => (
+          <ForWhoItem key={item} item={item} />
         ))}
       </List>
     </Box>

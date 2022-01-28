@@ -41,7 +41,7 @@ export default function CourseLandingPageHeader({
           {title}
         </Typography>
         <Typography variant="h6">{subtitle}</Typography>
-        <Box sx={{ color: 'text.secondary' }}>
+        <Box>
           <Typography>
             Created by{' '}
             <NextLink href={`/user/${author.id}`} passHref>
