@@ -47,7 +47,7 @@ const CourseSection = ({ section }) => {
 
 export default function CourseLandingPageContent({ sections }) {
   return (
-    <Box sx={{ mt: 4 }}>
+    <Box>
       <Typography variant="h4" mb={2}>
         Course content
       </Typography>
