@@ -76,7 +76,7 @@ export default function CourseLearnPageContent({
       sx={{
         position: 'relative',
         overflow: 'auto',
-        maxHeight: 600,
+        maxHeight: '90vh',
         flex: '0 0 400px',
       }}
     >
