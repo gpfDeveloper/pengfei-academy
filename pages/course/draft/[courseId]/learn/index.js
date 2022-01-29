@@ -2,10 +2,10 @@ import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 import dynamic from 'next/dynamic';
-import PageLayout from 'components/layouts/PageLayout';
 import Spinner from 'components/UIs/Spinner';
 import axios from 'axios';
 import CourseLearnPage from 'components/course/learnPage/CourseLearnPage';
+import PageLayoutLearning from 'components/layouts/PageLayoutLearning';
 
 function CourseLearnScreenDraft() {
   const router = useRouter();
@@ -50,12 +50,12 @@ function CourseLearnScreenDraft() {
     }
   }, [courseId, token]);
   return (
-    <PageLayout>
+    <PageLayoutLearning course={course} isPreview={true}>
       {loading && <Spinner />}
       {!loading && isLogin && isInstructor && (
         <CourseLearnPage course={course} />
       )}
-    </PageLayout>
+    </PageLayoutLearning>
   );
 }
 
