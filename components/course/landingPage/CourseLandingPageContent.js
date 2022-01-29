@@ -29,10 +29,10 @@ const Lecture = ({ lecture }) => {
   );
 };
 
-const CourseSection = ({ section }) => {
+const CourseSection = ({ section, defaultExpanded }) => {
   const { title, lectures } = section;
   return (
-    <Accordion>
+    <Accordion defaultExpanded={defaultExpanded}>
       <AccordionSummary expandIcon={<ExpandMoreIcon />}>
         <Typography>{title}</Typography>
       </AccordionSummary>
@@ -45,15 +45,35 @@ const CourseSection = ({ section }) => {
   );
 };
 
+const ContentSummary = ({ sections }) => {
+  const sectionLength = sections.length;
+  let lectureLength = 0;
+  for (const section of sections) {
+    lectureLength += section.lectures.length;
+  }
+  return (
+    <Box>
+      <Typography variant="body2">{`${sectionLength} sections • ${lectureLength} lectures`}</Typography>
+    </Box>
+  );
+};
+
 export default function CourseLandingPageContent({ sections }) {
   return (
     <Box>
       <Typography variant="h4" mb={2}>
         Course content
       </Typography>
-      {sections.map((section) => (
-        <CourseSection key={section.id} section={section} />
-      ))}
+      <ContentSummary sections={sections} />
+      {sections.map((section, idx) => {
+        return (
+          <CourseSection
+            key={section.id}
+            section={section}
+            defaultExpanded={idx === 0}
+          />
+        );
+      })}
     </Box>
   );
 }
