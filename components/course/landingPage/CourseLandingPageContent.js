@@ -34,7 +34,7 @@ const CourseSection = ({ section, defaultExpanded }) => {
   return (
     <Accordion defaultExpanded={defaultExpanded}>
       <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-        <Typography>{title}</Typography>
+        <Typography variant="h6">{title}</Typography>
       </AccordionSummary>
       <AccordionDetails>
         {lectures.map((lecture) => (

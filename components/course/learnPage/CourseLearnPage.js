@@ -1,9 +1,28 @@
-import React from 'react';
+import { useState } from 'react';
+import { Box } from '@mui/material';
+import CourseLearnPageContent from './CourseLearnPageContent';
+import CourseLearnPageLecture from './CourseLearnPageLecture';
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 export default function CourseLearnPage({ course }) {
+  const [currentLecture, setCurrentLecture] = useState(
+    course?.sections[0]?.lectures[0]
+  );
+  const theme = useTheme();
+  const isBelowLg = useMediaQuery(theme.breakpoints.down('lg'));
   if (!course) {
     return <></>;
   }
-  console.log(course);
-  return <div>Course learn page</div>;
+  const { sections } = course;
+  return (
+    <Box sx={{ display: 'flex', flexDirection: isBelowLg ? 'column' : 'row' }}>
+      <CourseLearnPageLecture lecture={currentLecture} />
+      <CourseLearnPageContent
+        sections={sections}
+        currentLecture={currentLecture}
+        setCurrentLecture={setCurrentLecture}
+      />
+    </Box>
+  );
 }
