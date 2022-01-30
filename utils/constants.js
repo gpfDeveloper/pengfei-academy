@@ -29,17 +29,10 @@ export const NOTIFICATION_TYPES = {
   message: 'message',
 };
 
-export const CREATE_COURSE_STATUS = {
-  draft: 0,
-  review: 1,
-  published: 2,
-};
-
-export const CREATE_COURSE_STATUS_REVERSE = {
-  0: 'draft',
-  1: 'review',
-  2: 'approved',
-  3: 'published',
+export const COURSE_REVIEW_STATUS = {
+  reviewing: 'Reviewing',
+  approved: 'Approved',
+  needsFixes: 'Needs Fixes',
 };
 
 export const COURSE_CATEGORY = {

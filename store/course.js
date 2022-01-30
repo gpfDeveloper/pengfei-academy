@@ -13,7 +13,7 @@ const initialState = {
   learningObjectives: [],
   prerequisites: [],
   courseForWho: [],
-  status: 0,
+  isPublished: false,
   price: '',
   sections: [],
 };

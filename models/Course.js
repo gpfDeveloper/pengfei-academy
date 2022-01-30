@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
-import { CREATE_COURSE_STATUS, COURSE_LANGUAGE } from 'utils/constants';
+import { COURSE_LANGUAGE, COURSE_REVIEW_STATUS } from 'utils/constants';
 import { getAllCourseCategories, getAllCourseSubcategories } from 'utils';
-const { draft, review, published } = CREATE_COURSE_STATUS;
+const { reviewing, approved, needsFixes } = COURSE_REVIEW_STATUS;
 
 const courseLanguages = Object.keys(COURSE_LANGUAGE);
 const courseCategories = getAllCourseCategories();
@@ -15,11 +15,13 @@ const CourseSchema = new mongoose.Schema(
       ref: 'User',
     },
     title: { type: String, required: true, trim: true, maxlength: 60 },
-    status: {
-      type: Number,
-      required: true,
-      default: draft,
-      enum: [draft, review, published],
+    isPublished: {
+      type: Boolean,
+      default: false,
+    },
+    reviewStatus: {
+      type: String,
+      enum: [reviewing, approved, needsFixes],
     },
     subtitle: { type: String, trim: true, maxlength: 120 },
     description: { type: String, trim: true, maxlength: 6000 },

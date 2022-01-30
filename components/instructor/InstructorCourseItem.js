@@ -9,10 +9,8 @@ import {
   CardActionArea,
 } from '@mui/material';
 
-import { CREATE_COURSE_STATUS_REVERSE } from 'utils/constants';
-
 export default function InstructorCourseItem({ item }) {
-  const { id, title, thumbnail, status } = item;
+  const { id, title, thumbnail, isPublished } = item;
   const router = useRouter();
   const clickHandler = () => {
     router.push(`/instructor/course/${id}`);
@@ -33,7 +31,7 @@ export default function InstructorCourseItem({ item }) {
               {title}
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              {CREATE_COURSE_STATUS_REVERSE[status]}
+              {isPublished ? 'PUBLISHED' : 'DRAFT'}
             </Typography>
           </CardContent>
         </Box>

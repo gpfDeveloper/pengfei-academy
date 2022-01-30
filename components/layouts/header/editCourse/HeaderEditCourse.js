@@ -15,7 +15,6 @@ import {
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import LightModeIcon from '@mui/icons-material/LightMode';
-import { CREATE_COURSE_STATUS_REVERSE } from 'utils/constants';
 import { sliceText } from 'utils';
 
 export default function HeaderEditCourse() {
@@ -23,7 +22,7 @@ export default function HeaderEditCourse() {
   const dispatch = useDispatch();
   const course = useSelector((state) => state.course);
   const isDark = useSelector((state) => state.theme.isDark);
-  const { title, status } = course;
+  const { title, isPublished } = course;
   const theme = useTheme();
   const isBelowMd = useMediaQuery(theme.breakpoints.down('md'));
   const isBelowSm = useMediaQuery(theme.breakpoints.down('sm'));
@@ -74,7 +73,7 @@ export default function HeaderEditCourse() {
               color: 'text.secondary',
             }}
           >
-            {CREATE_COURSE_STATUS_REVERSE[status]}
+            {isPublished ? 'PUBLISHED' : 'DRAFT'}
           </Typography>
         </Box>
         <Box>
