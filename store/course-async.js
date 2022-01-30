@@ -11,8 +11,11 @@ import {
   dragDropSection,
   dragDropLectureSameSection,
   dragDropLectureOtherSection,
+  updateReviewStatus,
 } from './course';
 import { setSnackbar } from './snackbar';
+
+import { COURSE_REVIEW_STATUS } from 'utils/constants';
 
 export const createCourseAsync =
   ({ title, token }) =>
@@ -509,6 +512,26 @@ export const dragDropLectureOtherSectionAsync =
         setSnackbar({
           severity: 'error',
           message: message || 'Reorder lecture failed, please try again later.',
+        })
+      );
+    }
+  };
+
+export const submitForReviewAsync =
+  ({ courseId, token }) =>
+  async (dispatch) => {
+    try {
+      // await axios.get(`/api/instructor/course/${courseId}/submitForReview`, {
+      //   headers: { Authorization: `Bearer ${token}` },
+      // });
+      dispatch(updateReviewStatus(COURSE_REVIEW_STATUS.reviewing));
+    } catch (error) {
+      const message = error.response?.data?.message;
+      dispatch(
+        setSnackbar({
+          severity: 'error',
+          message:
+            message || 'Submit for review failed, please try again later.',
         })
       );
     }

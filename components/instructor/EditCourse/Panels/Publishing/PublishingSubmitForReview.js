@@ -1,5 +1,6 @@
-import React from 'react';
+import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { submitForReviewAsync } from 'store/course-async';
 import {
   Box,
   Button,
@@ -12,14 +13,17 @@ import {
 } from '@mui/material';
 import MuiCheckIcon from '@mui/icons-material/Check';
 import MuiCloseIcon from '@mui/icons-material/Close';
+import Tips from 'components/UIs/Tips';
 
 const CheckIcon = () => <MuiCheckIcon color="success" />;
 const CloseIcon = () => <MuiCloseIcon color="error" />;
 
 export default function PublishingSubmitForReview() {
+  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
   const course = useSelector((state) => state.course);
-  console.log(course);
+  const user = useSelector((state) => state.user);
+  const { token } = user;
   const {
     learningObjectives,
     prerequisites,
@@ -31,6 +35,7 @@ export default function PublishingSubmitForReview() {
     subcategory,
     description,
     price,
+    id: courseId,
   } = course;
   let lecutureCount = 0;
   for (const section of sections) {
@@ -102,6 +107,12 @@ export default function PublishingSubmitForReview() {
     if (hasError) break;
   }
 
+  const submitForReviewHandler = async () => {
+    setLoading(true);
+    await dispatch(submitForReviewAsync({ token, courseId }));
+    setLoading(false);
+  };
+
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
       <Typography variant="h6">
@@ -149,13 +160,23 @@ export default function PublishingSubmitForReview() {
           ))}
         </List>
       </Box>
-      <Button size="large" variant="contained" disabled={hasError}>
+      <Button
+        size="large"
+        variant="contained"
+        disabled={hasError || loading}
+        onClick={submitForReviewHandler}
+      >
         Submit for review
       </Button>
-      <Typography>
-        Your course will be published on the marketplace automatically after
-        review.
-      </Typography>
+      <Tips
+        title="For Your Information"
+        content={
+          <Typography>
+            Your course will be published on the marketplace automatically after
+            review.
+          </Typography>
+        }
+      />
     </Box>
   );
 }

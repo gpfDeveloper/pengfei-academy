@@ -14,6 +14,7 @@ const initialState = {
   prerequisites: [],
   courseForWho: [],
   isPublished: false,
+  reviewStatus: '',
   price: '',
   sections: [],
 };
@@ -108,6 +109,9 @@ const courseSlice = createSlice({
       lecturesDrag.splice(lectureDragIdx, 1);
       lecturesDrop.splice(lectureDropIdx, 0, lecuture);
     },
+    updateReviewStatus: (state, { payload }) => {
+      state.reviewStatus = payload;
+    },
   },
 });
 
@@ -123,6 +127,7 @@ export const {
   dragDropSection,
   dragDropLectureSameSection,
   dragDropLectureOtherSection,
+  updateReviewStatus,
 } = courseSlice.actions;
 
 export default courseSlice.reducer;
