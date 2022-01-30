@@ -16,10 +16,6 @@ const CourseReviewRequestSchema = new mongoose.Schema(
       unique: true,
       ref: 'Course',
     },
-    courseTitle: {
-      type: String,
-      required: true,
-    },
     status: {
       type: String,
       default: reviewing,

@@ -6,6 +6,7 @@ import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
 import AdminUserInfo from './AdminUserInfo';
 import AdminTeachRequest from './AdminTeachRequest';
+import AdminCourseReviewRequest from './AdminCourseReviewRequest';
 
 const Tab = styled(MuiTab)({
   textTransform: 'none',
@@ -40,6 +41,7 @@ export default function AdminPanel() {
         <Tabs value={value} onChange={handleChange}>
           <Tab label="Users" />
           <Tab label="Teaching Requests" />
+          <Tab label="Course Review Requests" />
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>
@@ -47,6 +49,9 @@ export default function AdminPanel() {
       </TabPanel>
       <TabPanel value={value} index={1}>
         <AdminTeachRequest />
+      </TabPanel>
+      <TabPanel value={value} index={2}>
+        <AdminCourseReviewRequest />
       </TabPanel>
     </>
   );

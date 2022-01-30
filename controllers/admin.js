@@ -1,6 +1,7 @@
 import User from 'models/User';
 import TeachRequest from 'models/TeachRequest';
 import Notification from 'models/Notification';
+import CourseReviewRequest from 'models/CourseReviewRequest';
 import db from 'utils/db';
 import { TEACH_REQUEST_STATUS } from 'utils/constants';
 
@@ -28,7 +29,7 @@ export const getTeachRequests = async (req, res) => {
   );
 };
 
-export const updateComment = async (req, res) => {
+export const updateTeachReqComment = async (req, res) => {
   const { comment } = req.body;
   const teachRequestId = req.query.id;
   await db.connect();
@@ -38,7 +39,7 @@ export const updateComment = async (req, res) => {
   res.status(200).send();
 };
 
-export const rejectRequest = async (req, res) => {
+export const rejectTeachRequest = async (req, res) => {
   const teachRequestId = req.query.id;
   await db.connect();
   const teachRequest = await TeachRequest.findById(teachRequestId).exec();
@@ -50,7 +51,7 @@ export const rejectRequest = async (req, res) => {
   res.status(200).send();
 };
 
-export const approveRequest = async (req, res) => {
+export const approveTeachRequest = async (req, res) => {
   const teachRequestId = req.query.id;
   await db.connect();
   const teachRequest = await TeachRequest.findById(teachRequestId).exec();
@@ -73,11 +74,29 @@ export const approveRequest = async (req, res) => {
   res.status(200).send();
 };
 
-export const setHasMeeting = async (req, res) => {
+export const setTeachReqHasMeeting = async (req, res) => {
   const teachRequestId = req.query.id;
   await db.connect();
   const teachRequest = await TeachRequest.findById(teachRequestId).exec();
   teachRequest.hasMeeting = true;
   await teachRequest.save();
   res.status(200).send();
+};
+
+export const getCourseReviewReqs = async (req, res) => {
+  await db.connect();
+
+  const courseReviewReqs = await CourseReviewRequest.find().populate([
+    { path: 'user', select: ['name', 'email'] },
+    { path: 'course', select: ['title'] },
+  ]);
+
+  res.status(200).json(
+    courseReviewReqs.map((item) => ({
+      ...item.toObject({ getters: true }),
+      userName: item.user.name,
+      userEmail: item.user.email,
+      courseTitle: item.course.title,
+    }))
+  );
 };
