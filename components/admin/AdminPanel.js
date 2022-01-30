@@ -12,15 +12,10 @@ const Tab = styled(MuiTab)({
 });
 
 function TabPanel(props) {
-  const { children, value, index, ...other } = props;
+  const { children, value, index } = props;
 
   return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`tabpanel-${index}`}
-      {...other}
-    >
+    <div hidden={value !== index}>
       {value === index && <Box sx={{ p: 4 }}>{children}</Box>}
     </div>
   );
@@ -31,12 +26,6 @@ TabPanel.propTypes = {
   index: PropTypes.number.isRequired,
   value: PropTypes.number.isRequired,
 };
-
-function a11yProps(index) {
-  return {
-    id: `tab-${index}`,
-  };
-}
 
 export default function AdminPanel() {
   const [value, setValue] = React.useState(0);
@@ -49,8 +38,8 @@ export default function AdminPanel() {
     <>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs value={value} onChange={handleChange}>
-          <Tab label="Users" {...a11yProps(0)} />
-          <Tab label="Teaching Requests" {...a11yProps(1)} />
+          <Tab label="Users" />
+          <Tab label="Teaching Requests" />
         </Tabs>
       </Box>
       <TabPanel value={value} index={0}>

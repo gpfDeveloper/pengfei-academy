@@ -1,16 +1,22 @@
+import NextLink from 'next/link';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { Card, Typography, Box, Tooltip, Badge, Divider } from '@mui/material';
+import {
+  Card,
+  Typography,
+  Box,
+  Tooltip,
+  Badge,
+  Divider,
+  Link,
+} from '@mui/material';
 import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
 import PersonIcon from '@mui/icons-material/Person';
 import EmailIcon from '@mui/icons-material/Email';
-import MessageIcon from '@mui/icons-material/Message';
-import ArticleIcon from '@mui/icons-material/Article';
-import WorkIcon from '@mui/icons-material/Work';
 
 const roleColorMap = {
   User: 'info',
-  Administrator: 'success',
+  Admin: 'success',
   Instructor: 'primary',
 };
 
@@ -20,8 +26,6 @@ export default function AdminUserInfoCurrent({
   email,
   role,
   registeredAt,
-  headline,
-  bio,
 }) {
   const theme = useTheme();
   const isBelowMd = useMediaQuery(theme.breakpoints.down('md'));
@@ -49,13 +53,9 @@ export default function AdminUserInfoCurrent({
     >
       <Badge badgeContent={role} color={roleColorMap[role]}></Badge>
       <Box sx={rowStyle}>
-        <Typography>
-          {' '}
-          <Tooltip title="Id">
-            <ArticleIcon />
-          </Tooltip>{' '}
-          {id}
-        </Typography>
+        <NextLink href={`/user/${id}`} passHref>
+          <Link>{id}</Link>
+        </NextLink>
         <Typography>
           <Tooltip title="Registered At">
             <AppRegistrationIcon />
@@ -81,25 +81,6 @@ export default function AdminUserInfoCurrent({
         </Typography>
       </Box>
       <Divider />
-      <Typography>
-        <Tooltip title="Headline">
-          <WorkIcon />
-        </Tooltip>
-        {headline}
-      </Typography>
-      <Divider />
-      <Typography
-        sx={{
-          maxWidth: '40rem',
-          overflowWrap: 'break-word',
-          overflow: isBelowMd ? 'scroll' : undefined,
-        }}
-      >
-        <Tooltip title="Bio">
-          <MessageIcon />
-        </Tooltip>{' '}
-        {bio}
-      </Typography>
     </Card>
   );
 }

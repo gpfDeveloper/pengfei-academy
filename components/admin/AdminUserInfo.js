@@ -36,18 +36,6 @@ const cols = [
     headerName: 'Email',
     width: 150,
   },
-  {
-    field: 'headline',
-    headerName: 'Headline',
-    sortable: false,
-    width: 120,
-  },
-  {
-    field: 'bio',
-    headerName: 'Bio',
-    sortable: false,
-    width: 120,
-  },
 ];
 
 const transform = (rawUserData) => {
@@ -57,11 +45,9 @@ const transform = (rawUserData) => {
     row.registeredAt = moment(userData.createdAt).format('LLL');
     row.name = userData.name;
     row.email = userData.email;
-    row.headline = userData.headline;
     const isAdmin = userData.isAdmin;
     const isInstructor = userData.isInstructor;
     row.role = isAdmin ? RoleAdmin : isInstructor ? RoleInstructor : RoleUser;
-    row.bio = userData.bio;
     row.id = userData.id;
     ret.push(row);
   }
