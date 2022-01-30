@@ -521,9 +521,9 @@ export const submitForReviewAsync =
   ({ courseId, token }) =>
   async (dispatch) => {
     try {
-      // await axios.get(`/api/instructor/course/${courseId}/submitForReview`, {
-      //   headers: { Authorization: `Bearer ${token}` },
-      // });
+      await axios.get(`/api/instructor/course/${courseId}/submitForReview`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       dispatch(updateReviewStatus(COURSE_REVIEW_STATUS.reviewing));
     } catch (error) {
       const message = error.response?.data?.message;

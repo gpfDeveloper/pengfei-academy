@@ -2,8 +2,10 @@ import User from 'models/User';
 import Course from 'models/Course';
 import CourseSection from 'models/CourseSection';
 import Lecture from 'models/Lecture';
+import CourseReviewRequest from 'models/CourseReviewRequest';
 import db from 'utils/db';
 import { isValidCategory } from 'utils';
+import { COURSE_REVIEW_STATUS } from 'utils/constants';
 import mongoose from 'mongoose';
 
 export const createCourse = async (req, res) => {
@@ -397,5 +399,29 @@ export const dragDropLectureOtherSection = async (req, res) => {
   await lecture.save({ session });
   await session.commitTransaction();
 
+  return res.status(200).send();
+};
+
+export const submitCourseForReview = async (req, res) => {
+  const course = req.course;
+  let reviewReq;
+  if (course.reviewReq) {
+    reviewReq = await CourseReviewRequest.findById(course.reviewReq);
+  } else {
+    const userId = course.author;
+    reviewReq = new CourseReviewRequest({
+      course: course._id,
+      user: userId,
+    });
+    course.reviewReq = reviewReq._id;
+  }
+  reviewReq.courseTitle = course.title;
+  course.reviewStatus = COURSE_REVIEW_STATUS.reviewing;
+
+  const session = await mongoose.startSession();
+  session.startTransaction();
+  await reviewReq.save({ session });
+  await course.save({ session });
+  await session.commitTransaction();
   return res.status(200).send();
 };

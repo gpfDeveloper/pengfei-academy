@@ -23,6 +23,10 @@ const CourseSchema = new mongoose.Schema(
       type: String,
       enum: [reviewing, approved, needsFixes],
     },
+    reviewReq: {
+      type: mongoose.Types.ObjectId,
+      ref: 'CourseReviewRequest',
+    },
     subtitle: { type: String, trim: true, maxlength: 120 },
     description: { type: String, trim: true, maxlength: 6000 },
     language: {
