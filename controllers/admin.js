@@ -3,7 +3,7 @@ import TeachRequest from 'models/TeachRequest';
 import Notification from 'models/Notification';
 import CourseReviewRequest from 'models/CourseReviewRequest';
 import db from 'utils/db';
-import { TEACH_REQUEST_STATUS } from 'utils/constants';
+import { COURSE_REVIEW_STATUS, TEACH_REQUEST_STATUS } from 'utils/constants';
 
 const { approved: APPROVED, rejected: REJECTED } = TEACH_REQUEST_STATUS;
 
@@ -99,4 +99,23 @@ export const getCourseReviewReqs = async (req, res) => {
       courseTitle: item.course.title,
     }))
   );
+};
+
+export const updateCourseReviewReqComment = async (req, res) => {
+  const { comment } = req.body;
+  const reviewReqId = req.query.id;
+  await db.connect();
+  const reviewReq = await CourseReviewRequest.findById(reviewReqId).exec();
+  reviewReq.adminComment = comment;
+  await reviewReq.save();
+  res.status(200).send();
+};
+
+export const updateCourseReviewReqNeedFixes = async (req, res) => {
+  const reviewReqId = req.query.id;
+  await db.connect();
+  const reviewReq = await CourseReviewRequest.findById(reviewReqId).exec();
+  reviewReq.status = COURSE_REVIEW_STATUS.needsFixes;
+  await reviewReq.save();
+  res.status(200).send();
 };

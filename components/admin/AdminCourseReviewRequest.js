@@ -99,7 +99,7 @@ export default function AdminCourseReviewRequest() {
     const comment = adminCommentRef.current.value;
     try {
       await axios.put(
-        `/api/admin/courseReviewRequest/${currentSelection.id}`,
+        `/api/admin/courseReviewRequest/${currentSelection.id}/comment`,
         { comment },
         {
           headers: { Authorization: `Bearer ${token}` },

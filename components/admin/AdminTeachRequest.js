@@ -108,7 +108,7 @@ export default function AdminTeachRequest() {
     const comment = adminCommentRef.current.value;
     try {
       await axios.put(
-        `/api/admin/teachRequest/${currentSelection.id}`,
+        `/api/admin/teachRequest/${currentSelection.id}/comment`,
         { comment },
         {
           headers: { Authorization: `Bearer ${token}` },

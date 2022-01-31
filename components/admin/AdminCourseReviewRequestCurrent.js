@@ -19,7 +19,7 @@ import ArticleIcon from '@mui/icons-material/Article';
 const statusColorMap = {
   Reviewing: 'info',
   Approved: 'success',
-  NeedFixes: 'error',
+  'Needs Fixes': 'error',
 };
 
 export default function AdminCourseReviewRequestCurrent({
@@ -157,12 +157,12 @@ export default function AdminCourseReviewRequestCurrent({
         </Button>
       </Box>
       <Box sx={{ display: 'flex', gap: 4, alignItems: 'center' }}>
-        {status !== 'approved' && (
+        {status !== 'Approved' && (
           <Button color="success" onClick={onApproveAndPublish}>
             Approve and publish
           </Button>
         )}
-        {status !== 'needFixes' && (
+        {status !== 'Needs Fixes' && (
           <Button color="error" onClick={onNeedFixes}>
             Need fixes
           </Button>
