@@ -17,7 +17,7 @@ export const getTeachRequests = async (req, res) => {
   await db.connect();
 
   const teachRequests = await TeachRequest.find().populate([
-    { path: 'user', select: ['name', 'email'] },
+    { path: 'user', select: ['name', 'email', 'conversationWithAdmin'] },
   ]);
 
   res.status(200).json(

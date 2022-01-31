@@ -72,6 +72,7 @@ const transform = (rawTeachReqs) => {
     row.status = teachReq.status;
     row.adminComment = teachReq.adminComment;
     row.id = teachReq.id;
+    row.conversationId = teachReq.user.conversationWithAdmin;
     ret.push(row);
   }
   return ret;

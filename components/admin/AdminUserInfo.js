@@ -45,6 +45,7 @@ const transform = (rawUserData) => {
     row.registeredAt = moment(userData.createdAt).format('LLL');
     row.name = userData.name;
     row.email = userData.email;
+    row.conversationId = userData.conversationWithAdmin;
     const isAdmin = userData.isAdmin;
     const isInstructor = userData.isInstructor;
     row.role = isAdmin ? RoleAdmin : isInstructor ? RoleInstructor : RoleUser;

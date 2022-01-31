@@ -1,3 +1,4 @@
+import NextLink from 'next/link';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import {
@@ -34,6 +35,7 @@ export default function AdminTechRequestCurrent({
   message,
   adminComment,
   sendTime,
+  conversationId,
   onApprove,
   onReject,
   onUpdateHasMeeting,
@@ -154,6 +156,19 @@ export default function AdminTechRequestCurrent({
             Reject
           </Button>
         )}
+        <NextLink
+          href={{
+            pathname: '/message/[conversationId]',
+            query: { conversationId },
+          }}
+          passHref
+        >
+          <a target="_blank">
+            <Button size="large" variant="outlined">
+              Message user
+            </Button>
+          </a>
+        </NextLink>
       </Box>
     </Card>
   );

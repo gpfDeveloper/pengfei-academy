@@ -8,6 +8,7 @@ import {
   Tooltip,
   Badge,
   Divider,
+  Button,
   Link,
 } from '@mui/material';
 import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
@@ -25,6 +26,7 @@ export default function AdminUserInfoCurrent({
   name,
   email,
   role,
+  conversationId,
   registeredAt,
 }) {
   const theme = useTheme();
@@ -81,6 +83,19 @@ export default function AdminUserInfoCurrent({
         </Typography>
       </Box>
       <Divider />
+      <NextLink
+        href={{
+          pathname: '/message/[conversationId]',
+          query: { conversationId },
+        }}
+        passHref
+      >
+        <a target="_blank">
+          <Button size="large" variant="outlined">
+            Message user
+          </Button>
+        </a>
+      </NextLink>
     </Card>
   );
 }

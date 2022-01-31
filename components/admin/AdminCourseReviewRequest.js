@@ -64,7 +64,6 @@ const transform = (rawItems) => {
     row.courseId = rowItem.course.id;
     row.courseTitle = rowItem.courseTitle;
     row.conversationId = rowItem.user.conversationWithAdmin;
-    console.log(row);
     ret.push(row);
   }
   return ret;

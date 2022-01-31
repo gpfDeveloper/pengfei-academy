@@ -11,7 +11,6 @@ export default function CourseLandingPage({ course }) {
   if (!course) {
     return <></>;
   }
-  console.log(course);
   const {
     author,
     title,
