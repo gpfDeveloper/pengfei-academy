@@ -130,11 +130,25 @@ export const updateCourseReviewReqNeedFixes = async (req, res) => {
   reviewReq.status = COURSE_REVIEW_STATUS.needsFixes;
   const course = await Course.findById(reviewReq.course).exec();
   course.reviewStatus = COURSE_REVIEW_STATUS.needsFixes;
+  const user = await User.findById(course.author).exec();
+
+  let notification;
+  const message = `Your course: ${course.title} is need fixes, please contact pengfei for more information.`;
+  if (user.notification) {
+    notification = await Notification.findOne({ user });
+  } else {
+    notification = new Notification({ user });
+    user.notification = notification;
+  }
+  user.unReadNotificationCount += 1;
+  notification.items.push({ message });
 
   const session = await mongoose.startSession();
   session.startTransaction();
   await course.save({ session });
   await reviewReq.save({ session });
+  await notification.save({ session });
+  await user.save({ session });
   await session.commitTransaction();
   res.status(200).send();
 };

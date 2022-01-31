@@ -3,6 +3,7 @@ import Course from 'models/Course';
 import CourseSection from 'models/CourseSection';
 import Lecture from 'models/Lecture';
 import CourseReviewRequest from 'models/CourseReviewRequest';
+import Notification from 'models/Notification';
 import db from 'utils/db';
 import { isValidCategory } from 'utils';
 import { COURSE_REVIEW_STATUS } from 'utils/constants';
@@ -423,5 +424,16 @@ export const submitCourseForReview = async (req, res) => {
   await reviewReq.save({ session });
   await course.save({ session });
   await session.commitTransaction();
+
+  //send notification to admin
+  const admin = await User.findOne({ isAdmin: true });
+  admin.unReadNotificationCount += 1;
+  const notification = await Notification.findById(admin.notification);
+  notification.items.push({
+    message: `A course review request was received: ${course.title}`,
+  });
+  admin.save();
+  notification.save();
+
   return res.status(200).send();
 };
