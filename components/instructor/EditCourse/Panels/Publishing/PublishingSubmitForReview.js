@@ -14,6 +14,7 @@ import {
 import MuiCheckIcon from '@mui/icons-material/Check';
 import MuiCloseIcon from '@mui/icons-material/Close';
 import Tips from 'components/UIs/Tips';
+import { COURSE_REVIEW_STATUS } from 'utils/constants';
 
 const CheckIcon = () => <MuiCheckIcon color="success" />;
 const CloseIcon = () => <MuiCloseIcon color="error" />;
@@ -35,9 +36,11 @@ export default function PublishingSubmitForReview() {
     subcategory,
     description,
     price,
+    reviewStatus,
     id: courseId,
   } = course;
   let lecutureCount = 0;
+  const isNeedFixes = reviewStatus === COURSE_REVIEW_STATUS.needsFixes;
   for (const section of sections) {
     lecutureCount += section.lectures.length;
   }
@@ -115,6 +118,14 @@ export default function PublishingSubmitForReview() {
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+      {isNeedFixes && (
+        <Box>
+          <Typography color="error">
+            Your course is need fixes, please fix the issues before resubmit for
+            review, you can contact Pengfei if you have any questions.
+          </Typography>
+        </Box>
+      )}
       <Typography variant="h6">
         All the requirements you need to complete, before submit for review:
       </Typography>

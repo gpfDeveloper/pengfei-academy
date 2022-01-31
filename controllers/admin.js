@@ -1,5 +1,7 @@
+import mongoose from 'mongoose';
 import User from 'models/User';
 import TeachRequest from 'models/TeachRequest';
+import Course from 'models/Course';
 import Notification from 'models/Notification';
 import CourseReviewRequest from 'models/CourseReviewRequest';
 import db from 'utils/db';
@@ -116,6 +118,13 @@ export const updateCourseReviewReqNeedFixes = async (req, res) => {
   await db.connect();
   const reviewReq = await CourseReviewRequest.findById(reviewReqId).exec();
   reviewReq.status = COURSE_REVIEW_STATUS.needsFixes;
-  await reviewReq.save();
+  const course = await Course.findById(reviewReq.course).exec();
+  course.reviewStatus = COURSE_REVIEW_STATUS.needsFixes;
+
+  const session = await mongoose.startSession();
+  session.startTransaction();
+  await course.save({ session });
+  await reviewReq.save({ session });
+  await session.commitTransaction();
   res.status(200).send();
 };
