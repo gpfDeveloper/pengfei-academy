@@ -126,10 +126,12 @@ export const updateCourseReviewReqComment = async (req, res) => {
 export const updateCourseReviewReqNeedFixes = async (req, res) => {
   const reviewReqId = req.query.id;
   await db.connect();
+
   const reviewReq = await CourseReviewRequest.findById(reviewReqId).exec();
   reviewReq.status = COURSE_REVIEW_STATUS.needsFixes;
   const course = await Course.findById(reviewReq.course).exec();
   course.reviewStatus = COURSE_REVIEW_STATUS.needsFixes;
+
   const user = await User.findById(course.author).exec();
 
   let notification;
@@ -150,5 +152,11 @@ export const updateCourseReviewReqNeedFixes = async (req, res) => {
   await notification.save({ session });
   await user.save({ session });
   await session.commitTransaction();
-  res.status(200).send();
+  return res.status(200).send();
+};
+
+export const updateCourseReviewReqApproveAndPublish = async (req, res) => {
+  const reviewReqId = req.query.id;
+  await db.connect();
+  return res.status(200).send();
 };
