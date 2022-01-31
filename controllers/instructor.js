@@ -416,6 +416,7 @@ export const submitCourseForReview = async (req, res) => {
     course.reviewReq = reviewReq._id;
   }
   course.reviewStatus = COURSE_REVIEW_STATUS.reviewing;
+  reviewReq.status = COURSE_REVIEW_STATUS.reviewing;
 
   const session = await mongoose.startSession();
   session.startTransaction();

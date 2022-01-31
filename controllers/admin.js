@@ -48,8 +48,13 @@ export const rejectTeachRequest = async (req, res) => {
   const user = await User.findById(teachRequest.user);
   user.isInstructor = false;
   teachRequest.status = REJECTED;
-  await teachRequest.save();
-  await user.save();
+
+  const session = await mongoose.startSession();
+  session.startTransaction();
+  await teachRequest.save({ session });
+  await user.save(session);
+  await session.commitTransaction();
+
   res.status(200).send();
 };
 
@@ -70,9 +75,14 @@ export const approveTeachRequest = async (req, res) => {
   }
   user.unReadNotificationCount += 1;
   notification.items.push({ message });
-  await teachRequest.save();
-  await user.save();
-  await notification.save();
+
+  const session = await mongoose.startSession();
+  session.startTransaction();
+  await teachRequest.save({ session });
+  await user.save({ session });
+  await notification.save(session);
+  await session.commitTransaction();
+
   res.status(200).send();
 };
 
