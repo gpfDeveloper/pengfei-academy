@@ -29,7 +29,7 @@ const cols = [
     field: 'sendTime',
     headerName: 'Send time',
     type: 'date',
-    width: 100,
+    width: 200,
   },
   {
     field: 'status',
@@ -61,7 +61,10 @@ const transform = (rawItems) => {
     row.status = rowItem.status;
     row.adminComment = rowItem.adminComment;
     row.id = rowItem.id;
+    row.courseId = rowItem.course.id;
     row.courseTitle = rowItem.courseTitle;
+    row.conversationId = rowItem.user.conversationWithAdmin;
+    console.log(row);
     ret.push(row);
   }
   return ret;

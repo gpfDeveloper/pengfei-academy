@@ -87,7 +87,7 @@ export const getCourseReviewReqs = async (req, res) => {
   await db.connect();
 
   const courseReviewReqs = await CourseReviewRequest.find().populate([
-    { path: 'user', select: ['name', 'email'] },
+    { path: 'user', select: ['name', 'email', 'conversationWithAdmin'] },
     { path: 'course', select: ['title'] },
   ]);
 

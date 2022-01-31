@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import {
@@ -16,19 +17,22 @@ import EmailIcon from '@mui/icons-material/Email';
 import ArticleIcon from '@mui/icons-material/Article';
 
 const statusColorMap = {
-  reviewing: 'info',
-  approved: 'success',
-  rejected: 'error',
+  Reviewing: 'info',
+  Approved: 'success',
+  NeedFixes: 'error',
 };
 
 export default function AdminCourseReviewRequestCurrent({
   id,
+  courseId,
+  courseTitle,
   userName,
   email,
   status,
+  conversationId,
   adminComment,
   sendTime,
-  onApprove,
+  onApproveAndPublish,
   onNeedFixes,
   onSendComment,
   adminCommentRef,
@@ -78,6 +82,22 @@ export default function AdminCourseReviewRequestCurrent({
       <Box sx={rowStyle}>
         <Typography>
           {' '}
+          <Tooltip title="CourseId">
+            <ArticleIcon />
+          </Tooltip>{' '}
+          {courseId}
+        </Typography>
+        <Typography>
+          <Tooltip title="Course Title">
+            <ArticleIcon />
+          </Tooltip>{' '}
+          {courseTitle}
+        </Typography>
+      </Box>
+      <Divider />
+      <Box sx={rowStyle}>
+        <Typography>
+          {' '}
           <Tooltip title="User Name">
             <PersonIcon />
           </Tooltip>{' '}
@@ -90,6 +110,32 @@ export default function AdminCourseReviewRequestCurrent({
           </Tooltip>{' '}
           {email}
         </Typography>
+      </Box>
+      <Divider />
+      <Box sx={rowStyle}>
+        <Link
+          href={{ pathname: '/course/draft/[courseId]', query: { courseId } }}
+          passHref
+        >
+          <a target="_blank">
+            <Button size="large" variant="contained">
+              Course landing page
+            </Button>
+          </a>
+        </Link>
+        <Link
+          href={{
+            pathname: '/course/draft/[courseId]/learn',
+            query: { courseId },
+          }}
+          passHref
+        >
+          <a target="_blank">
+            <Button size="large" variant="contained">
+              Course learn page
+            </Button>
+          </a>
+        </Link>
       </Box>
       <Divider />
       <Box
@@ -110,10 +156,10 @@ export default function AdminCourseReviewRequestCurrent({
           Update Comment
         </Button>
       </Box>
-      <Box sx={{ display: 'flex', gap: 4 }}>
+      <Box sx={{ display: 'flex', gap: 4, alignItems: 'center' }}>
         {status !== 'approved' && (
-          <Button color="success" onClick={onApprove}>
-            Approve
+          <Button color="success" onClick={onApproveAndPublish}>
+            Approve and publish
           </Button>
         )}
         {status !== 'needFixes' && (
@@ -121,6 +167,19 @@ export default function AdminCourseReviewRequestCurrent({
             Need fixes
           </Button>
         )}
+        <Link
+          href={{
+            pathname: '/message/[conversationId]',
+            query: { conversationId },
+          }}
+          passHref
+        >
+          <a target="_blank">
+            <Button size="large" variant="outlined">
+              Message user
+            </Button>
+          </a>
+        </Link>
       </Box>
     </Card>
   );
