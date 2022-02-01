@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 
 const PublishedCourseSectionSchema = new mongoose.Schema(
   {
-    publishedCourse: {
+    course: {
       type: mongoose.Types.ObjectId,
       required: true,
       ref: 'PublishedCourse',

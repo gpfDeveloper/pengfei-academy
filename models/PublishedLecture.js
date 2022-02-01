@@ -10,12 +10,12 @@ const PublishedLectureSchema = new mongoose.Schema(
       unique: true,
       ref: 'Lecture',
     },
-    publishedCourse: {
+    course: {
       type: mongoose.Types.ObjectId,
       required: true,
       ref: 'PublishedCourse',
     },
-    publishedSection: {
+    section: {
       type: mongoose.Types.ObjectId,
       required: true,
       ref: 'PublishedCourseSection',

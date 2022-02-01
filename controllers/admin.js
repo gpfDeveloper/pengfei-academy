@@ -2,6 +2,11 @@ import mongoose from 'mongoose';
 import User from 'models/User';
 import TeachRequest from 'models/TeachRequest';
 import Course from 'models/Course';
+import CourseSection from 'models/CourseSection';
+import Lecture from 'models/Lecture';
+import PublishedCourse from 'models/PublishedCourse';
+import PublishedCourseSection from 'models/PublishedCourseSection';
+import PublishedLecture from 'models/PublishedLecture';
 import Notification from 'models/Notification';
 import CourseReviewRequest from 'models/CourseReviewRequest';
 import db from 'utils/db';
@@ -155,8 +160,113 @@ export const updateCourseReviewReqNeedFixes = async (req, res) => {
   return res.status(200).send();
 };
 
+const createPublishedLecture = async (
+  lectureId,
+  publishedCourseSection,
+  session
+) => {
+  const lecture = await Lecture.findById(lectureId);
+  // console.log('lecture:', lecture);
+  const publishedLecture = new PublishedLecture();
+  publishedLecture.section = publishedCourseSection._id;
+  publishedLecture.course = publishedCourseSection.course;
+  publishedLecture.lecture = lectureId;
+  publishedLecture.title = lecture.title;
+  publishedLecture.contentType = lecture.contentType;
+  publishedLecture.article = lecture.article;
+  lecture.publishedLecture = publishedLecture._id;
+  publishedCourseSection.lectures.push(publishedLecture._id);
+  await publishedLecture.save({ session });
+  await lecture.save({ session });
+};
+
+const createPublishedCourseSection = async (
+  sectionId,
+  publishedCourse,
+  session
+) => {
+  const courseSection = await CourseSection.findById(sectionId);
+  // console.log('courseSection:', courseSection);
+  const publishedCourseSection = new PublishedCourseSection();
+  publishedCourseSection.course = publishedCourse._id;
+  publishedCourseSection.courseSection = sectionId;
+  publishedCourseSection.title = courseSection.title;
+  publishedCourse.sections.push(publishedCourseSection._id);
+  courseSection.publishedCourseSection = publishedCourseSection._id;
+  for (const lectureId of courseSection.lectures) {
+    await createPublishedLecture(lectureId, publishedCourseSection, session);
+  }
+  await publishedCourseSection.save({ session });
+  await courseSection.save({ session });
+};
+
+const setPublishedCourseFields = (course, publishedCourse) => {
+  publishedCourse.author = course.author;
+  publishedCourse.title = course.title;
+  publishedCourse.language = course.language;
+  publishedCourse.learningObjectives = course.learningObjectives;
+  publishedCourse.prerequisites = course.prerequisites;
+  publishedCourse.courseForWho = course.courseForWho;
+  publishedCourse.price = course.price;
+  publishedCourse.category = course.category;
+  publishedCourse.subcategory = course.subcategory;
+  publishedCourse.description = course.description;
+  publishedCourse.subtitle = course.subtitle;
+};
+
+const createPublishedCourse = async (course, session) => {
+  console.log('create:', course);
+  const publishedCourse = new PublishedCourse();
+  publishedCourse.course = course._id;
+  course.publishedCourse = publishedCourse._id;
+  course.isPublished = true;
+  setPublishedCourseFields(course, publishedCourse);
+  for (const sectionId of course.sections) {
+    await createPublishedCourseSection(sectionId, publishedCourse, session);
+  }
+  await publishedCourse.save({ session });
+  await course.save({ session });
+};
+
+const updatePublishedCourse = async (course, session) => {
+  console.log('update', course);
+};
+
 export const updateCourseReviewReqApproveAndPublish = async (req, res) => {
   const reviewReqId = req.query.id;
   await db.connect();
+  const reviewReq = await CourseReviewRequest.findById(reviewReqId).exec();
+  reviewReq.status = COURSE_REVIEW_STATUS.approved;
+  const course = await Course.findById(reviewReq.course).exec();
+  course.reviewStatus = COURSE_REVIEW_STATUS.approved;
+
+  const user = await User.findById(course.author).exec();
+
+  let notification;
+  const message = `Congratulation Your course: ${course.title} is published on the marketplace.`;
+  if (user.notification) {
+    notification = await Notification.findOne({ user });
+  } else {
+    notification = new Notification({ user });
+    user.notification = notification;
+  }
+  user.unReadNotificationCount += 1;
+  notification.items.push({ message });
+
+  const session = await mongoose.startSession();
+  session.startTransaction();
+
+  //copy course, courseSection, lecture
+  if (!course.publishedCourse) {
+    await createPublishedCourse(course, session);
+  } else {
+    await updatePublishedCourse(course, session);
+  }
+
+  await reviewReq.save({ session });
+  await notification.save({ session });
+  await user.save({ session });
+  await session.commitTransaction();
+
   return res.status(200).send();
 };

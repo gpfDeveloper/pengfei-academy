@@ -151,10 +151,11 @@ export default function AdminCourseReviewRequest() {
       );
     }
   };
-  const approveHandler = async () => {
+  const approveAndPublishHandler = async () => {
     try {
+      console.log('aa');
       await axios.get(
-        `/api/admin/courseReviewRequest/${currentSelection.id}/approve`,
+        `/api/admin/courseReviewRequest/${currentSelection.id}/approveAndPublish`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -200,7 +201,7 @@ export default function AdminCourseReviewRequest() {
           adminCommentRef={adminCommentRef}
           onSendComment={sendCommentHandler}
           onNeedFixes={needFixesHandler}
-          onApprove={approveHandler}
+          onApproveAndPublish={approveAndPublishHandler}
         />
       )}
     </>

@@ -19,6 +19,10 @@ const CourseSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    publishedCourse: {
+      type: mongoose.Types.ObjectId,
+      ref: 'PublishedCourse',
+    },
     reviewStatus: {
       type: String,
       enum: [reviewing, approved, needsFixes],

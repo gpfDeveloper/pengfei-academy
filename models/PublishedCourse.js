@@ -44,6 +44,6 @@ const PublishedCourseSchema = new mongoose.Schema(
 );
 
 const PublishedCourse =
-  mongoose.models.Course ||
+  mongoose.models.PublishedCourse ||
   mongoose.model('PublishedCourse', PublishedCourseSchema);
 export default PublishedCourse;

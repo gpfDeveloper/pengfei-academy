@@ -7,6 +7,10 @@ const CourseSectionSchema = new mongoose.Schema(
       required: true,
       ref: 'Course',
     },
+    publishedCourseSection: {
+      type: mongoose.Types.ObjectId,
+      ref: 'CourseSection',
+    },
     title: { type: String, required: true, trim: true, maxlength: 80 },
     lectures: [{ type: mongoose.Types.ObjectId, ref: 'Lecture' }],
   },
