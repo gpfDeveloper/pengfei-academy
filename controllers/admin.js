@@ -166,7 +166,6 @@ const createPublishedLecture = async (
   session
 ) => {
   const lecture = await Lecture.findById(lectureId);
-  // console.log('lecture:', lecture);
   const publishedLecture = new PublishedLecture();
   publishedLecture.section = publishedCourseSection._id;
   publishedLecture.course = publishedCourseSection.course;
@@ -186,7 +185,6 @@ const createPublishedCourseSection = async (
   session
 ) => {
   const courseSection = await CourseSection.findById(sectionId);
-  // console.log('courseSection:', courseSection);
   const publishedCourseSection = new PublishedCourseSection();
   publishedCourseSection.course = publishedCourse._id;
   publishedCourseSection.courseSection = sectionId;
@@ -215,7 +213,6 @@ const setPublishedCourseFields = (course, publishedCourse) => {
 };
 
 const createPublishedCourse = async (course, session) => {
-  console.log('create:', course);
   const publishedCourse = new PublishedCourse();
   publishedCourse.course = course._id;
   course.publishedCourse = publishedCourse._id;

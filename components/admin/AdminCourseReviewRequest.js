@@ -175,10 +175,10 @@ export default function AdminCourseReviewRequest() {
       setCurrentSelection(newCourseReviewReq);
       setCourseReviewReqs(newCourseReviewReqs);
       dispatch(
-        setSnackbar({ severity: 'success', message: 'Approve success.' })
+        setSnackbar({ severity: 'success', message: 'Publish success.' })
       );
     } catch (err) {
-      dispatch(setSnackbar({ severity: 'error', message: 'Approve failed.' }));
+      dispatch(setSnackbar({ severity: 'error', message: 'Publish failed.' }));
     }
   };
 

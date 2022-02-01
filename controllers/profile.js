@@ -75,3 +75,23 @@ export const getPublicProfile = async (req, res) => {
     return res.status(404).json({ message: 'User not found.' });
   }
 };
+export const getPublicProfileServer = async (userId) => {
+  await db.connect();
+  const user = await User.findById(userId);
+  if (user) {
+    const name = user.name;
+    const isInstructor = user.isInstructor;
+    let headline = '';
+    let bio = '';
+    let website = '';
+    if (user.profile) {
+      const profile = await Profile.findById(user.profile);
+      headline = profile.headline;
+      bio = profile.bio;
+      website = profile.website;
+    }
+    return { name, headline, bio, website, isInstructor };
+  } else {
+    throw new Error('User not found');
+  }
+};
