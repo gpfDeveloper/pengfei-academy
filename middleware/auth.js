@@ -3,6 +3,7 @@ import db from 'utils/db';
 import User from 'models/User';
 import Conversation from 'models/Conversation';
 import Course from 'models/Course';
+import PublishedCourse from 'models/PublishedCourse';
 
 export const isLogin = async (req, res, next) => {
   const { authorization } = req.headers;
@@ -84,6 +85,27 @@ export const canViewEditCourse = async (req, res, next) => {
   const course = await Course.findById(courseId);
   if (user.isAdmin || course.author.toString() === user._id.toString()) {
     req.course = course;
+    return next();
+  } else {
+    return res.status(403).json({ message: 'Not authorized.' });
+  }
+};
+
+export const canLearnPublishedCourse = async (req, res, next) => {
+  const courseId = req.query.courseId;
+  console.log(req.query);
+  if (!courseId) {
+    return res.status(422).json({ message: 'Course id not provide.' });
+  }
+  await db.connect();
+  const user = await User.findById(req.user.id);
+  const course = await PublishedCourse.findById(courseId);
+  //todo user who enrolled in course can view
+  let isEnrolled = true;
+  if (user.isAdmin || course.author.toString() === user._id.toString()) {
+    req.course = course;
+    return next();
+  } else if (isEnrolled) {
     return next();
   } else {
     return res.status(403).json({ message: 'Not authorized.' });

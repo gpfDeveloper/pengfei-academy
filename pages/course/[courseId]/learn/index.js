@@ -7,30 +7,25 @@ import axios from 'axios';
 import CourseLearnPage from 'components/course/learnPage/CourseLearnPage';
 import PageLayoutLearning from 'components/layouts/PageLayoutLearning';
 
-function CourseLearnScreenDraft() {
+function CourseLearnScreen() {
   const router = useRouter();
   const user = useSelector((state) => state.user);
-  const { isLogin, isInstructor, token } = user;
+  const { isLogin, token } = user;
   const [loading, setLoading] = useState(false);
   const courseId = router.query.courseId;
   const [course, setCourse] = useState(null);
   useEffect(() => {
     if (!isLogin) {
       router.replace('/login');
-    } else if (!isInstructor) {
-      router.replace('/');
     }
-  }, [isLogin, router, isInstructor]);
+  }, [isLogin, router]);
   useEffect(() => {
     const fetchCourse = async () => {
       setLoading(true);
       try {
-        const courseData = await axios.get(
-          `/api/instructor/course/${courseId}`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
+        const courseData = await axios.get(`/api/course/${courseId}/learn`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
         const _course = courseData.data.course;
         const authorId = _course.author;
         const instructorData = await axios.get(
@@ -49,15 +44,13 @@ function CourseLearnScreenDraft() {
     }
   }, [courseId, token]);
   return (
-    <PageLayoutLearning course={course} isPreview={true}>
+    <PageLayoutLearning course={course}>
       {loading && <Spinner />}
-      {!loading && isLogin && isInstructor && (
-        <CourseLearnPage course={course} />
-      )}
+      {!loading && isLogin && <CourseLearnPage course={course} />}
     </PageLayoutLearning>
   );
 }
 
-export default dynamic(() => Promise.resolve(CourseLearnScreenDraft), {
+export default dynamic(() => Promise.resolve(CourseLearnScreen), {
   ssr: false,
 });

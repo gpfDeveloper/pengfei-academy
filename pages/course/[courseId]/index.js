@@ -9,13 +9,13 @@ export default function CourseLandingScreen({ course }) {
   );
 }
 
-import { getCourseServer } from 'controllers/publishedCourse';
+import { getPublishedCourseServer } from 'controllers/publishedCourse';
 import { getPublicProfileServer } from 'controllers/profile';
 
 export async function getServerSideProps({ params }) {
   const { courseId } = params;
 
-  const course = await getCourseServer(courseId);
+  const course = await getPublishedCourseServer(courseId);
   const authorId = course.author;
   const author = await getPublicProfileServer(authorId);
   course.author = author;
