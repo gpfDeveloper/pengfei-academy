@@ -210,6 +210,8 @@ const setPublishedCourseFields = (course, publishedCourse) => {
   publishedCourse.subcategory = course.subcategory;
   publishedCourse.description = course.description;
   publishedCourse.subtitle = course.subtitle;
+  publishedCourse.welcomeMsg = course.welcomeMsg;
+  publishedCourse.congratulationMsg = course.congratulationMsg;
 };
 
 const createPublishedCourse = async (course, session) => {
@@ -222,11 +224,26 @@ const createPublishedCourse = async (course, session) => {
     await createPublishedCourseSection(sectionId, publishedCourse, session);
   }
   await publishedCourse.save({ session });
-  await course.save({ session });
 };
 
 const updatePublishedCourse = async (course, session) => {
-  console.log('update', course);
+  const publishedCourse = await PublishedCourse.findById(
+    course.publishedCourse
+  );
+  setPublishedCourseFields(course, publishedCourse);
+  publishedCourse.sections = [];
+  await PublishedCourseSection.deleteMany(
+    { course: publishedCourse._id },
+    { session }
+  );
+  await PublishedLecture.deleteMany(
+    { course: publishedCourse._id },
+    { session }
+  );
+  for (const sectionId of course.sections) {
+    await createPublishedCourseSection(sectionId, publishedCourse, session);
+  }
+  await publishedCourse.save({ session });
 };
 
 export const updateCourseReviewReqApproveAndPublish = async (req, res) => {
@@ -260,6 +277,7 @@ export const updateCourseReviewReqApproveAndPublish = async (req, res) => {
     await updatePublishedCourse(course, session);
   }
 
+  await course.save({ session });
   await reviewReq.save({ session });
   await notification.save({ session });
   await user.save({ session });
