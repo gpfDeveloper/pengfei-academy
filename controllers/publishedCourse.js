@@ -157,3 +157,34 @@ export const getPublishedCourseLearn = async (req, res) => {
     return res.status(404).json({ message: 'Course not found.' });
   }
 };
+
+export const getPublishedCourseItemsServer = async ({
+  filters = {},
+  order = {},
+  pageSize = 6,
+  page = 1,
+}) => {
+  await db.connect();
+  const courses = await PublishedCourse.find(filters)
+    .sort(order)
+    .skip(pageSize * (page - 1))
+    .limit(pageSize)
+    .lean()
+    .select([
+      'title',
+      'subtitle',
+      'price',
+      'category',
+      'subcategory',
+      'updatedAt',
+    ])
+    .populate([{ path: 'author', select: ['name'] }]);
+  for (const course of courses) {
+    course._id = course._id.toString();
+    course.id = course._id;
+    course.author._id = course.author._id.toString();
+    course.author.id = course.author._id;
+    course.updatedAt = course.updatedAt.toString();
+  }
+  return courses;
+};
