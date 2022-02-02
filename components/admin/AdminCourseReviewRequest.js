@@ -61,7 +61,7 @@ const transform = (rawItems) => {
     row.status = rowItem.status;
     row.adminComment = rowItem.adminComment;
     row.id = rowItem.id;
-    row.courseId = rowItem.course.id;
+    row.courseId = rowItem.course?.id;
     row.courseTitle = rowItem.courseTitle;
     row.conversationId = rowItem.user.conversationWithAdmin;
     ret.push(row);

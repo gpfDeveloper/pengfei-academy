@@ -2,6 +2,9 @@ import User from 'models/User';
 import Course from 'models/Course';
 import CourseSection from 'models/CourseSection';
 import Lecture from 'models/Lecture';
+import PublishedCourse from 'models/PublishedCourse';
+import PublishedCourseSection from 'models/PublishedCourseSection';
+import PublishedLecture from 'models/PublishedLecture';
 import CourseReviewRequest from 'models/CourseReviewRequest';
 import Notification from 'models/Notification';
 import db from 'utils/db';
@@ -196,6 +199,21 @@ export const deleteCourse = async (req, res) => {
   await CourseSection.deleteMany({ course: course._id }, { session: session });
   await Lecture.deleteMany({ course: course._id }, { session: session });
   await Course.findByIdAndDelete(course._id, { session: session });
+
+  //Delete published course
+  if (course.publishedCourse) {
+    await PublishedCourse.findByIdAndDelete(course.publishedCourse, {
+      session,
+    });
+    await PublishedCourseSection.deleteMany(
+      { course: course.publishedCourse },
+      { session }
+    );
+    await PublishedLecture.deleteMany(
+      { course: course.publishedCourse },
+      { session }
+    );
+  }
   await session.commitTransaction();
   res.status(200).send();
 };

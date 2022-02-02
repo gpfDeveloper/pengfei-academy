@@ -113,7 +113,7 @@ export const getCourseReviewReqs = async (req, res) => {
       ...item.toObject({ getters: true }),
       userName: item.user.name,
       userEmail: item.user.email,
-      courseTitle: item.course.title,
+      courseTitle: item.course?.title || 'deleted',
     }))
   );
 };
