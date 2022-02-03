@@ -1,6 +1,8 @@
 import PublishedCourse from 'models/PublishedCourse';
 import PublishedCourseSection from 'models/PublishedCourseSection';
 import PublishedLecture from 'models/PublishedLecture';
+// necessary to since we populate user
+import User from 'models/User';
 import db from 'utils/db';
 
 // export const getCourse = async (req, res) => {
@@ -159,16 +161,55 @@ export const getPublishedCourseLearn = async (req, res) => {
 };
 
 export const getPublishedCourseItemsServer = async ({
-  filters = {},
-  order = {},
-  pageSize = 6,
-  page = 1,
+  _category,
+  _subcategory,
+  _searchQuery,
+  _language,
+  _price,
+  _page = 1,
+  _pageSize = 6,
 }) => {
   await db.connect();
+  const category = _category || 'all';
+  const subcategory = _subcategory || 'all';
+  const searchQuery = _searchQuery || '';
+  const language = _language || 'all';
+  // price all, paid, free
+  const price = _price || 'all';
+
+  const searchQueryFilter = searchQuery
+    ? {
+        title: {
+          $regex: searchQuery,
+          $options: 'i',
+        },
+      }
+    : {};
+
+  const categoryFilter = category !== 'all' ? { category } : {};
+  const subcategoryFilter = subcategory !== 'all' ? { subcategory } : {};
+  const languageFilter = language !== 'all' ? { language } : {};
+  let priceFilter;
+  if (price === 'free') {
+    priceFilter = { price: 0 };
+  } else if (price === 'paid') {
+    priceFilter = { price: { $gt: 0 } };
+  } else {
+    priceFilter = {};
+  }
+
+  const filters = {
+    ...searchQueryFilter,
+    ...categoryFilter,
+    ...subcategoryFilter,
+    ...languageFilter,
+    ...priceFilter,
+  };
+  const order = { updatedAt: -1 };
   const courses = await PublishedCourse.find(filters)
     .sort(order)
-    .skip(pageSize * (page - 1))
-    .limit(pageSize)
+    .skip(_pageSize * (_page - 1))
+    .limit(_pageSize)
     .lean()
     .select([
       'title',

@@ -1,9 +1,13 @@
+import CourseItems from 'components/course/items/CourseItems';
 import PageLayout from 'components/layouts/PageLayout';
 import { getPublishedCourseItemsServer } from 'controllers/publishedCourse';
 
 export default function Courses({ courseItems }) {
-  console.log(courseItems);
-  return <PageLayout>courses</PageLayout>;
+  return (
+    <PageLayout>
+      <CourseItems items={courseItems} />
+    </PageLayout>
+  );
 }
 
 export async function getServerSideProps({ _page }) {
