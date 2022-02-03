@@ -153,7 +153,6 @@ export default function AdminCourseReviewRequest() {
   };
   const approveAndPublishHandler = async () => {
     try {
-      console.log('aa');
       await axios.get(
         `/api/admin/courseReviewRequest/${currentSelection.id}/approveAndPublish`,
         {

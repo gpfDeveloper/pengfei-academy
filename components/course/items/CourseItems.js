@@ -21,6 +21,7 @@ export default function CourseItems({ items }) {
       sx={{
         display: 'flex',
         flexDirection: 'column',
+        gap: 4,
         mt: 12,
       }}
     >

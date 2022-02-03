@@ -9,7 +9,7 @@ import {
 } from '@mui/material';
 
 export default function CourseItem({ item }) {
-  const { id, thumbnail, title, price, subtitle } = item;
+  const { id, thumbnail, title, price, subtitle, author } = item;
   const router = useRouter();
   const clickHandler = () => {
     router.push(`/course/${id}`);
@@ -24,14 +24,20 @@ export default function CourseItem({ item }) {
             image={thumbnail ? thumbnail : '/image-placeholder.svg'}
             alt={item.title}
           />
-          <CardContent>
+          <CardContent
+            sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}
+          >
             <Typography variant="h5">{title}</Typography>
+            <Typography>{subtitle}</Typography>
             <Typography variant="body2" color="text.secondary">
-              {subtitle}
+              {author.name}
             </Typography>
           </CardContent>
           <CardContent>
-            <Typography variant="h5"> ${price}</Typography>
+            <Typography variant="h5">
+              {' '}
+              {price === 0 ? 'Free' : `$${price}`}
+            </Typography>
           </CardContent>
         </Box>
       </CardActionArea>

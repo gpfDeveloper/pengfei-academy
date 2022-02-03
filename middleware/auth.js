@@ -93,7 +93,6 @@ export const canViewEditCourse = async (req, res, next) => {
 
 export const canLearnPublishedCourse = async (req, res, next) => {
   const courseId = req.query.courseId;
-  console.log(req.query);
   if (!courseId) {
     return res.status(422).json({ message: 'Course id not provide.' });
   }
