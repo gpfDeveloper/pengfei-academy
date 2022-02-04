@@ -5,6 +5,8 @@ import PublishedLecture from 'models/PublishedLecture';
 import User from 'models/User';
 import db from 'utils/db';
 
+import { COURSE_CATEGORY } from 'utils/constants';
+
 // export const getCourse = async (req, res) => {
 //   const courseId = req.query.id;
 //   if (!courseId) {
@@ -228,6 +230,28 @@ export const getPublishedCourseItemsServer = async ({
     course.updatedAt = course.updatedAt.toString();
   }
   const courseCount = await PublishedCourse.countDocuments(filters);
+  const publishedCategories = await PublishedCourse.find().distinct('category');
+  let publishedSubcategories = await PublishedCourse.find().distinct(
+    'subcategory'
+  );
+
+  if (_category) {
+    const avaliableSubCategories = COURSE_CATEGORY[_category].subcategory;
+    console.log(avaliableSubCategories);
+    publishedSubcategories = publishedSubcategories.filter((item) => {
+      if (item in avaliableSubCategories) return true;
+      return false;
+    });
+  }
+
+  const publishedLanguages = await PublishedCourse.find().distinct('language');
   const pageCount = Math.ceil(courseCount / _pageSize);
-  return { courseCount, courseItems, pageCount };
+  return {
+    courseCount,
+    courseItems,
+    pageCount,
+    publishedCategories,
+    publishedSubcategories,
+    publishedLanguages,
+  };
 };
