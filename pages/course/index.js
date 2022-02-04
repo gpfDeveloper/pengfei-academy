@@ -4,6 +4,9 @@ import CourseItems from 'components/course/items/CourseItems';
 import PageLayout from 'components/layouts/PageLayout';
 import { getPublishedCourseItemsServer } from 'controllers/publishedCourse';
 import CourseFilter from 'components/course/filter/CourseFilter';
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import CourseFilterDrawer from 'components/course/filter/CourseFilterDrawer';
 
 export default function Courses({
   courseItems,
@@ -18,6 +21,8 @@ export default function Courses({
   subcategory,
   price,
 }) {
+  const theme = useTheme();
+  const isBelowMd = useMediaQuery(theme.breakpoints.down('md'));
   const router = useRouter();
   if (!language) language = 'all';
   if (!category) category = 'all';
@@ -60,24 +65,56 @@ export default function Courses({
       <Box
         sx={{ display: 'flex', flexDirection: 'column', mt: 12, gap: 2, mb: 4 }}
       >
-        <Typography sx={{ fontWeight: 'bold', alignSelf: 'flex-end' }}>
-          {' '}
-          {courseCount} results
-        </Typography>
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+          }}
+        >
+          <Box
+            sx={{
+              border: '1px solid',
+              borderColor: 'text.secondary',
+              visibility: isBelowMd ? 'visiable' : 'hidden',
+            }}
+          >
+            <CourseFilterDrawer
+              courseCount={courseCount}
+              publishedCategories={publishedCategories}
+              publishedSubcategories={publishedSubcategories}
+              publishedLanguages={publishedLanguages}
+              language={language}
+              category={category}
+              subcategory={subcategory}
+              price={price}
+              onChangeCategory={changeCategoryHandler}
+              onChangeSucategory={changeSubcategoryHandler}
+              onChangeLanguage={changeLanguageHandler}
+              onChangePrice={changePriceHandler}
+            />
+          </Box>
+          <Typography sx={{ fontWeight: 'bold' }}>
+            {' '}
+            {courseCount} results
+          </Typography>
+        </Box>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', gap: 2 }}>
-          <CourseFilter
-            publishedCategories={publishedCategories}
-            publishedSubcategories={publishedSubcategories}
-            publishedLanguages={publishedLanguages}
-            language={language}
-            category={category}
-            subcategory={subcategory}
-            price={price}
-            onChangeCategory={changeCategoryHandler}
-            onChangeSucategory={changeSubcategoryHandler}
-            onChangeLanguage={changeLanguageHandler}
-            onChangePrice={changePriceHandler}
-          />
+          <Box sx={{ display: isBelowMd ? 'none' : 'block' }}>
+            <CourseFilter
+              publishedCategories={publishedCategories}
+              publishedSubcategories={publishedSubcategories}
+              publishedLanguages={publishedLanguages}
+              language={language}
+              category={category}
+              subcategory={subcategory}
+              price={price}
+              onChangeCategory={changeCategoryHandler}
+              onChangeSucategory={changeSubcategoryHandler}
+              onChangeLanguage={changeLanguageHandler}
+              onChangePrice={changePriceHandler}
+            />
+          </Box>
           <Box
             sx={{
               display: 'flex',
