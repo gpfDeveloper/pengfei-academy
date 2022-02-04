@@ -19,7 +19,7 @@ export default function CourseItem({ item }) {
     router.push(`/course/${id}`);
   };
   return (
-    <Card sx={{ maxWidth: 800 }}>
+    <Card sx={{ maxWidth: 960 }}>
       <CardActionArea onClick={clickHandler}>
         <Box
           sx={{ display: 'flex', flexDirection: isBelowMd ? 'column' : 'row' }}

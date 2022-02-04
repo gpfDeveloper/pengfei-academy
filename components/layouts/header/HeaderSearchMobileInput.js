@@ -1,4 +1,5 @@
-import React from 'react';
+import { useState } from 'react';
+import { useRouter } from 'next/router';
 import { styled, alpha } from '@mui/material/styles';
 import { InputBase } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
@@ -34,13 +35,29 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-export default function HeaderSearchMobileInput() {
+export default function HeaderSearchMobileInput({ onClose }) {
+  const [inputQuery, setInputQuery] = useState('');
+  const router = useRouter();
+  const changeHandler = (e) => {
+    setInputQuery(e.target.value);
+  };
+  const inputHandler = (e) => {
+    if (e.keyCode === 13) {
+      const pathname = '/course';
+      const { query } = router;
+      query.searchQuery = inputQuery;
+      router.push({ pathname, query });
+      onClose();
+    }
+  };
   return (
     <Search>
       <SearchIconWrapper>
         <SearchIcon />
       </SearchIconWrapper>
       <StyledInputBase
+        onChange={changeHandler}
+        onKeyDown={inputHandler}
         placeholder="Search…"
         inputProps={{ 'aria-label': 'search' }}
       />

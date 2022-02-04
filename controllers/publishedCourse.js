@@ -237,7 +237,6 @@ export const getPublishedCourseItemsServer = async ({
 
   if (_category) {
     const avaliableSubCategories = COURSE_CATEGORY[_category].subcategory;
-    console.log(avaliableSubCategories);
     publishedSubcategories = publishedSubcategories.filter((item) => {
       if (item in avaliableSubCategories) return true;
       return false;

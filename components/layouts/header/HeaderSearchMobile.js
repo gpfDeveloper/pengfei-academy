@@ -7,6 +7,7 @@ export default function HeaderSearchMobile() {
   const [isOpen, setIsOpen] = useState(false);
   const drawerCloseHandler = () => setIsOpen(false);
   const drawerOpenHandler = () => setIsOpen(true);
+  console.log(isOpen);
   return (
     <>
       <IconButton
@@ -32,7 +33,7 @@ export default function HeaderSearchMobile() {
         onClose={drawerCloseHandler}
         // PaperProps={{ sx: { height: '40px' } }}
       >
-        <HeaderSearchMobileInput />
+        <HeaderSearchMobileInput onClose={drawerCloseHandler} />
       </SwipeableDrawer>
     </>
   );

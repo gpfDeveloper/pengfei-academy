@@ -126,6 +126,7 @@ export default function Courses({
             <CourseItems items={courseItems} />
             <Pagination
               count={pageCount}
+              variant="outlined"
               page={page}
               color="primary"
               onChange={changePageHandler}
@@ -148,6 +149,8 @@ export async function getServerSideProps({ query }) {
   if (language === 'all') language = '';
   if (price === 'all') price = '';
 
+  const _searchQuery = query.searchQuery;
+
   const {
     courseItems,
     pageCount,
@@ -161,6 +164,7 @@ export async function getServerSideProps({ query }) {
     _subcategory: subcategory,
     _language: language,
     _price: price,
+    _searchQuery,
   });
 
   return {
