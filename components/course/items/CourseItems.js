@@ -9,7 +9,6 @@ export default function CourseItems({ items }) {
           display: 'flex',
           justifyContent: 'center',
           textAlign: 'center',
-          mt: 12,
         }}
       >
         <Typography variant="h4">No course found</Typography>
@@ -22,7 +21,6 @@ export default function CourseItems({ items }) {
         display: 'flex',
         flexDirection: 'column',
         gap: 4,
-        mt: 12,
       }}
     >
       {items.map((item) => (

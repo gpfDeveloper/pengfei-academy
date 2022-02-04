@@ -7,8 +7,12 @@ import {
   CardMedia,
   Typography,
 } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 export default function CourseItem({ item }) {
+  const theme = useTheme();
+  const isBelowMd = useMediaQuery(theme.breakpoints.down('md'));
   const { id, thumbnail, title, price, subtitle, author } = item;
   const router = useRouter();
   const clickHandler = () => {
@@ -17,7 +21,9 @@ export default function CourseItem({ item }) {
   return (
     <Card sx={{ maxWidth: 800 }}>
       <CardActionArea onClick={clickHandler}>
-        <Box sx={{ display: 'flex' }}>
+        <Box
+          sx={{ display: 'flex', flexDirection: isBelowMd ? 'column' : 'row' }}
+        >
           <CardMedia
             sx={{ flex: '0 0', height: 146, width: 260 }}
             component="img"

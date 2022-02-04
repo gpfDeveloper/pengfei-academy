@@ -206,7 +206,7 @@ export const getPublishedCourseItemsServer = async ({
     ...priceFilter,
   };
   const order = { updatedAt: -1 };
-  const courses = await PublishedCourse.find(filters)
+  const courseItems = await PublishedCourse.find(filters)
     .sort(order)
     .skip(_pageSize * (_page - 1))
     .limit(_pageSize)
@@ -220,12 +220,14 @@ export const getPublishedCourseItemsServer = async ({
       'updatedAt',
     ])
     .populate([{ path: 'author', select: ['name'] }]);
-  for (const course of courses) {
+  for (const course of courseItems) {
     course._id = course._id.toString();
     course.id = course._id;
     course.author._id = course.author._id.toString();
     course.author.id = course.author._id;
     course.updatedAt = course.updatedAt.toString();
   }
-  return courses;
+  const courseCount = await PublishedCourse.countDocuments(filters);
+  const pageCount = Math.ceil(courseCount / _pageSize);
+  return { courseCount, courseItems, pageCount };
 };
