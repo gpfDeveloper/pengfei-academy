@@ -19,14 +19,17 @@ export default function Courses({
   price,
 }) {
   const router = useRouter();
-  console.log('aaa');
+  if (!language) language = 'all';
+  if (!category) category = 'all';
+  if (!subcategory) subcategory = 'all';
+  if (!price) price = 'all';
 
   const filterSearch = ({ page, category, subcategory, language, price }) => {
     const pathname = '/course';
     const { query } = router;
     if (page) query.page = page;
     if (category) query.category = category;
-    if (subcategory !== undefined) query.subcategory = subcategory;
+    if (subcategory) query.subcategory = subcategory;
     if (language) query.language = language;
     if (price) query.price = price;
     router.push({ pathname, query });
@@ -37,7 +40,7 @@ export default function Courses({
   };
 
   const changeCategoryHandler = (category) => {
-    filterSearch({ category, subcategory: '' });
+    filterSearch({ category, subcategory: 'all' });
   };
 
   const changeSubcategoryHandler = (subcategory) => {
@@ -99,10 +102,14 @@ export default function Courses({
 
 export async function getServerSideProps({ query }) {
   const page = +query.page || 1;
-  const category = query.category || '';
-  const subcategory = query.subcategory || '';
-  const language = query.language || '';
-  const price = query.price || '';
+  let category = query.category || '';
+  let subcategory = query.subcategory || '';
+  let language = query.language || '';
+  let price = query.price || '';
+  if (category === 'all') category = '';
+  if (subcategory === 'all') subcategory = '';
+  if (language === 'all') language = '';
+  if (price === 'all') price = '';
 
   const {
     courseItems,

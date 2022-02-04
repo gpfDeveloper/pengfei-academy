@@ -14,6 +14,7 @@ export default function CourseFilter({
   onChangeCategory = () => {},
   onChangeSucategory = () => {},
   onChangeLanguage = () => {},
+  onChangePrice = () => {},
   language,
   category,
   subcategory,
@@ -21,7 +22,7 @@ export default function CourseFilter({
 }) {
   return (
     <Stack sx={{ gap: 2 }}>
-      <FormControl sx={{ width: 120 }}>
+      <FormControl sx={{ width: 160 }}>
         <InputLabel id="Language">Language</InputLabel>
         <Select
           label="Language"
@@ -29,6 +30,7 @@ export default function CourseFilter({
           onChange={(e) => onChangeLanguage(e.target.value)}
           labelId="Language"
         >
+          <MenuItem value="all">All</MenuItem>
           {publishedLanguages.map((k) => (
             <MenuItem value={k} key={k}>
               {k}
@@ -44,6 +46,7 @@ export default function CourseFilter({
           label="Category"
           labelId="Category"
         >
+          <MenuItem value="all">All</MenuItem>
           {publishedCategories.map((k) => (
             <MenuItem value={k} key={k}>
               {k}
@@ -59,11 +62,25 @@ export default function CourseFilter({
           label="Subcategory"
           labelId="Subcategory"
         >
+          <MenuItem value="all">All</MenuItem>
           {publishedSubcategories.map((k) => (
             <MenuItem value={k} key={k}>
               {k}
             </MenuItem>
           ))}
+        </Select>
+      </FormControl>
+      <FormControl sx={{ minWidth: 160 }}>
+        <InputLabel id="price">Price</InputLabel>
+        <Select
+          value={price}
+          onChange={(e) => onChangePrice(e.target.value)}
+          label="Price"
+          labelId="Price"
+        >
+          <MenuItem value="all">All</MenuItem>
+          <MenuItem value="free">Free</MenuItem>
+          <MenuItem value="paid">Paid</MenuItem>
         </Select>
       </FormControl>
     </Stack>
