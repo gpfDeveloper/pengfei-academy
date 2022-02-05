@@ -146,3 +146,26 @@ export const addToWishlist = async (req, res) => {
     return res.status(404).json({ message: 'User not found.' });
   }
 };
+
+export const removeFromWishlist = async (req, res) => {
+  await db.connect();
+  const userId = req.user.id;
+  const user = await User.findById(userId);
+  const { courseId } = req.body;
+  if (user) {
+    const wishlist = user.wishlist || [];
+    const course = await PublishedCourse.findById(courseId);
+    if (!course) {
+      return res.status(404).json({ message: 'Course not found' });
+    }
+    const courseIdx = wishlist.indexOf(course._id);
+    if (courseIdx !== -1) {
+      wishlist.splice(courseIdx, 1);
+    }
+    user.wishlist = wishlist;
+    await user.save();
+    res.status(200).send();
+  } else {
+    return res.status(404).json({ message: 'User not found.' });
+  }
+};

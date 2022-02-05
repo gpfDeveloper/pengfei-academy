@@ -9,6 +9,7 @@ import {
   clearUnReadMsgCount,
   getHeaderInfo,
   addToWishlist,
+  removeFromWishlist,
 } from 'store/user';
 import { clear as clearTeaching } from './teaching';
 import { setSnackbar } from './snackbar';
@@ -197,6 +198,31 @@ export const addToWishlistAsync =
         setSnackbar({
           severity: 'error',
           message: message || 'Add to wishlist failed, please try again later',
+        })
+      );
+    }
+  };
+
+export const removeFromWishlistAsync =
+  ({ courseId, token }) =>
+  async (dispatch) => {
+    try {
+      await axios.post(
+        '/api/user/removeFromWishlist',
+        {
+          courseId,
+        },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      dispatch(removeFromWishlist(courseId));
+    } catch (error) {
+      console.log(error);
+      const message = error.response?.data?.message;
+      dispatch(
+        setSnackbar({
+          severity: 'error',
+          message:
+            message || 'Remove from wishlist failed, please try again later',
         })
       );
     }

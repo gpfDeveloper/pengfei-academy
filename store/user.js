@@ -84,7 +84,12 @@ const userSlice = createSlice({
     addToWishlist: (state, { payload }) => {
       if (state.wishlist.indexOf(payload) === -1) {
         state.wishlist.push(payload);
+        Cookies.set(USER_INFO_KEY, JSON.stringify(state));
       }
+    },
+    removeFromWishlist: (state, { payload }) => {
+      state.wishlist = state.wishlist.filter((id) => id !== payload);
+      Cookies.set(USER_INFO_KEY, JSON.stringify(state));
     },
   },
 });
@@ -98,6 +103,7 @@ export const {
   clearUnReadMsgCount,
   getHeaderInfo,
   addToWishlist,
+  removeFromWishlist,
 } = userSlice.actions;
 
 export default userSlice.reducer;
