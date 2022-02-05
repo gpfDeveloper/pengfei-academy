@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
 import dynamic from 'next/dynamic';
-import { Box, Divider, Stack, Typography } from '@mui/material';
+import { Box, Button, Divider, Stack, Typography } from '@mui/material';
 import PageLayout from 'components/layouts/PageLayout';
 import CourseItems from 'components/course/items/CourseItems';
 import axios from 'axios';
@@ -29,6 +29,9 @@ function WishlistPage() {
       setLoading(false);
     }
   }, [isLogin, router, token]);
+  const browseCourseHandler = () => {
+    router.push('/course');
+  };
 
   return (
     <PageLayout>
@@ -36,10 +39,23 @@ function WishlistPage() {
         <Box sx={{ mt: 12 }}>
           {loading && <Spinner />}
           {!loading && (
-            <Stack sx={{ gap: 4 }}>
+            <Stack sx={{ gap: 4, alignItems: 'center' }}>
               <Typography variant="h4">Wishlist</Typography>
-              <Divider />
-              <CourseItems items={courseItems} />
+              <Divider sx={{ alignSelf: 'stretch' }} />
+              <>
+                {courseItems.length === 0 && (
+                  <Button
+                    variant="contained"
+                    size="large"
+                    onClick={browseCourseHandler}
+                  >
+                    Browse course now
+                  </Button>
+                )}
+                {courseItems.length !== 0 && (
+                  <CourseItems items={courseItems} />
+                )}
+              </>
             </Stack>
           )}
         </Box>
