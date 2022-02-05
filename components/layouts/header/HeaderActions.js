@@ -18,7 +18,7 @@ function HeaderActions() {
   const router = useRouter();
   const isDark = useSelector((state) => state.theme.isDark);
   const user = useSelector((state) => state.user);
-  const { isLogin, wishlist } = user;
+  const { isLogin, wishlist, cart } = user;
   const dispatch = useDispatch();
   const clickWishlistHandler = () => {
     router.push('/my-course/wishlist');
@@ -49,7 +49,7 @@ function HeaderActions() {
       )}
       <Tooltip title="Cart">
         <IconButton size="large" color="inherit">
-          <Badge badgeContent={17} color="error">
+          <Badge badgeContent={cart.length} color="error">
             <ShoppingCartIcon />
           </Badge>
         </IconButton>

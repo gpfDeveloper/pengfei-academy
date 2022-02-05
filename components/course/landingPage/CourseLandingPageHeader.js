@@ -7,6 +7,7 @@ import LanguageIcon from '@mui/icons-material/Language';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import WishlistIconBtn from 'components/UIs/WishlistIconBtn';
+import AddToCartBtn from 'components/UIs/AddToCartBtn';
 
 export default function CourseLandingPageHeader({
   title,
@@ -72,9 +73,7 @@ export default function CourseLandingPageHeader({
         />
         <Typography variant="h6">${price}</Typography>
         <Box sx={{ display: 'flex', gap: 2, alignSelf: 'stretch' }}>
-          <Button variant="contained" size="large" fullWidth>
-            Add To Cart
-          </Button>
+          <AddToCartBtn />
           <WishlistIconBtn />
         </Box>
       </Paper>
