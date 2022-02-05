@@ -18,7 +18,7 @@ function HeaderActions() {
   const router = useRouter();
   const isDark = useSelector((state) => state.theme.isDark);
   const user = useSelector((state) => state.user);
-  const { isLogin } = user;
+  const { isLogin, wishlist } = user;
   const dispatch = useDispatch();
   return (
     <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
@@ -66,7 +66,7 @@ function HeaderActions() {
         <Stack sx={{ flexDirection: 'row' }}>
           <Tooltip title="Wishlist">
             <IconButton size="large" color="inherit">
-              <Badge badgeContent={4} color="error">
+              <Badge badgeContent={wishlist.length} color="error">
                 <FavoriteIcon />
               </Badge>
             </IconButton>

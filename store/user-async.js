@@ -8,6 +8,7 @@ import {
   clearUnReadNotificationCount,
   clearUnReadMsgCount,
   getHeaderInfo,
+  addToWishlist,
 } from 'store/user';
 import { clear as clearTeaching } from './teaching';
 import { setSnackbar } from './snackbar';
@@ -17,7 +18,7 @@ export const loginAsync =
   async (dispatch) => {
     try {
       const data = await axios.post('/api/user/login', { email, password });
-      const { token, id, name, isAdmin, isInstructor } = data.data;
+      const { token, id, name, isAdmin, isInstructor, wishlist } = data.data;
       dispatch(
         login({
           token,
@@ -26,6 +27,7 @@ export const loginAsync =
           email,
           isAdmin,
           isInstructor,
+          wishlist,
         })
       );
       return true;
@@ -175,3 +177,27 @@ export const getHeaderInfoAsync = (token) => async (dispatch) => {
     console.log(error);
   }
 };
+
+export const addToWishlistAsync =
+  ({ courseId, token }) =>
+  async (dispatch) => {
+    try {
+      await axios.post(
+        '/api/user/addToWishlist',
+        {
+          courseId,
+        },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      dispatch(addToWishlist(courseId));
+    } catch (error) {
+      console.log(error);
+      const message = error.response?.data?.message;
+      dispatch(
+        setSnackbar({
+          severity: 'error',
+          message: message || 'Add to wishlist failed, please try again later',
+        })
+      );
+    }
+  };

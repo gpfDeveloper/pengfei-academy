@@ -15,6 +15,7 @@ let initialState = {
   unReadNotificationCount: 0,
   unReadMsgCount: 0,
   expireAt: null,
+  wishlist: [],
 };
 
 const userInfo = Cookies.get(USER_INFO_KEY);
@@ -28,7 +29,7 @@ const userSlice = createSlice({
   reducers: {
     login: (
       state,
-      { payload: { id, name, email, token, isAdmin, isInstructor } }
+      { payload: { id, name, email, token, isAdmin, isInstructor, wishlist } }
     ) => {
       state.id = id;
       state.isLogin = true;
@@ -38,6 +39,7 @@ const userSlice = createSlice({
       state.email = email;
       state.token = token;
       state.expireAt = new Date().getTime() + SESSION_EXPIRE_SEC * 1000;
+      state.wishlist = wishlist;
       Cookies.set(USER_INFO_KEY, JSON.stringify(state));
     },
     logout: (state) => {
@@ -51,6 +53,7 @@ const userSlice = createSlice({
       state.unReadNotificationCount = 0;
       state.unReadMsgCount = 0;
       state.expireAt = null;
+      state.wishlist = [];
       Cookies.remove(USER_INFO_KEY);
     },
     updateEmail: (state, { payload: email }) => {
@@ -78,6 +81,11 @@ const userSlice = createSlice({
       state.isInstructor = isInstructor;
       Cookies.set(USER_INFO_KEY, JSON.stringify(state));
     },
+    addToWishlist: (state, { payload }) => {
+      if (state.wishlist.indexOf(payload) === -1) {
+        state.wishlist.push(payload);
+      }
+    },
   },
 });
 
@@ -89,6 +97,7 @@ export const {
   clearUnReadNotificationCount,
   clearUnReadMsgCount,
   getHeaderInfo,
+  addToWishlist,
 } = userSlice.actions;
 
 export default userSlice.reducer;

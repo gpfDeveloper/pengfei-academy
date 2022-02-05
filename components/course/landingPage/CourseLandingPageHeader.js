@@ -1,19 +1,12 @@
-import {
-  Box,
-  Typography,
-  Link,
-  Button,
-  Paper,
-  IconButton,
-} from '@mui/material';
+import { Box, Typography, Link, Button, Paper } from '@mui/material';
 import NextLink from 'next/link';
 import moment from 'moment';
 import ReactPlayer from 'react-player/lazy';
 import InfoIcon from '@mui/icons-material/Info';
 import LanguageIcon from '@mui/icons-material/Language';
-import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import WishlistIconBtn from 'components/UIs/WishlistIconBtn';
 
 export default function CourseLandingPageHeader({
   title,
@@ -78,19 +71,11 @@ export default function CourseLandingPageHeader({
           height={216}
         />
         <Typography variant="h6">${price}</Typography>
-        <Box sx={{ display: 'flex', gap: 2 }}>
-          <Button variant="contained" size="large">
+        <Box sx={{ display: 'flex', gap: 2, alignSelf: 'stretch' }}>
+          <Button variant="contained" size="large" fullWidth>
             Add To Cart
           </Button>
-          <IconButton
-            sx={{
-              border: '1px solid',
-              borderRadius: '4px',
-              borderColor: 'primary.main',
-            }}
-          >
-            <FavoriteBorderOutlinedIcon fontSize="large" color="primary" />
-          </IconButton>
+          <WishlistIconBtn />
         </Box>
       </Paper>
     </Box>

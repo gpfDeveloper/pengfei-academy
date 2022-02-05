@@ -50,6 +50,7 @@ const userSchema = new mongoose.Schema(
       type: mongoose.Types.ObjectId,
       ref: 'Conversation',
     },
+    wishlist: [{ type: mongoose.Types.ObjectId, ref: 'PublishedCourse' }],
   },
   { timestamps: true }
 );
