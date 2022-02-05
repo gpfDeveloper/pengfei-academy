@@ -20,6 +20,9 @@ function HeaderActions() {
   const user = useSelector((state) => state.user);
   const { isLogin, wishlist } = user;
   const dispatch = useDispatch();
+  const clickWishlistHandler = () => {
+    router.push('/my-course/wishlist');
+  };
   return (
     <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
       {!isDark && (
@@ -65,7 +68,11 @@ function HeaderActions() {
       {isLogin && (
         <Stack sx={{ flexDirection: 'row' }}>
           <Tooltip title="Wishlist">
-            <IconButton size="large" color="inherit">
+            <IconButton
+              size="large"
+              color="inherit"
+              onClick={clickWishlistHandler}
+            >
               <Badge badgeContent={wishlist.length} color="error">
                 <FavoriteIcon />
               </Badge>
