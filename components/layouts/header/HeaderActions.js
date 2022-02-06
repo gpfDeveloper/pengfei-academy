@@ -77,7 +77,7 @@ function HeaderActions() {
               color="inherit"
               onClick={clickWishlistHandler}
             >
-              <Badge badgeContent={wishlist.length} color="error">
+              <Badge badgeContent={wishlist?.length} color="error">
                 <FavoriteIcon />
               </Badge>
             </IconButton>

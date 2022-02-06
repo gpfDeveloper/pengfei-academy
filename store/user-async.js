@@ -67,6 +67,7 @@ export const registerAsync =
           email,
           isAdmin: false,
           isInstructor: false,
+          wishlist: [],
         })
       );
       dispatch(

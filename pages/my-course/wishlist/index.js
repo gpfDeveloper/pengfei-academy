@@ -40,7 +40,7 @@ function WishlistPage() {
           {loading && <Spinner />}
           {!loading && (
             <Stack sx={{ gap: 4, alignItems: 'center' }}>
-              <Typography variant="h4">Wishlist</Typography>
+              <Typography variant="h3">Wishlist</Typography>
               <Divider sx={{ alignSelf: 'stretch' }} />
               <>
                 {courseItems.length === 0 && (
