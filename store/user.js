@@ -16,7 +16,6 @@ let initialState = {
   unReadMsgCount: 0,
   expireAt: null,
   wishlist: [],
-  cart: [],
 };
 
 const userInfo = Cookies.get(USER_INFO_KEY);
@@ -93,16 +92,6 @@ const userSlice = createSlice({
       state.wishlist = state.wishlist.filter((id) => id !== payload);
       Cookies.set(USER_INFO_KEY, JSON.stringify(state));
     },
-    addToCart: (state, { payload }) => {
-      if (state.cart.indexOf(payload) === -1) {
-        state.cart.push(payload);
-        Cookies.set(USER_INFO_KEY, JSON.stringify(state));
-      }
-    },
-    removeFromCart: (state, { payload }) => {
-      state.Cart = state.cart.filter((id) => id !== payload);
-      Cookies.set(USER_INFO_KEY, JSON.stringify(state));
-    },
   },
 });
 
@@ -116,8 +105,6 @@ export const {
   getHeaderInfo,
   addToWishlist,
   removeFromWishlist,
-  addToCart,
-  removeFromCart,
 } = userSlice.actions;
 
 export default userSlice.reducer;

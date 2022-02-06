@@ -2,19 +2,21 @@ import { Button } from '@mui/material';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import { useSelector, useDispatch } from 'react-redux';
-import { addToCart } from 'store/user';
+import { addToCart } from 'store/cart';
 
-function AddToCartBtn() {
-  const user = useSelector((state) => state.user);
+function AddToCartBtn({ author, price, title }) {
   const dispatch = useDispatch();
-  const { cart } = user;
+  const cart = useSelector((state) => state.cart);
   const router = useRouter();
   const { courseId } = router.query;
-  const isInCart = cart.indexOf(courseId) !== -1;
+  const isInCart =
+    cart.items.findIndex((item) => item.courseId === courseId) !== -1;
   const addToCartHandler = () => {
-    dispatch(addToCart(courseId));
+    dispatch(addToCart({ courseId, author, price, title }));
   };
-  const goToCartHandler = () => {};
+  const goToCartHandler = () => {
+    router.push('/cart');
+  };
   return (
     <>
       {!isInCart && (

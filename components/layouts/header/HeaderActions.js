@@ -18,10 +18,14 @@ function HeaderActions() {
   const router = useRouter();
   const isDark = useSelector((state) => state.theme.isDark);
   const user = useSelector((state) => state.user);
-  const { isLogin, wishlist, cart } = user;
+  const cart = useSelector((state) => state.cart);
+  const { isLogin, wishlist } = user;
   const dispatch = useDispatch();
   const clickWishlistHandler = () => {
     router.push('/my-course/wishlist');
+  };
+  const clickCartHandler = () => {
+    router.push('/cart');
   };
   return (
     <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
@@ -48,8 +52,8 @@ function HeaderActions() {
         </Tooltip>
       )}
       <Tooltip title="Cart">
-        <IconButton size="large" color="inherit">
-          <Badge badgeContent={cart.length} color="error">
+        <IconButton size="large" color="inherit" onClick={clickCartHandler}>
+          <Badge badgeContent={cart.items.length} color="error">
             <ShoppingCartIcon />
           </Badge>
         </IconButton>

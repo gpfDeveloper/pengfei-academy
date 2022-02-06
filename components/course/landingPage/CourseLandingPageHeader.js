@@ -1,4 +1,4 @@
-import { Box, Typography, Link, Button, Paper } from '@mui/material';
+import { Box, Typography, Link, Paper } from '@mui/material';
 import NextLink from 'next/link';
 import moment from 'moment';
 import ReactPlayer from 'react-player/lazy';
@@ -73,7 +73,7 @@ export default function CourseLandingPageHeader({
         />
         <Typography variant="h6">${price}</Typography>
         <Box sx={{ display: 'flex', gap: 2, alignSelf: 'stretch' }}>
-          <AddToCartBtn />
+          <AddToCartBtn title={title} author={author.name} price={price} />
           <WishlistIconBtn />
         </Box>
       </Paper>
