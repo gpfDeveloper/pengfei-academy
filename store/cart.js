@@ -23,10 +23,20 @@ const cartSlice = createSlice({
       if (isExist) return;
       state.items.push({ courseId, title, author, price });
       state.subtotal += price;
+      state.subtotal = Math.round(state.subtotal * 100) / 100;
       Cookies.set(CART_INFO_KEY, JSON.stringify(state));
     },
     removeFromCart: (state, { payload }) => {
-      state.Cart = state.cart.filter((id) => id !== payload);
+      const itemIdx = state.items.findIndex(
+        (item) => item.courseId === payload
+      );
+      if (itemIdx === -1) return;
+      state.subtotal -= state.items[itemIdx].price;
+      state.subtotal = Math.round(state.subtotal * 100) / 100;
+      state.items.splice(itemIdx, 1);
+      if (state.items.length === 0) {
+        state.subtotal = 0;
+      }
       Cookies.set(CART_INFO_KEY, JSON.stringify(state));
     },
   },
