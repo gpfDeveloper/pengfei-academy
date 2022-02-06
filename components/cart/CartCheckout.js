@@ -14,6 +14,8 @@ export default function CartCheckout() {
   const checkoutHandler = () => {
     if (!isLogin) {
       router.push('/login?redirect=/cart');
+    } else {
+      router.push('/cart/checkout');
     }
   };
   return (
