@@ -4,9 +4,9 @@ import { useRouter } from 'next/router';
 import dynamic from 'next/dynamic';
 import { Box, Button, Divider, Stack, Typography } from '@mui/material';
 import PageLayout from 'components/layouts/PageLayout';
-import CourseItems from 'components/course/items/CourseItems';
 import axios from 'axios';
 import Spinner from 'components/UIs/Spinner';
+import CourseLearningItems from 'components/course/learning/CourseLearningItems';
 
 function MyCoursesLearningPage() {
   const router = useRouter();
@@ -15,8 +15,8 @@ function MyCoursesLearningPage() {
   const [courseItems, setCourseItems] = useState([]);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
-    const fetchWishlist = async () => {
-      const data = await axios.get('/api/user/getWishlist', {
+    const fetchLearningList = async () => {
+      const data = await axios.get('/api/user/getLearningList', {
         headers: { Authorization: `Bearer ${token}` },
       });
       setCourseItems(data.data.courseItems);
@@ -25,7 +25,7 @@ function MyCoursesLearningPage() {
       router.replace('/login');
     } else {
       setLoading(true);
-      fetchWishlist();
+      fetchLearningList();
       setLoading(false);
     }
   }, [isLogin, router, token]);
@@ -58,7 +58,7 @@ function MyCoursesLearningPage() {
                   </>
                 )}
                 {courseItems.length !== 0 && (
-                  <CourseItems items={courseItems} />
+                  <CourseLearningItems items={courseItems} />
                 )}
               </>
             </Stack>

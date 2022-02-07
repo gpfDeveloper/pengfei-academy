@@ -228,3 +228,20 @@ export const enrollment = async (req, res) => {
     return res.status(404).json({ message: 'User not found.' });
   }
 };
+
+export const getLearningListCourseItems = async (req, res) => {
+  await db.connect();
+  const userId = req.user.id;
+  const user = await User.findById(userId);
+  if (user) {
+    let learningList = user.learningList || [];
+    let courseItems = await PublishedCourse.find({ _id: { $in: learningList } })
+      .select(['title', 'subtitle', 'category', 'subcategory', 'updatedAt'])
+      .populate([{ path: 'author', select: ['name'] }]);
+    return res.status(200).json({
+      courseItems: courseItems.map((item) => item.toObject({ getters: true })),
+    });
+  } else {
+    return res.status(404).json({ message: 'User not found.' });
+  }
+};

@@ -2,12 +2,14 @@ export const PAGES = [
   { label: 'Home', path: '/' },
   { label: 'Course', path: '/course' },
   { label: 'Teach here', path: '/teaching' },
+  { label: 'My learing', path: '/my-course/learning' },
 ];
 
 export const PAGES_INSTRUCTOR = [
   { label: 'Home', path: '/' },
   { label: 'Course', path: '/course' },
   { label: 'Instructor', path: '/instructor' },
+  { label: 'My learing', path: '/my-course/learning' },
 ];
 
 export const SESSION_EXPIRE_SEC = 60 * 60 * 24 * 365;
