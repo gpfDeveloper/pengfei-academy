@@ -19,6 +19,10 @@ const CourseSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    numOfStudents: {
+      type: Number,
+      default: 0,
+    },
     publishedCourse: {
       type: mongoose.Types.ObjectId,
       ref: 'PublishedCourse',

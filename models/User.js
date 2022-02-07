@@ -51,6 +51,7 @@ const userSchema = new mongoose.Schema(
       ref: 'Conversation',
     },
     wishlist: [{ type: mongoose.Types.ObjectId, ref: 'PublishedCourse' }],
+    learningList: [{ type: mongoose.Types.ObjectId, ref: 'PublishedCourse' }],
   },
   { timestamps: true }
 );

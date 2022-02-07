@@ -7,7 +7,6 @@ export default function HeaderSearchMobile() {
   const [isOpen, setIsOpen] = useState(false);
   const drawerCloseHandler = () => setIsOpen(false);
   const drawerOpenHandler = () => setIsOpen(true);
-  console.log(isOpen);
   return (
     <>
       <IconButton

@@ -6,6 +6,8 @@ import Message from 'models/Message';
 import db from 'utils/db';
 import { signToken } from 'utils/auth';
 import PublishedCourse from 'models/PublishedCourse';
+import mongoose from 'mongoose';
+import Course from 'models/Course';
 
 export const register = async (req, res) => {
   await db.connect();
@@ -70,6 +72,7 @@ export const login = async (req, res) => {
       isAdmin: user.isAdmin,
       isInstructor: user.isInstructor,
       wishlist: user.wishlist,
+      learningList: user.learningList,
     });
   } else {
     return res.status(401).json({ message: 'Invalid email or password' });
@@ -189,6 +192,38 @@ export const getWishlistCourseItems = async (req, res) => {
     return res.status(200).json({
       courseItems: courseItems.map((item) => item.toObject({ getters: true })),
     });
+  } else {
+    return res.status(404).json({ message: 'User not found.' });
+  }
+};
+
+export const enrollment = async (req, res) => {
+  await db.connect();
+  const userId = req.user.id;
+  const user = await User.findById(userId);
+  const { courseId } = req.body;
+  if (user) {
+    const learningList = user.learningList || [];
+    const publishedCourse = await PublishedCourse.findById(courseId);
+    if (!publishedCourse) {
+      return res.status(404).json({ message: 'Course not found' });
+    }
+    const course = await Course.findById(publishedCourse.course);
+    if (learningList.indexOf(publishedCourse._id) === -1) {
+      learningList.push(courseId);
+      course.numOfStudents += 1;
+    } else {
+      return res.status(422).json({ message: 'Already enrolled.' });
+    }
+    user.learningList = learningList;
+
+    const session = await mongoose.startSession();
+    session.startTransaction();
+    await user.save({ session });
+    await course.save({ session });
+    await session.commitTransaction();
+
+    res.status(200).send();
   } else {
     return res.status(404).json({ message: 'User not found.' });
   }

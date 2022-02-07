@@ -10,6 +10,7 @@ import {
   getHeaderInfo,
   addToWishlist,
   removeFromWishlist,
+  enrollment,
 } from 'store/user';
 import { clear as clearTeaching } from './teaching';
 import { setSnackbar } from './snackbar';
@@ -19,7 +20,8 @@ export const loginAsync =
   async (dispatch) => {
     try {
       const data = await axios.post('/api/user/login', { email, password });
-      const { token, id, name, isAdmin, isInstructor, wishlist } = data.data;
+      const { token, id, name, isAdmin, isInstructor, wishlist, learningList } =
+        data.data;
       dispatch(
         login({
           token,
@@ -29,6 +31,7 @@ export const loginAsync =
           isAdmin,
           isInstructor,
           wishlist,
+          learningList,
         })
       );
       return true;
@@ -68,6 +71,7 @@ export const registerAsync =
           isAdmin: false,
           isInstructor: false,
           wishlist: [],
+          learningList: [],
         })
       );
       dispatch(
@@ -193,7 +197,6 @@ export const addToWishlistAsync =
       );
       dispatch(addToWishlist(courseId));
     } catch (error) {
-      console.log(error);
       const message = error.response?.data?.message;
       dispatch(
         setSnackbar({
@@ -226,5 +229,30 @@ export const removeFromWishlistAsync =
             message || 'Remove from wishlist failed, please try again later',
         })
       );
+    }
+  };
+
+export const enrollmentAsync =
+  ({ courseId, token }) =>
+  async (dispatch) => {
+    try {
+      await axios.post(
+        '/api/user/enrollment',
+        {
+          courseId,
+        },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      dispatch(enrollment(courseId));
+      return true;
+    } catch (error) {
+      const message = error.response?.data?.message;
+      dispatch(
+        setSnackbar({
+          severity: 'error',
+          message: message || 'Enrollment failed, please try again later',
+        })
+      );
+      return false;
     }
   };

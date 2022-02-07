@@ -16,6 +16,7 @@ let initialState = {
   unReadMsgCount: 0,
   expireAt: null,
   wishlist: [],
+  learningList: [],
 };
 
 const userInfo = Cookies.get(USER_INFO_KEY);
@@ -29,7 +30,18 @@ const userSlice = createSlice({
   reducers: {
     login: (
       state,
-      { payload: { id, name, email, token, isAdmin, isInstructor, wishlist } }
+      {
+        payload: {
+          id,
+          name,
+          email,
+          token,
+          isAdmin,
+          isInstructor,
+          wishlist,
+          learningList,
+        },
+      }
     ) => {
       state.id = id;
       state.isLogin = true;
@@ -40,6 +52,7 @@ const userSlice = createSlice({
       state.token = token;
       state.expireAt = new Date().getTime() + SESSION_EXPIRE_SEC * 1000;
       state.wishlist = wishlist;
+      state.learningList = learningList;
       Cookies.set(USER_INFO_KEY, JSON.stringify(state));
     },
     logout: (state) => {
@@ -54,7 +67,7 @@ const userSlice = createSlice({
       state.unReadMsgCount = 0;
       state.expireAt = null;
       state.wishlist = [];
-      state.cart = [];
+      state.learningList = [];
       Cookies.remove(USER_INFO_KEY);
     },
     updateEmail: (state, { payload: email }) => {
@@ -92,6 +105,12 @@ const userSlice = createSlice({
       state.wishlist = state.wishlist.filter((id) => id !== payload);
       Cookies.set(USER_INFO_KEY, JSON.stringify(state));
     },
+    enrollment: (state, { payload }) => {
+      if (state.learningList.indexOf(payload) === -1) {
+        state.learningList.push(payload);
+        Cookies.set(USER_INFO_KEY, JSON.stringify(state));
+      }
+    },
   },
 });
 
@@ -105,6 +124,7 @@ export const {
   getHeaderInfo,
   addToWishlist,
   removeFromWishlist,
+  enrollment,
 } = userSlice.actions;
 
 export default userSlice.reducer;
