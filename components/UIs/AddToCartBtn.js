@@ -34,7 +34,9 @@ function AddToCartBtn({ author, price, title }) {
       }
     }
   };
-  const goToCourseHandler = () => {};
+  const goToCourseHandler = () => {
+    router.push(`/course/${courseId}/learn`);
+  };
 
   let button;
   const btnProps = { variant: 'contained', size: 'large', fullWidth: true };

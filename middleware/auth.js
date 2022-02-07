@@ -99,12 +99,15 @@ export const canLearnPublishedCourse = async (req, res, next) => {
   await db.connect();
   const user = await User.findById(req.user.id);
   const course = await PublishedCourse.findById(courseId);
-  //todo user who enrolled in course can view
-  let isEnrolled = true;
   if (user.isAdmin || course.author.toString() === user._id.toString()) {
     req.course = course;
     return next();
-  } else if (isEnrolled) {
+  }
+  let learningList = user.learningList || [];
+  learningList = learningList.map((item) => item.toString());
+  const isEnrolled = learningList.indexOf(courseId) !== -1;
+  if (isEnrolled) {
+    req.course = course;
     return next();
   } else {
     return res.status(403).json({ message: 'Not authorized.' });
