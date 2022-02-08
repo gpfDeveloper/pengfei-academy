@@ -57,43 +57,27 @@ export const sendMessage = async (req, res) => {
 };
 
 //Create converstion if coversation not exist, send message if text if provided, called in server.
-export const sendMessageServer = async (
-  session,
-  senderId,
-  receiverId,
-  text
-) => {
-  if (receiverId === senderId) {
-    throw Error('Same receiver and sender');
-  }
+export const sendMessageServer = async (session, senderId, receiver, text) => {
   await db.connect();
-  const sender = await User.findById(senderId);
-  if (!sender) {
-    throw Error('Sender not found.');
-  }
-  const receiver = await User.findById(receiverId);
-  if (!receiver) {
-    throw Error('Receiver not found.');
-  }
   let conversation;
   // find exist conversation frist
   conversation = await Conversation.findOne({
     $and: [
-      { member1: { $in: [sender, receiver] } },
-      { member2: { $in: [sender, receiver] } },
+      { member1: { $in: [senderId, receiver] } },
+      { member2: { $in: [senderId, receiver] } },
     ],
   });
 
   if (!conversation) {
     conversation = new Conversation();
-    conversation.member1 = sender._id;
+    conversation.member1 = senderId;
     conversation.member2 = receiver._id;
   }
 
   if (text) {
     const message = new Message({
       conversation: conversation._id,
-      sender: sender._id,
+      sender: senderId,
       text,
     });
     conversation.lastMsg = message._id;

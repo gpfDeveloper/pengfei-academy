@@ -224,11 +224,10 @@ export const enrollment = async (req, res) => {
     await course.save({ session });
     //add welcome msg
     const senderId = publishedCourse.author;
-    const receiverId = userId;
     await sendMessageServer(
       session,
       senderId,
-      receiverId,
+      user,
       publishedCourse.welcomeMsg
     );
     await session.commitTransaction();
