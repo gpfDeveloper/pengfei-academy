@@ -9,8 +9,14 @@ import {
   CardActionArea,
 } from '@mui/material';
 
+const reviewStatusMap = {
+  Reviewing: 'Change in review',
+  Approved: '',
+  'Needs Fixes': 'Needs Fixes',
+};
+
 export default function InstructorCourseItem({ item }) {
-  const { id, title, thumbnail, isPublished } = item;
+  const { id, title, thumbnail, isPublished, reviewStatus, price } = item;
   const router = useRouter();
   const clickHandler = () => {
     router.push(`/instructor/course/${id}`);
@@ -30,10 +36,24 @@ export default function InstructorCourseItem({ item }) {
             <Typography gutterBottom variant="h5" component="div">
               {title}
             </Typography>
-            <Typography variant="body2" color="text.secondary">
-              {isPublished ? 'PUBLISHED' : 'DRAFT'}
-            </Typography>
+            <Box sx={{ display: 'flex', gap: 2 }}>
+              <Typography variant="body2" color="text.secondary">
+                {isPublished ? 'PUBLISHED' : 'DRAFT'}
+              </Typography>
+              <Typography
+                variant="body2"
+                color="text.secondary"
+                sx={{ textTransform: 'uppercase' }}
+              >
+                {reviewStatusMap[reviewStatus]}
+              </Typography>
+            </Box>
           </CardContent>
+          {price !== undefined && (
+            <Typography variant="h6" sx={{ padding: 2 }}>
+              {price === 0 ? 'Free' : `$${price}`}
+            </Typography>
+          )}
         </Box>
       </CardActionArea>
     </Card>

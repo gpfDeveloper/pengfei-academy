@@ -191,9 +191,13 @@ export const updateCoursePrice = async (req, res) => {
   res.status(200).send();
 };
 
-//to do courses cannot be deleted after students have enrolled.
 export const deleteCourse = async (req, res) => {
   const course = req.course;
+  if (course.numOfStudents > 0) {
+    return res.status(403).json({
+      message: 'Course cannot delete since already have students enrolled',
+    });
+  }
   const session = await mongoose.startSession();
   session.startTransaction();
   await CourseSection.deleteMany({ course: course._id }, { session: session });

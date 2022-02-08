@@ -17,12 +17,18 @@ import DarkModeIcon from '@mui/icons-material/DarkMode';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import { sliceText } from 'utils';
 
+const reviewStatusMap = {
+  Reviewing: 'Change in review',
+  Approved: '',
+  'Needs Fixes': 'Needs Fixes',
+};
+
 export default function HeaderEditCourse() {
   const router = useRouter();
   const dispatch = useDispatch();
   const course = useSelector((state) => state.course);
   const isDark = useSelector((state) => state.theme.isDark);
-  const { title, isPublished } = course;
+  const { title, isPublished, reviewStatus } = course;
   const theme = useTheme();
   const isBelowMd = useMediaQuery(theme.breakpoints.down('md'));
   const isBelowSm = useMediaQuery(theme.breakpoints.down('sm'));
@@ -74,6 +80,16 @@ export default function HeaderEditCourse() {
             }}
           >
             {isPublished ? 'PUBLISHED' : 'DRAFT'}
+          </Typography>
+          <Typography
+            sx={{
+              textTransform: 'uppercase',
+              fontSize: '.8rem',
+              padding: 0.8,
+              color: 'text.secondary',
+            }}
+          >
+            {reviewStatusMap[reviewStatus]}
           </Typography>
         </Box>
         <Box>
