@@ -2,6 +2,7 @@ import db from 'utils/db';
 import User from 'models/User';
 import Conversation from 'models/Conversation';
 import Message from 'models/Message';
+import mongoose from 'mongoose';
 
 export const sendMessage = async (req, res) => {
   const senderId = req.user.id;
@@ -42,12 +43,65 @@ export const sendMessage = async (req, res) => {
     text,
   });
   conversation.lastMsg = message._id;
-  await message.save();
-  await conversation.save();
+
+  const session = await mongoose.startSession();
+  session.startTransaction();
+  await message.save({ session });
+  await conversation.save({ session });
+  await session.commitTransaction();
+
   res.status(200).json({ message: message.toObject({ getters: true }) });
 
   receiver.unReadMsgCount += 1;
   receiver.save();
+};
+
+//Create converstion if coversation not exist, send message if text if provided, called in server.
+export const sendMessageServer = async (
+  session,
+  senderId,
+  receiverId,
+  text
+) => {
+  if (receiverId === senderId) {
+    throw Error('Same receiver and sender');
+  }
+  await db.connect();
+  const sender = await User.findById(senderId);
+  if (!sender) {
+    throw Error('Sender not found.');
+  }
+  const receiver = await User.findById(receiverId);
+  if (!receiver) {
+    throw Error('Receiver not found.');
+  }
+  let conversation;
+  // find exist conversation frist
+  conversation = await Conversation.findOne({
+    $and: [
+      { member1: { $in: [sender, receiver] } },
+      { member2: { $in: [sender, receiver] } },
+    ],
+  });
+
+  if (!conversation) {
+    conversation = new Conversation();
+    conversation.member1 = sender._id;
+    conversation.member2 = receiver._id;
+  }
+
+  if (text) {
+    const message = new Message({
+      conversation: conversation._id,
+      sender: sender._id,
+      text,
+    });
+    conversation.lastMsg = message._id;
+    receiver.unReadMsgCount += 1;
+    await message.save({ session });
+    await receiver.save({ session });
+  }
+  await conversation.save({ session });
 };
 
 export const getConversations = async (req, res) => {
@@ -77,8 +131,10 @@ export const getConversations = async (req, res) => {
         text: 1,
         sender: 1,
       });
-      convInfo.lastMsg = lastMsg.text;
-      convInfo.isSendByMe = lastMsg.sender.toString() === userId;
+      if (lastMsg) {
+        convInfo.lastMsg = lastMsg.text;
+        convInfo.isSendByMe = lastMsg.sender.toString() === userId;
+      }
       conversations.push(convInfo);
     }
   }

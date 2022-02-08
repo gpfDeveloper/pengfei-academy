@@ -8,6 +8,7 @@ import { signToken } from 'utils/auth';
 import PublishedCourse from 'models/PublishedCourse';
 import mongoose from 'mongoose';
 import Course from 'models/Course';
+import { sendMessageServer } from './message';
 
 export const register = async (req, res) => {
   await db.connect();
@@ -221,6 +222,15 @@ export const enrollment = async (req, res) => {
     session.startTransaction();
     await user.save({ session });
     await course.save({ session });
+    //add welcome msg
+    const senderId = publishedCourse.author;
+    const receiverId = userId;
+    await sendMessageServer(
+      session,
+      senderId,
+      receiverId,
+      publishedCourse.welcomeMsg
+    );
     await session.commitTransaction();
 
     res.status(200).send();
