@@ -32,7 +32,6 @@ const PublishedCourseSchema = new mongoose.Schema(
     category: { type: String, enum: [...courseCategories] },
     subcategory: { type: String, enum: [...courseSubcategories] },
     welcomeMsg: { type: String, trim: true, maxlength: 1000 },
-    congratulationMsg: { type: String, trim: true, maxlength: 1000 },
     learningObjectives: [{ type: String, trim: true, maxlength: 160 }],
     prerequisites: [{ type: String, trim: true, maxlength: 160 }],
     courseForWho: [{ type: String, trim: true, maxlength: 160 }],

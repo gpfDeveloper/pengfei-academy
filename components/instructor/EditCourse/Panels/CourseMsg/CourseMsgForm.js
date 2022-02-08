@@ -24,17 +24,15 @@ export default function CourseMsgForm() {
 
   useEffect(() => {
     setValue('welcomeMsg', course.welcomeMsg);
-    setValue('congratulationMsg', course.congratulationMsg);
   }, []);
 
-  const onSubmit = async ({ welcomeMsg, congratulationMsg }) => {
+  const onSubmit = async ({ welcomeMsg }) => {
     setIsSaving(true);
     await dispatch(
       updateMyCourseMsgAsync({
         courseId,
         token,
         welcomeMsg,
-        congratulationMsg,
       })
     );
     setIsSaving(false);
@@ -59,26 +57,6 @@ export default function CourseMsgForm() {
           />
         )}
       />
-      <Controller
-        name="congratulationMsg"
-        defaultValue=""
-        control={control}
-        rules={{ maxLength: 1000 }}
-        render={({ field }) => (
-          <TextField
-            error={Boolean(errors.subtitle)}
-            multiline
-            rows={4}
-            helperText={
-              errors.subtitle &&
-              'Congratulation message at most have 1000 charactors.'
-            }
-            label="Congratulation message"
-            {...field}
-          />
-        )}
-      />
-
       {!isSaving && (
         <Button
           size="large"

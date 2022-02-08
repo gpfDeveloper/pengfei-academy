@@ -211,7 +211,6 @@ const setPublishedCourseFields = (course, publishedCourse) => {
   publishedCourse.description = course.description;
   publishedCourse.subtitle = course.subtitle;
   publishedCourse.welcomeMsg = course.welcomeMsg;
-  publishedCourse.congratulationMsg = course.congratulationMsg;
 };
 
 const createPublishedCourse = async (course, session) => {

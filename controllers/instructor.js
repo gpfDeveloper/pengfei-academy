@@ -152,9 +152,8 @@ export const updateCourseBasicInfo = async (req, res) => {
 
 export const updateCourseMsg = async (req, res) => {
   const course = req.course;
-  const { welcomeMsg, congratulationMsg } = req.body;
+  const { welcomeMsg } = req.body;
   course.welcomeMsg = welcomeMsg;
-  course.congratulationMsg = congratulationMsg;
   await course.save();
   res.status(200).send();
 };

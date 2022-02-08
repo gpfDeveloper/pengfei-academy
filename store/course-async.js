@@ -128,12 +128,12 @@ export const updateMyCourseBasicInfoAsync =
   };
 
 export const updateMyCourseMsgAsync =
-  ({ courseId, token, welcomeMsg, congratulationMsg }) =>
+  ({ courseId, token, welcomeMsg }) =>
   async (dispatch) => {
     try {
       await axios.put(
         `/api/instructor/course/${courseId}/updateMsg`,
-        { welcomeMsg, congratulationMsg },
+        { welcomeMsg },
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -141,7 +141,6 @@ export const updateMyCourseMsgAsync =
       dispatch(
         updateCourse({
           welcomeMsg,
-          congratulationMsg,
         })
       );
       dispatch(

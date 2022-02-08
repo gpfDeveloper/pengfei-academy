@@ -9,9 +9,9 @@ export default function CourseMsg() {
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
         <Typography color="text.secondary">
           Write messages to your students (optional) that will be sent
-          automatically when they join or complete your course to encourage
-          students to engage with course content. If you do not wish to send a
-          welcome or congratulations message, leave the text box blank.
+          automatically when they join your course to encourage students to
+          engage with course content. If you do not wish to send a welcome
+          message, leave the text box blank.
         </Typography>
         <CourseMsgForm />
       </Box>

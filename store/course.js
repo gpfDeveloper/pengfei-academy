@@ -9,7 +9,6 @@ const initialState = {
   category: '',
   subcategory: '',
   welcomeMsg: '',
-  congratulationMsg: '',
   learningObjectives: [],
   prerequisites: [],
   courseForWho: [],
