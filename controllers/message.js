@@ -57,7 +57,7 @@ export const sendMessage = async (req, res) => {
 };
 
 //Create converstion if coversation not exist, send message if text if provided, called in server.
-export const sendMessageServer = async (session, senderId, receiver, text) => {
+export const sendMessageServer = async ({ senderId, receiver, text }) => {
   await db.connect();
   let conversation;
   // find exist conversation frist
@@ -81,11 +81,9 @@ export const sendMessageServer = async (session, senderId, receiver, text) => {
       text,
     });
     conversation.lastMsg = message._id;
-    receiver.unReadMsgCount += 1;
-    await message.save({ session });
-    await receiver.save({ session });
+    await message.save();
   }
-  await conversation.save({ session });
+  await conversation.save();
 };
 
 export const getConversations = async (req, res) => {

@@ -221,16 +221,16 @@ export const enrollment = async (req, res) => {
 
     const session = await mongoose.startSession();
     session.startTransaction();
-    await user.save({ session });
     await course.save({ session });
     //add welcome msg
     const senderId = publishedCourse.author;
-    await sendMessageServer(
-      session,
+    await sendMessageServer({
       senderId,
-      user,
-      publishedCourse.welcomeMsg
-    );
+      receiver: user,
+      text: publishedCourse.welcomeMsg,
+    });
+    user.unReadMsgCount += 1;
+    await user.save({ session });
     await session.commitTransaction();
 
     res.status(200).send();

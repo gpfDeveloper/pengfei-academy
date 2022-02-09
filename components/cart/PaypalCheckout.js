@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useRouter } from 'next/router';
 import { setSnackbar } from 'store/snackbar';
+import { enrollmentBatch } from 'store/user';
 import { clearCart } from 'store/cart';
 import {
   Card,
@@ -76,6 +77,9 @@ export default function PaypalCheckout() {
   };
   const onApprove = (data, actions) => {
     return actions.order.capture().then(async function (details) {
+      dispatch(
+        enrollmentBatch({ courseIds: cart.items.map((item) => item.courseId) })
+      );
       dispatch(clearCart());
       dispatch(
         setSnackbar({ severity: 'success', message: 'Payment success.' })

@@ -105,11 +105,20 @@ const userSlice = createSlice({
       state.wishlist = state.wishlist.filter((id) => id !== payload);
       Cookies.set(USER_INFO_KEY, JSON.stringify(state));
     },
+    //free enrollment
     enrollment: (state, { payload }) => {
       if (state.learningList.indexOf(payload) === -1) {
         state.learningList.push(payload);
         Cookies.set(USER_INFO_KEY, JSON.stringify(state));
       }
+    },
+    enrollmentBatch: (state, { payload: { courseIds } }) => {
+      for (const courseId of courseIds) {
+        if (state.learningList.indexOf(courseId) === -1) {
+          state.learningList.push(courseId);
+        }
+      }
+      Cookies.set(USER_INFO_KEY, JSON.stringify(state));
     },
   },
 });
@@ -125,6 +134,7 @@ export const {
   addToWishlist,
   removeFromWishlist,
   enrollment,
+  enrollmentBatch,
 } = userSlice.actions;
 
 export default userSlice.reducer;

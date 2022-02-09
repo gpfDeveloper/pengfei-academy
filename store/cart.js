@@ -42,6 +42,7 @@ const cartSlice = createSlice({
     clearCart: (state) => {
       state.subtotal = 0;
       state.items = [];
+      Cookies.set(CART_INFO_KEY, JSON.stringify(state));
     },
   },
 });
