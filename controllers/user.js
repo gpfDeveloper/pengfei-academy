@@ -198,6 +198,7 @@ export const getWishlistCourseItems = async (req, res) => {
   }
 };
 
+//Free course enrollment
 export const enrollment = async (req, res) => {
   await db.connect();
   const userId = req.user.id;
