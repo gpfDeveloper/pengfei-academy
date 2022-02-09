@@ -6,7 +6,7 @@ import Order from 'models/Order';
 import db from 'utils/db';
 import mongoose from 'mongoose';
 
-const enrollmentServer = async (user, courseId, price, session) => {
+const _enrollmentServer = async (user, courseId, price, session) => {
   const learningList = user.learningList || [];
   const publishedCourse = await PublishedCourse.findById(courseId);
   if (!publishedCourse) {
@@ -19,14 +19,12 @@ const enrollmentServer = async (user, courseId, price, session) => {
     learningList.push(courseId);
     course.numOfStudents += 1;
     course.revenue += price;
-    console.log(course);
   } else {
     throw Error('Already enrolled.');
   }
   user.learningList = learningList;
 
   await course.save({ session });
-  await user.save({ session });
   //add welcome msg
   const senderId = publishedCourse.author;
   await sendMessageServer(session, senderId, user, publishedCourse.welcomeMsg);
@@ -49,11 +47,10 @@ export const createOrderAndBatchEnrollment = async (req, res) => {
   session.startTransaction();
   user.totalPayment += order.totalAmount;
   for (const item of order.items) {
-    console.log(item);
-    await enrollmentServer(user, item.courseId, item.price, session);
+    await _enrollmentServer(user, item.courseId, item.price, session);
   }
   await newOrder.save({ session });
   await user.save({ session });
-  // await session.commitTransaction();
+  await session.commitTransaction();
   res.status(200).send();
 };
