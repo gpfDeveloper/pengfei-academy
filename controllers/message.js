@@ -57,21 +57,21 @@ export const sendMessage = async (req, res) => {
 };
 
 //Create converstion if coversation not exist, send message if text if provided, called in server.
-export const sendMessageServer = async ({ senderId, receiver, text }) => {
+export const sendMessageServer = async ({ senderId, receiverId, text }) => {
   await db.connect();
   let conversation;
   // find exist conversation frist
   conversation = await Conversation.findOne({
     $and: [
-      { member1: { $in: [senderId, receiver] } },
-      { member2: { $in: [senderId, receiver] } },
+      { member1: { $in: [senderId, receiverId] } },
+      { member2: { $in: [senderId, receiverId] } },
     ],
   });
 
   if (!conversation) {
     conversation = new Conversation();
     conversation.member1 = senderId;
-    conversation.member2 = receiver._id;
+    conversation.member2 = receiverId;
   }
 
   if (text) {

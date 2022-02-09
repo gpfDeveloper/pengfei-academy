@@ -226,7 +226,7 @@ export const enrollment = async (req, res) => {
     const senderId = publishedCourse.author;
     await sendMessageServer({
       senderId,
-      receiver: user,
+      receiverId: user._id.toString(),
       text: publishedCourse.welcomeMsg,
     });
     user.unReadMsgCount += 1;

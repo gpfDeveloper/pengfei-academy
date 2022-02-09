@@ -23,17 +23,16 @@ const _enrollmentServer = async (user, courseId, price, session) => {
     throw Error('Already enrolled.');
   }
   user.learningList = learningList;
-  console.log(courseId);
-  console.log(user.learningList);
 
   await course.save({ session });
   //add welcome msg
   const senderId = publishedCourse.author;
   await sendMessageServer({
     senderId,
-    receiver: user,
+    receiverId: user._id.toString(),
     text: publishedCourse.welcomeMsg,
   });
+  user.unReadMsgCount += 1;
 };
 
 export const createOrderAndBatchEnrollment = async (req, res) => {
@@ -56,7 +55,6 @@ export const createOrderAndBatchEnrollment = async (req, res) => {
     await _enrollmentServer(user, item.courseId, item.price, session);
   }
   await newOrder.save({ session });
-  user.unReadMsgCount += 1;
   await user.save({ session });
   await session.commitTransaction();
   res.status(200).send();
