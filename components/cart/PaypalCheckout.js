@@ -28,7 +28,6 @@ export default function PaypalCheckout() {
   const { subtotal } = cart;
   const user = useSelector((state) => state.user);
   const { token } = user;
-  console.log(cart);
 
   useEffect(() => {
     const loadPaypalScript = async () => {

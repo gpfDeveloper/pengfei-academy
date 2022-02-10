@@ -14,7 +14,6 @@ function PurchaseHistoryPage() {
   const user = useSelector((state) => state.user);
   const { isLogin, token } = user;
   const [orders, setOrders] = useState([]);
-  console.log(orders);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     const fetchOrderItems = async () => {

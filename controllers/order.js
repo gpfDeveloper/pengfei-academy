@@ -59,3 +59,14 @@ export const createOrderAndBatchEnrollment = async (req, res) => {
   await session.commitTransaction();
   res.status(200).send();
 };
+
+//For admin to get all orders
+export const getAllOrders = async (req, res) => {
+  await db.connect();
+  const orders = await Order.find().sort({
+    createTime: 'desc',
+  });
+  res
+    .status(200)
+    .json({ orders: orders.map((order) => order.toObject({ getters: true })) });
+};
