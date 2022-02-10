@@ -32,7 +32,9 @@ const _enrollmentServer = async (user, courseId, price, session) => {
     receiverId: user._id.toString(),
     text: publishedCourse.welcomeMsg,
   });
-  user.unReadMsgCount += 1;
+  if (publishedCourse.welcomeMsg) {
+    user.unReadMsgCount += 1;
+  }
 };
 
 export const createOrderAndBatchEnrollment = async (req, res) => {

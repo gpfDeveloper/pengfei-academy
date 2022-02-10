@@ -189,7 +189,7 @@ export const addToWishlistAsync =
   async (dispatch) => {
     try {
       await axios.post(
-        '/api/user/addToWishlist',
+        '/api/user/wishlist',
         {
           courseId,
         },

@@ -16,7 +16,7 @@ function MyCoursesLearningPage() {
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     const fetchLearningList = async () => {
-      const data = await axios.get('/api/user/getLearningList', {
+      const data = await axios.get('/api/user/learningList', {
         headers: { Authorization: `Bearer ${token}` },
       });
       setCourseItems(data.data.courseItems);

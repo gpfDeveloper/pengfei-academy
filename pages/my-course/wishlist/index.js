@@ -16,7 +16,7 @@ function WishlistPage() {
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     const fetchWishlist = async () => {
-      const data = await axios.get('/api/user/getWishlist', {
+      const data = await axios.get('/api/user/wishlist', {
         headers: { Authorization: `Bearer ${token}` },
       });
       setCourseItems(data.data.courseItems);

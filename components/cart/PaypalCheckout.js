@@ -31,7 +31,7 @@ export default function PaypalCheckout() {
 
   useEffect(() => {
     const loadPaypalScript = async () => {
-      const data = await axios.get('/api/user/getPaypalClientId', {
+      const data = await axios.get('/api/user/paypalClientId', {
         headers: { Authorization: `Bearer ${token}` },
       });
       const clientId = data.data.paypalClientId;
