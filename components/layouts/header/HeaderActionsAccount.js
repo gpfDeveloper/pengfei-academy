@@ -31,6 +31,11 @@ export default function HeaderActionsAccount() {
     router.push(`/user/${id}`);
   };
 
+  const purchaseHistoryHandler = () => {
+    setAnchorEl(null);
+    router.push('/purchase-history');
+  };
+
   const adminHandler = () => {
     setAnchorEl(null);
     router.push('/admin');
@@ -67,6 +72,12 @@ export default function HeaderActionsAccount() {
           Public profile
         </MenuItem>,
         <Divider key={3} />,
+      ]}
+      {[
+        <MenuItem key={1} onClick={purchaseHistoryHandler}>
+          Purchase history
+        </MenuItem>,
+        <Divider key={2} />,
       ]}
       <MenuItem
         onClick={() => {

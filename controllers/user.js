@@ -9,6 +9,7 @@ import PublishedCourse from 'models/PublishedCourse';
 import mongoose from 'mongoose';
 import Course from 'models/Course';
 import { sendMessageServer } from './message';
+import Order from 'models/Order';
 
 export const register = async (req, res) => {
   await db.connect();
@@ -254,4 +255,32 @@ export const getLearningListCourseItems = async (req, res) => {
   } else {
     return res.status(404).json({ message: 'User not found.' });
   }
+};
+
+export const getPurchaseHistory = async (req, res) => {
+  await db.connect();
+  const userId = req.user.id;
+  const user = await User.findById(userId);
+  if (!user) {
+    return res.status(404).json({ message: 'User not found.' });
+  }
+  const _orders = await Order.find({ userEmail: user.email }).sort({
+    createTime: 'desc',
+  });
+  const ret = [];
+  for (const _order of _orders) {
+    const order = {};
+    order.createTime = _order.createTime;
+    order.totalAmount = _order.totalAmount;
+    order.items = [];
+    for (const _item of _order.items) {
+      const item = {};
+      item.courseId = _item.courseId;
+      item.courseTitle = _item.courseTitle;
+      item.price = _item.price;
+      order.items.push(item);
+    }
+    ret.push(order);
+  }
+  res.status(200).json({ orders: ret });
 };
