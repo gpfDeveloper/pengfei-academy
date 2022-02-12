@@ -20,6 +20,8 @@ const conversationSchma = new mongoose.Schema(
   { timestamps: true }
 );
 
+conversationSchma.index({ member1: 1, member2: 1 }, { unique: true });
+
 const Conversation =
   mongoose.models.Conversation ||
   mongoose.model('Conversation', conversationSchma);

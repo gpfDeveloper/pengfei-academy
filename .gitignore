@@ -35,3 +35,5 @@ yarn-error.log*
 
 
 *.mp4
+pages/api/test.js
+pages/api/seed.js

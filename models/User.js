@@ -28,6 +28,9 @@ const userSchema = new mongoose.Schema(
     isAdmin: {
       type: Boolean,
       default: false,
+      index: {
+        partialFilterExpression: { isAdmin: true },
+      },
     },
     isInstructor: {
       type: Boolean,
