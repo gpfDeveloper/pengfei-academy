@@ -290,6 +290,7 @@ export const getPurchaseHistory = async (req, res) => {
   res.status(200).json({ orders: ret });
 };
 
+//send reset password email
 const emailFrom = process.env.RESET_PASSWORD_EMAIL_FROM;
 const webAppDomain = process.env.WEB_APP_DOMAIN;
 export const sendResetPasswordEmail = async (req, res) => {
@@ -300,8 +301,10 @@ export const sendResetPasswordEmail = async (req, res) => {
     if (user) {
       const token = cryptoRandomString({ length: 32, type: 'url-safe' });
       user.resetPasswordToken = token;
-      user.resetPasswordTokenExpire = Date.now() + RESET_PASSWORD_EXPIRE_SEC;
+      user.resetPasswordTokenExpire =
+        Date.now() + RESET_PASSWORD_EXPIRE_SEC * 1000;
       await user.save();
+      const url = webAppDomain + '/user/forgot-password/' + token;
       const params = {
         Source: emailFrom,
         Destination: {
@@ -316,9 +319,11 @@ export const sendResetPasswordEmail = async (req, res) => {
                     <h1>Pengfei Academy Reset password</h1>
                     <p>Hi ${user.name},</p>
                     <p>A password reset for your account was requested.</p>
-                    <p>Click the link below to change your password:</p>
+                    <p>Use the link below to change your password:</p>
                     <p>Note that this link is valid for 24 hours. After the time limit has expired, you will have to resubmit the request for a password reset.</p>
-                    <i>${webAppDomain + '/user/forgot-password/' + token}</i>
+                    <p><a href="${url}">${
+                webAppDomain + '/user/forgot-password/' + token
+              }</a></p>
                   </html>
                 `,
             },
@@ -332,8 +337,30 @@ export const sendResetPasswordEmail = async (req, res) => {
 
       const emailSent = SES.sendEmail(params).promise();
       const result = await emailSent.then();
-      console.log(result);
+      console.log('reset password email result:', result);
     }
   }
+  res.status(200).send();
+};
+
+export const resetPasswordFromEmail = async (req, res) => {
+  const { password, email } = req.body;
+  const { token } = req.query;
+  if (!token || !password || !email) {
+    return res.status(422).json({ message: 'Invalid input' });
+  }
+  await db.connect();
+  const user = await User.findOne({
+    email,
+    resetPasswordToken: token,
+    resetPasswordTokenExpire: { $gte: Date.now() },
+  });
+  if (!user) {
+    res.status(401).send();
+  }
+  user.password = bcrypt.hashSync(password);
+  user.resetPasswordToken = undefined;
+  user.resetPasswordTokenExpire = undefined;
+  await user.save();
   res.status(200).send();
 };
