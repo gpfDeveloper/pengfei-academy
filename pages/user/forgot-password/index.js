@@ -5,10 +5,10 @@ import NextLink from 'next/link';
 import { Typography, Stack, Divider, Link } from '@mui/material';
 
 import PageLayout from 'components/layouts/PageLayout';
-import LoginForm from 'components/layouts/form/LoginForm';
 import Spinner from 'components/UIs/Spinner';
+import ForgotPasswordForm from 'components/layouts/form/ForgotPasswordForm';
 
-export default function Login() {
+export default function ForgotPasswordPage() {
   const router = useRouter();
   const redirect = router.query?.redirect;
   const isLogin = useSelector((state) => state.user.isLogin);
@@ -22,7 +22,7 @@ export default function Login() {
     }
   }, [isLogin, redirect, router]);
   return (
-    <PageLayout title="Log In to Pengfei Academy!">
+    <PageLayout title="Forgot password">
       {isLogin && <Spinner />}
       {!isLogin && (
         <Stack
@@ -34,28 +34,16 @@ export default function Login() {
           }}
         >
           <Typography component="h1" variant="h4">
-            Log In to Pengfei Academy!
+            Forgot password
           </Typography>
           <Divider />
-          <LoginForm />
+          <ForgotPasswordForm />
+          <Divider />
           <Typography sx={{ alignSelf: 'flex-start' }}>
-            or&nbsp;&nbsp;
-            <NextLink href="/user/forgot-password" passHref>
-              <Link>Forgot password</Link>
+            <NextLink href="/login" passHref>
+              <Link>Log in</Link>
             </NextLink>
           </Typography>
-          <Divider />
-          <Stack direction="row" gap={2}>
-            <Typography>Don&rsquo;t have an account? </Typography>
-            <NextLink
-              href={!redirect ? '/register' : `/register?redirect=${redirect}`}
-              passHref
-            >
-              <Link>
-                <Typography>Sign up</Typography>
-              </Link>
-            </NextLink>
-          </Stack>
         </Stack>
       )}
     </PageLayout>

@@ -11,6 +11,11 @@ import Course from 'models/Course';
 import { sendMessageServer } from './message';
 import Order from 'models/Order';
 
+//reset password
+import cryptoRandomString from 'crypto-random-string';
+import { SES } from 'utils/aws';
+import { RESET_PASSWORD_EXPIRE_SEC } from 'utils/constants';
+
 export const register = async (req, res) => {
   await db.connect();
   const { name, email, password } = req.body;
@@ -283,4 +288,52 @@ export const getPurchaseHistory = async (req, res) => {
     ret.push(order);
   }
   res.status(200).json({ orders: ret });
+};
+
+const emailFrom = process.env.RESET_PASSWORD_EMAIL_FROM;
+const webAppDomain = process.env.WEB_APP_DOMAIN;
+export const sendResetPasswordEmail = async (req, res) => {
+  const { email } = req.body;
+  if (email) {
+    await db.connect();
+    const user = await User.findOne({ email });
+    if (user) {
+      const token = cryptoRandomString({ length: 32, type: 'url-safe' });
+      user.resetPasswordToken = token;
+      user.resetPasswordTokenExpire = Date.now() + RESET_PASSWORD_EXPIRE_SEC;
+      await user.save();
+      const params = {
+        Source: emailFrom,
+        Destination: {
+          ToAddresses: [email],
+        },
+        Message: {
+          Body: {
+            Html: {
+              Charset: 'UTF-8',
+              Data: `
+                  <html>
+                    <h1>Pengfei Academy Reset password</h1>
+                    <p>Hi ${user.name},</p>
+                    <p>A password reset for your account was requested.</p>
+                    <p>Click the link below to change your password:</p>
+                    <p>Note that this link is valid for 24 hours. After the time limit has expired, you will have to resubmit the request for a password reset.</p>
+                    <i>${webAppDomain + '/user/forgot-password/' + token}</i>
+                  </html>
+                `,
+            },
+          },
+          Subject: {
+            Charset: 'UTF-8',
+            Data: 'Reset Password',
+          },
+        },
+      };
+
+      const emailSent = SES.sendEmail(params).promise();
+      const result = await emailSent.then();
+      console.log(result);
+    }
+  }
+  res.status(200).send();
 };

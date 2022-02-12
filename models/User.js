@@ -18,6 +18,8 @@ const userSchema = new mongoose.Schema(
       minlength: 6,
       maxlength: 64,
     },
+    resetPasswordToken: String,
+    resetPasswordTokenExpire: Date,
     totalPayment: {
       type: Number,
       default: 0,

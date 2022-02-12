@@ -14,6 +14,8 @@ export const PAGES_INSTRUCTOR = [
 
 export const SESSION_EXPIRE_SEC = 60 * 60 * 24 * 365;
 
+export const RESET_PASSWORD_EXPIRE_SEC = 60;
+
 export const TEACHING_STATUS = {
   signup: 'signup',
   sendRequest: 'sendRequest',
