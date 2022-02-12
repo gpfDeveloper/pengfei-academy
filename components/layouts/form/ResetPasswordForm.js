@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
+import { useDispatch } from 'react-redux';
+import { setSnackbar } from 'store/snackbar';
 import {
   TextField,
   Button,
@@ -17,6 +19,7 @@ import axios from 'axios';
 
 export default function ResetPasswordForm() {
   const router = useRouter();
+  const dispatch = useDispatch();
   const { token } = router.query;
   const [showPassword, setShowPassword] = useState(false);
   const handleMouseDownPassword = (event) => {
@@ -31,7 +34,24 @@ export default function ResetPasswordForm() {
     control,
   } = useForm();
   const onSubmit = async ({ email, password }) => {
-    await axios.post(`/api/user/forgot-password/${token}`, { email, password });
+    try {
+      await axios.post(`/api/user/forgot-password/${token}`, {
+        email,
+        password,
+      });
+      dispatch(
+        setSnackbar({ severity: 'success', message: 'Reset password success.' })
+      );
+      router.replace('/login');
+    } catch (err) {
+      dispatch(
+        setSnackbar({
+          severity: 'error',
+          message:
+            'Reset password failed, please resubmit request and try again.',
+        })
+      );
+    }
   };
 
   return (
