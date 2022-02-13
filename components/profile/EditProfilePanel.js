@@ -6,6 +6,7 @@ import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
 import EditAccountSecurity from './EditAccountSecurity';
 import EditProfileInfo from './EditProfileInfo';
+import EditProfilePic from './EditProfilePic';
 
 const Tab = styled(MuiTab)({
   textTransform: 'none',
@@ -16,7 +17,7 @@ function TabPanel(props) {
 
   return (
     <div hidden={value !== index}>
-      {value === index && <Box sx={{ p: 4 }}>{children}</Box>}
+      {value === index && <Box sx={{ p: 2 }}>{children}</Box>}
     </div>
   );
 }
@@ -47,7 +48,7 @@ export default function EditProfilePanel() {
         <EditProfileInfo />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        Profile picture
+        <EditProfilePic />
       </TabPanel>
       <TabPanel value={value} index={2}>
         <EditAccountSecurity />
