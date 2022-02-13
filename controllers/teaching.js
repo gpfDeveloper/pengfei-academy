@@ -27,8 +27,6 @@ export const sendRequest = async (req, res) => {
       await teachRequest.save();
       await user.save();
 
-      res.status(200).send();
-
       //send notification to admin
       const admin = await User.findOne({ isAdmin: true });
       admin.unReadNotificationCount += 1;
@@ -50,10 +48,13 @@ export const sendRequest = async (req, res) => {
       conversation.lastMsg = message._id;
       admin.unReadMsgCount += 1;
 
-      admin.save();
-      message.save();
-      conversation.save();
+      await admin.save();
+      await message.save();
+      await conversation.save();
+
+      res.status(200).send();
     } catch (err) {
+      console.log(err);
       return res
         .status(422)
         .json({ message: 'Send request failed, please try again latter' });

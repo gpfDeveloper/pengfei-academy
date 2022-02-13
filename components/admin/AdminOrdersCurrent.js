@@ -2,7 +2,6 @@ import NextLink from 'next/link';
 import { List, Link, ListItem, Typography } from '@mui/material';
 
 export default function AdminOrdersCurrent(props) {
-  console.log(props);
   return (
     <List>
       <ListItem>Open devtool for more detail</ListItem>

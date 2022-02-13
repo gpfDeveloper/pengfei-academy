@@ -2,6 +2,7 @@ import bcrypt from 'bcryptjs';
 import User from 'models/User';
 import Notification from 'models/Notification';
 import Conversation from 'models/Conversation';
+import { getMember1, getMember2 } from './message';
 import Message from 'models/Message';
 import db from 'utils/db';
 import { signToken } from 'utils/auth';
@@ -38,8 +39,8 @@ export const register = async (req, res) => {
 
   const conversation = new Conversation();
   const admin = await User.findOne({ isAdmin: true });
-  conversation.member1 = admin._id;
-  conversation.member2 = user._id;
+  conversation.member1 = getMember1(admin._id, user._id);
+  conversation.member2 = getMember2(admin._id, user._id);
   const message = new Message({
     conversation: conversation._id,
     sender: admin._id,

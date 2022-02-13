@@ -4,6 +4,17 @@ import Conversation from 'models/Conversation';
 import Message from 'models/Message';
 import mongoose from 'mongoose';
 
+//member1Id < member2Id
+export const getMember1 = (id1, id2) => {
+  if (id1 < id2) return id1;
+  else return id2;
+};
+
+export const getMember2 = (id1, id2) => {
+  if (id1 > id2) return id1;
+  else return id2;
+};
+
 export const sendMessage = async (req, res) => {
   const senderId = req.user.id;
   const { receiverId, text } = req.body;
@@ -25,16 +36,14 @@ export const sendMessage = async (req, res) => {
   let conversation;
   // find exist conversation frist
   conversation = await Conversation.findOne({
-    $and: [
-      { member1: { $in: [sender, receiver] } },
-      { member2: { $in: [sender, receiver] } },
-    ],
+    member1: getMember1(sender._id, receiver._id),
+    member2: getMember2(sender._id, receiver._id),
   });
 
   if (!conversation) {
     conversation = new Conversation();
-    conversation.member1 = sender._id;
-    conversation.member2 = receiver._id;
+    conversation.member1 = getMember1(sender._id, receiver._id);
+    conversation.member2 = getMember2(sender._id, receiver._id);
   }
 
   const message = new Message({
@@ -62,16 +71,14 @@ export const sendMessageServer = async ({ senderId, receiverId, text }) => {
   let conversation;
   // find exist conversation frist
   conversation = await Conversation.findOne({
-    $and: [
-      { member1: { $in: [senderId, receiverId] } },
-      { member2: { $in: [senderId, receiverId] } },
-    ],
+    member1: getMember1(senderId, receiverId),
+    member2: getMember2(senderId, receiverId),
   });
 
   if (!conversation) {
     conversation = new Conversation();
-    conversation.member1 = senderId;
-    conversation.member2 = receiverId;
+    conversation.member1 = getMember1(senderId, receiverId);
+    conversation.member2 = getMember2(senderId, receiverId);
   }
 
   if (text) {

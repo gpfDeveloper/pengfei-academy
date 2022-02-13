@@ -20,6 +20,7 @@ const conversationSchma = new mongoose.Schema(
   { timestamps: true }
 );
 
+//Each user pair at most have one conversation, and member1Id < member2Id
 conversationSchma.index({ member1: 1, member2: 1 }, { unique: true });
 
 const Conversation =
