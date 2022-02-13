@@ -10,9 +10,7 @@ const profileSchema = new mongoose.Schema(
     },
     headline: { type: String, trim: true, maxlength: 60 },
     bio: { type: String, trim: true, maxlength: 6000 },
-    avatar: {
-      type: String,
-    },
+    avatar: {},
     website: {
       type: String,
       trim: true,

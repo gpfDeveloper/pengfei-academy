@@ -1,6 +1,8 @@
 import db from 'utils/db';
 import User from 'models/User';
 import Profile from 'models/Profile';
+import { S3 } from 'utils/aws';
+import { v4 as uuid } from 'uuid';
 
 export const updateProfile = async (req, res) => {
   await db.connect();
@@ -93,5 +95,62 @@ export const getPublicProfileServer = async (userId) => {
     return { name, headline, bio, website, isInstructor };
   } else {
     throw new Error('User not found');
+  }
+};
+
+export const updateProfileAvatar = async (req, res) => {
+  await db.connect();
+  const userId = req.user.id;
+  const { imgBase64 } = req.body;
+
+  const user = await User.findById(userId);
+  if (user) {
+    let profile;
+    if (user.profile) {
+      profile = await Profile.findById(user.profile);
+    } else {
+      profile = new Profile({ user: user._id });
+      user.profile = profile._id;
+    }
+    try {
+      // prepare the image
+      const base64Data = new Buffer.from(
+        imgBase64.replace(/^data:image\/\w+;base64,/, ''),
+        'base64'
+      );
+
+      const type = imgBase64.split(';')[0].split('/')[1];
+
+      // image params
+      const params = {
+        Bucket: 'pengfei-academy-public-bucket',
+        Key: `${uuid()}.${type}`,
+        Body: base64Data,
+        ACL: 'public-read',
+        ContentEncoding: 'base64',
+        ContentType: `image/${type}`,
+      };
+
+      // upload to s3
+      S3.upload(params, (err, data) => {
+        if (err) {
+          console.log(err);
+          return res.sendStatus(400);
+        }
+        console.log(data);
+        // res.send(data);
+      });
+
+      // await user.save();
+      // await profile.save();
+      return res.status(200).send();
+    } catch (err) {
+      console.log(err);
+      return res.status(422).json({
+        message: 'Update profile avatar failed, please try again latter',
+      });
+    }
+  } else {
+    return res.status(404).json({ message: 'User not found.' });
   }
 };

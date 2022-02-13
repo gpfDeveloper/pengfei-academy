@@ -8,3 +8,4 @@ const awsConfig = {
 };
 
 export const SES = new AWS.SES(awsConfig);
+export const S3 = new AWS.S3(awsConfig);

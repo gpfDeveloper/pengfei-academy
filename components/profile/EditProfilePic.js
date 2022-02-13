@@ -1,38 +1,86 @@
 import { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { setSnackbar } from 'store/snackbar';
 import { styled } from '@mui/material/styles';
 import { Avatar, Box, Stack, Button, Typography } from '@mui/material';
 import LoadingButton from '@mui/lab/LoadingButton';
 import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
+import Resizer from 'react-image-file-resizer';
+import axios from 'axios';
 
-const MAX_PIC_SIZE = 1024 * 1024;
+const resizeFile = (file) =>
+  new Promise((resolve) => {
+    Resizer.imageFileResizer(
+      file,
+      200,
+      200,
+      'JPEG',
+      100,
+      0,
+      (uri) => {
+        resolve(uri);
+      },
+      'base64'
+    );
+  });
+
+const MAX_PIC_SIZE = 1024 * 1024 * 1;
 
 const Input = styled('input')({ display: 'none' });
 
 export default function EditProfilePic() {
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user);
+  const { token } = user;
   const [loading, setLoading] = useState(false);
   const [canSave, setCanSave] = useState(false);
   const [previewUrl, setPreviewUrl] = useState(null);
+  const [imgBase64, setImgBase64] = useState(null);
   const [errorMsg, setErrorMsg] = useState('');
-  const previewHandler = (e) => {
+  const previewHandler = async (e) => {
     setErrorMsg('');
     setPreviewUrl(null);
     setLoading(true);
-    const pic = e.target.files[0];
+    let pic = e.target.files[0];
+    if (!pic) return;
     if (pic.size > MAX_PIC_SIZE) {
       setErrorMsg(`${pic.name} is too large, maximum file size is 1.0MB.`);
       setLoading(false);
       return;
     }
 
-    const fileReader = new FileReader();
-    fileReader.onload = () => {
-      setPreviewUrl(fileReader.result);
-      setCanSave(true);
-      setLoading(false);
-    };
-    fileReader.readAsDataURL(pic);
+    const picUrl = URL.createObjectURL(pic);
+    pic = await resizeFile(pic);
+    setImgBase64(pic);
+    setPreviewUrl(picUrl);
+    setCanSave(true);
+    setLoading(false);
   };
-  const saveHandler = () => {};
+  const saveHandler = async () => {
+    if (!imgBase64) {
+      return;
+    }
+    setLoading(true);
+    try {
+      await axios.put(
+        '/api/profile/avatar',
+        { imgBase64 },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      dispatch(
+        setSnackbar({ severity: 'success', message: 'Update image success.' })
+      );
+      setLoading(false);
+    } catch (err) {
+      dispatch(
+        setSnackbar({
+          severity: 'error',
+          message: 'Update image failed, please try again later',
+        })
+      );
+      setLoading(false);
+    }
+  };
   return (
     <Stack sx={{ gap: 2 }}>
       <Box>
