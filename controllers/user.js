@@ -305,7 +305,7 @@ export const sendResetPasswordEmail = async (req, res) => {
       user.resetPasswordTokenExpire =
         Date.now() + RESET_PASSWORD_EXPIRE_SEC * 1000;
       await user.save();
-      const url = webAppDomain + '/user/forgot-password/' + token;
+      const url = 'http://' + webAppDomain + '/user/forgot-password/' + token;
       const params = {
         Source: emailFrom,
         Destination: {
@@ -322,9 +322,7 @@ export const sendResetPasswordEmail = async (req, res) => {
                     <p>A password reset for your account was requested.</p>
                     <p>Use the link below to change your password:</p>
                     <p>Note that this link is valid for 24 hours. After the time limit has expired, you will have to resubmit the request for a password reset.</p>
-                    <p><a href="${url}">${
-                webAppDomain + '/user/forgot-password/' + token
-              }</a></p>
+                    <h2>${url}</h2>
                   </html>
                 `,
             },
