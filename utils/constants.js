@@ -160,3 +160,7 @@ export const COURSE_CONTENT_TYPE = {
   video: 'Video',
   article: 'Article',
 };
+
+export const S3_BUCKETS = {
+  userAvatarBucket: 'pengfei-academy-user-avatar-bucket',
+};

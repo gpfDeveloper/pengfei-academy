@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { setSnackbar } from 'store/snackbar';
 import { styled } from '@mui/material/styles';
@@ -37,6 +37,18 @@ export default function EditProfilePic() {
   const [previewUrl, setPreviewUrl] = useState(null);
   const [imgBase64, setImgBase64] = useState(null);
   const [errorMsg, setErrorMsg] = useState('');
+  const [profileAvatarUrl, setProfileAvatarUrl] = useState(null);
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      const data = await axios.get('/api/profile/avatar', {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setProfileAvatarUrl(data.data.profileAvatarUrl);
+    };
+    fetchProfile();
+  }, [token]);
+
   const previewHandler = async (e) => {
     setErrorMsg('');
     setPreviewUrl(null);
@@ -101,7 +113,7 @@ export default function EditProfilePic() {
         }}
       >
         <Avatar
-          src={previewUrl}
+          src={previewUrl ? previewUrl : profileAvatarUrl}
           sx={{ height: 160, width: 160, margin: '0 auto' }}
         />
       </Box>

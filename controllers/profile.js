@@ -2,7 +2,9 @@ import db from 'utils/db';
 import User from 'models/User';
 import Profile from 'models/Profile';
 import { S3 } from 'utils/aws';
+import { S3_BUCKETS } from 'utils/constants';
 import { v4 as uuid } from 'uuid';
+import mongoose from 'mongoose';
 
 export const updateProfile = async (req, res) => {
   await db.connect();
@@ -22,8 +24,11 @@ export const updateProfile = async (req, res) => {
       user.profile = profile._id;
     }
     try {
-      await user.save();
-      await profile.save();
+      const session = await mongoose.startSession();
+      session.startTransaction();
+      await user.save({ session });
+      await profile.save({ session });
+      await session.commitTransaction();
       return res.status(200).send();
     } catch (err) {
       return res
@@ -56,6 +61,22 @@ export const getProfile = async (req, res) => {
   }
 };
 
+export const getProfileAvatarUrl = async (req, res) => {
+  await db.connect();
+  const userId = req.user.id;
+  const user = await User.findById(userId);
+  if (user) {
+    let profileAvatarUrl = null;
+    if (user.profile) {
+      const profile = await Profile.findById(user.profile);
+      profileAvatarUrl = profile.avatar?.s3Location;
+    }
+    res.status(200).json({ profileAvatarUrl });
+  } else {
+    return res.status(404).json({ message: 'User not found.' });
+  }
+};
+
 export const getPublicProfile = async (req, res) => {
   await db.connect();
   const userId = req.query.uid;
@@ -77,6 +98,7 @@ export const getPublicProfile = async (req, res) => {
     return res.status(404).json({ message: 'User not found.' });
   }
 };
+
 export const getPublicProfileServer = async (userId) => {
   await db.connect();
   const user = await User.findById(userId);
@@ -106,11 +128,13 @@ export const updateProfileAvatar = async (req, res) => {
   const user = await User.findById(userId);
   if (user) {
     let profile;
+    let isSaveUser = false;
     if (user.profile) {
       profile = await Profile.findById(user.profile);
     } else {
       profile = new Profile({ user: user._id });
       user.profile = profile._id;
+      isSaveUser = true;
     }
     try {
       // prepare the image
@@ -123,26 +147,43 @@ export const updateProfileAvatar = async (req, res) => {
 
       // image params
       const params = {
-        Bucket: 'pengfei-academy-public-bucket',
+        Bucket: S3_BUCKETS.userAvatarBucket,
         Key: `${uuid()}.${type}`,
         Body: base64Data,
-        ACL: 'public-read',
         ContentEncoding: 'base64',
         ContentType: `image/${type}`,
       };
 
-      // upload to s3
-      S3.upload(params, (err, data) => {
-        if (err) {
-          console.log(err);
-          return res.sendStatus(400);
-        }
-        console.log(data);
-        // res.send(data);
-      });
+      const uploadS3 = S3.upload(params).promise();
+      const { key: s3Key, Location: s3Location } = await uploadS3.then();
 
-      // await user.save();
-      // await profile.save();
+      // delete the origin avartar from S3 if exists
+      const originAvatar = profile.avatar;
+      if (originAvatar) {
+        S3.deleteObject(
+          { Bucket: originAvatar.s3Bucket, Key: originAvatar.s3Key },
+          (err, data) => {
+            if (err) console.log(err, err.stack);
+            else console.log(data);
+          }
+        );
+      }
+
+      profile.avatar = {
+        s3Key,
+        s3Location,
+        s3Bucket: S3_BUCKETS.userAvatarBucket,
+      };
+
+      if (isSaveUser) {
+        const session = await mongoose.startSession();
+        session.startTransaction();
+        await user.save({ session });
+        await profile.save({ session });
+        await session.commitTransaction();
+      } else {
+        await profile.save();
+      }
       return res.status(200).send();
     } catch (err) {
       console.log(err);
