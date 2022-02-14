@@ -121,6 +121,7 @@ export default function Courses({
               flexDirection: 'column',
               alignItems: 'center',
               gap: 4,
+              flexGrow: 1,
             }}
           >
             <CourseItems items={courseItems} />

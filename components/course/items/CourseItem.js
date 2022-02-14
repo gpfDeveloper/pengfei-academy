@@ -22,7 +22,10 @@ export default function CourseItem({ item }) {
     <Card sx={{ maxWidth: 960 }}>
       <CardActionArea onClick={clickHandler}>
         <Box
-          sx={{ display: 'flex', flexDirection: isBelowMd ? 'column' : 'row' }}
+          sx={{
+            display: 'flex',
+            flexDirection: isBelowMd ? 'column' : 'row',
+          }}
         >
           <CardMedia
             sx={{ flex: '0 0', height: 146, width: 260 }}
@@ -39,7 +42,7 @@ export default function CourseItem({ item }) {
               {author.name}
             </Typography>
           </CardContent>
-          <CardContent>
+          <CardContent sx={{ marginLeft: 'auto' }}>
             <Typography variant="h5">
               {' '}
               {price === 0 ? 'Free' : `$${price}`}

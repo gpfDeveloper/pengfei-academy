@@ -21,6 +21,7 @@ export default function CourseItems({ items }) {
         display: 'flex',
         flexDirection: 'column',
         gap: 4,
+        width: '100%',
       }}
     >
       {items.map((item) => (
