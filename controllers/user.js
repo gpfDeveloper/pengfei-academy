@@ -16,6 +16,7 @@ import Order from 'models/Order';
 import cryptoRandomString from 'crypto-random-string';
 import { SES } from 'utils/aws';
 import { RESET_PASSWORD_EXPIRE_SEC } from 'utils/constants';
+import Profile from 'models/Profile';
 
 export const register = async (req, res) => {
   await db.connect();
@@ -70,6 +71,13 @@ export const login = async (req, res) => {
   const user = await User.findOne({ email }).select('+password');
   if (user && bcrypt.compareSync(password, user.password)) {
     const token = signToken(user);
+    let avatarUrl = null;
+    if (user.profile) {
+      const profile = await Profile.findById(user.profile);
+      if (profile.avatar) {
+        avatarUrl = profile.avatar.s3Location;
+      }
+    }
     res.json({
       token,
       id: user._id.toString(),
@@ -81,6 +89,7 @@ export const login = async (req, res) => {
       isInstructor: user.isInstructor,
       wishlist: user.wishlist,
       learningList: user.learningList,
+      avatarUrl,
     });
   } else {
     return res.status(401).json({ message: 'Invalid email or password' });

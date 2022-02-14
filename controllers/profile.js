@@ -87,13 +87,17 @@ export const getPublicProfile = async (req, res) => {
     let headline = '';
     let bio = '';
     let website = '';
+    let avatarUrl = '';
     if (user.profile) {
       const profile = await Profile.findById(user.profile);
       headline = profile.headline;
       bio = profile.bio;
       website = profile.website;
+      avatarUrl = profile.avatar?.s3Location;
     }
-    res.status(200).json({ name, headline, bio, website, isInstructor });
+    res
+      .status(200)
+      .json({ name, headline, bio, website, isInstructor, avatarUrl });
   } else {
     return res.status(404).json({ message: 'User not found.' });
   }
@@ -157,7 +161,7 @@ export const updateProfileAvatar = async (req, res) => {
       const uploadS3 = S3.upload(params).promise();
       const { key: s3Key, Location: s3Location } = await uploadS3.then();
 
-      // delete the origin avartar from S3 if exists
+      // delete the origin avatar from S3 if exists
       const originAvatar = profile.avatar;
       if (originAvatar) {
         S3.deleteObject(
@@ -184,7 +188,7 @@ export const updateProfileAvatar = async (req, res) => {
       } else {
         await profile.save();
       }
-      return res.status(200).send();
+      return res.status(200).json({ userAvatarUrl: s3Location });
     } catch (err) {
       console.log(err);
       return res.status(422).json({

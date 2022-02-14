@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { updateAvatarUrl } from 'store/user';
 import { setSnackbar } from 'store/snackbar';
 import { styled } from '@mui/material/styles';
 import { Avatar, Box, Stack, Button, Typography } from '@mui/material';
@@ -74,7 +75,7 @@ export default function EditProfilePic() {
     }
     setLoading(true);
     try {
-      await axios.put(
+      const data = await axios.put(
         '/api/profile/avatar',
         { imgBase64 },
         { headers: { Authorization: `Bearer ${token}` } }
@@ -82,6 +83,7 @@ export default function EditProfilePic() {
       dispatch(
         setSnackbar({ severity: 'success', message: 'Update image success.' })
       );
+      dispatch(updateAvatarUrl({ url: data.data.userAvatarUrl }));
       setLoading(false);
     } catch (err) {
       dispatch(

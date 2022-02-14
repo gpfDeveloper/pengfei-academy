@@ -20,8 +20,16 @@ export const loginAsync =
   async (dispatch) => {
     try {
       const data = await axios.post('/api/user/login', { email, password });
-      const { token, id, name, isAdmin, isInstructor, wishlist, learningList } =
-        data.data;
+      const {
+        token,
+        id,
+        name,
+        isAdmin,
+        isInstructor,
+        wishlist,
+        learningList,
+        avatarUrl,
+      } = data.data;
       dispatch(
         login({
           token,
@@ -32,6 +40,7 @@ export const loginAsync =
           isInstructor,
           wishlist,
           learningList,
+          avatarUrl,
         })
       );
       return true;

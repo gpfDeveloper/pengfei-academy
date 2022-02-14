@@ -17,6 +17,7 @@ let initialState = {
   expireAt: null,
   wishlist: [],
   learningList: [],
+  avatarUrl: null,
 };
 
 const userInfo = Cookies.get(USER_INFO_KEY);
@@ -40,6 +41,7 @@ const userSlice = createSlice({
           isInstructor,
           wishlist,
           learningList,
+          avatarUrl,
         },
       }
     ) => {
@@ -53,6 +55,7 @@ const userSlice = createSlice({
       state.expireAt = new Date().getTime() + SESSION_EXPIRE_SEC * 1000;
       state.wishlist = wishlist;
       state.learningList = learningList;
+      state.avatarUrl = avatarUrl;
       Cookies.set(USER_INFO_KEY, JSON.stringify(state));
     },
     logout: (state) => {
@@ -68,6 +71,7 @@ const userSlice = createSlice({
       state.expireAt = null;
       state.wishlist = [];
       state.learningList = [];
+      state.avatarUrl = null;
       Cookies.remove(USER_INFO_KEY);
     },
     updateEmail: (state, { payload: email }) => {
@@ -76,6 +80,10 @@ const userSlice = createSlice({
     },
     updateName: (state, { payload: { name } }) => {
       state.name = name;
+      Cookies.set(USER_INFO_KEY, JSON.stringify(state));
+    },
+    updateAvatarUrl: (state, { payload: { url } }) => {
+      state.avatarUrl = url;
       Cookies.set(USER_INFO_KEY, JSON.stringify(state));
     },
     clearUnReadNotificationCount: (state) => {
@@ -128,6 +136,7 @@ export const {
   logout,
   updateEmail,
   updateName,
+  updateAvatarUrl,
   clearUnReadNotificationCount,
   clearUnReadMsgCount,
   getHeaderInfo,

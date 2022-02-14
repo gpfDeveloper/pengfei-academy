@@ -13,7 +13,7 @@ import { logoutAsync } from 'store/user-async';
 
 export default function HeaderActionsAccount() {
   const router = useRouter();
-  const { isAdmin, name, id } = useSelector((state) => state.user);
+  const { isAdmin, name, id, avatarUrl } = useSelector((state) => state.user);
   const [anchorEl, setAnchorEl] = useState(null);
   const isMenuOpen = Boolean(anchorEl);
   const handleProfileMenuOpen = (event) => {
@@ -99,7 +99,11 @@ export default function HeaderActionsAccount() {
           onClick={handleProfileMenuOpen}
           color="inherit"
         >
-          <Avatar alt={name} src="/" sx={{ backgroundColor: 'primary.main' }} />
+          <Avatar
+            alt={name}
+            src={avatarUrl || '/'}
+            sx={{ backgroundColor: 'primary.main' }}
+          />
         </IconButton>
       </Tooltip>
       {renderMenu}

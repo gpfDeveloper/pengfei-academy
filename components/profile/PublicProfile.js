@@ -10,7 +10,7 @@ export default function PublicProfile({ userInfo }) {
   if (!userInfo) {
     return <></>;
   }
-  const { name, headline, bio, website, isInstructor, avatar } = userInfo;
+  const { name, headline, bio, website, isInstructor, avatarUrl } = userInfo;
 
   const clickWebsiteHandler = () => {
     window.open(website, '_blank');
@@ -62,7 +62,7 @@ export default function PublicProfile({ userInfo }) {
           }}
         >
           <Avatar
-            src={avatar || '/'}
+            src={avatarUrl || '/'}
             alt={name}
             sx={{
               backgroundColor: 'primary.main',
