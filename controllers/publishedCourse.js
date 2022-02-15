@@ -102,7 +102,7 @@ export const getPublishedCourseServer = async (courseId) => {
     }
 
     const ret = course.toObject({ getters: true });
-    ret.authorUpdatedAt = ret.authorUpdatedAt.toString();
+    ret.authorUpdatedAt = ret.authorUpdatedAt.toISOString();
     for (const _section of sections) {
       const section = _section.toObject({ getters: true });
       section._id = section._id.toString();

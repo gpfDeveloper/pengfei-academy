@@ -1,13 +1,14 @@
+import { useEffect, useState } from 'react';
 import { Box, Typography, Link, Paper } from '@mui/material';
 import NextLink from 'next/link';
 import moment from 'moment';
-import ReactPlayer from 'react-player/lazy';
 import InfoIcon from '@mui/icons-material/Info';
 import LanguageIcon from '@mui/icons-material/Language';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import WishlistIconBtn from 'components/UIs/WishlistIconBtn';
 import AddToCartBtn from 'components/UIs/AddToCartBtn';
+import VideoPlayer from 'components/UIs/VideoPlayer';
 
 export default function CourseLandingPageHeader({
   title,
@@ -19,6 +20,7 @@ export default function CourseLandingPageHeader({
 }) {
   const theme = useTheme();
   const isBelowMd = useMediaQuery(theme.breakpoints.down('md'));
+
   return (
     <Box
       sx={{
@@ -65,12 +67,7 @@ export default function CourseLandingPageHeader({
           pb: 2,
         }}
       >
-        <ReactPlayer
-          url="/video/demo.mp4"
-          controls={true}
-          width={384}
-          height={216}
-        />
+        <VideoPlayer url="/video/demo.mp4" />
         <Typography variant="h6">
           {price === 0 ? 'Free' : `$${price}`}
         </Typography>
