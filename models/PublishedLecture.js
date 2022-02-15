@@ -13,11 +13,13 @@ const PublishedLectureSchema = new mongoose.Schema(
     course: {
       type: mongoose.Types.ObjectId,
       required: true,
+      index: true,
       ref: 'PublishedCourse',
     },
     section: {
       type: mongoose.Types.ObjectId,
       required: true,
+      index: true,
       ref: 'PublishedCourseSection',
     },
     title: { type: String, required: true, trim: true, maxlength: 80 },

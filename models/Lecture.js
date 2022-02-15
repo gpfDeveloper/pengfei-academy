@@ -7,15 +7,18 @@ const LectureSchema = new mongoose.Schema(
     course: {
       type: mongoose.Types.ObjectId,
       required: true,
+      index: true,
       ref: 'Course',
     },
     section: {
       type: mongoose.Types.ObjectId,
       required: true,
+      index: true,
       ref: 'CourseSection',
     },
     publishedLecture: {
       type: mongoose.Types.ObjectId,
+      index: true,
       ref: 'PublisedLecture',
     },
     title: { type: String, required: true, trim: true, maxlength: 80 },

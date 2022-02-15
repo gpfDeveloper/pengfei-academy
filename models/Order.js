@@ -4,6 +4,7 @@ const orderSchema = new mongoose.Schema(
   {
     userEmail: {
       type: String,
+      index: true,
     },
     userName: {
       type: String,

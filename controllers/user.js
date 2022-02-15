@@ -51,7 +51,13 @@ export const register = async (req, res) => {
   user.unReadMsgCount += 1;
   user.conversationWithAdmin = conversation._id;
 
-  await user.save();
+  const session = await mongoose.startSession();
+  session.startTransaction();
+  await user.save({ session });
+  await notification.save({ session });
+  await conversation.save({ session });
+  await message.save({ session });
+  await session.commitTransaction();
 
   res.send({
     token,
@@ -59,10 +65,6 @@ export const register = async (req, res) => {
     name: user.name,
     email: user.email,
   });
-
-  notification.save();
-  conversation.save();
-  message.save();
 };
 
 export const login = async (req, res) => {

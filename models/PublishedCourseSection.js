@@ -5,6 +5,7 @@ const PublishedCourseSectionSchema = new mongoose.Schema(
     course: {
       type: mongoose.Types.ObjectId,
       required: true,
+      index: true,
       ref: 'PublishedCourse',
     },
     courseSection: {

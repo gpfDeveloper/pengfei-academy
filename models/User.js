@@ -58,6 +58,7 @@ const userSchema = new mongoose.Schema(
     },
     conversationWithAdmin: {
       type: mongoose.Types.ObjectId,
+      unique: true,
       ref: 'Conversation',
     },
     wishlist: [{ type: mongoose.Types.ObjectId, ref: 'PublishedCourse' }],

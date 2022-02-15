@@ -17,6 +17,7 @@ const PublishedCourseSchema = new mongoose.Schema(
     author: {
       type: mongoose.Types.ObjectId,
       required: true,
+      index: true,
       ref: 'User',
     },
     authorUpdatedAt: {

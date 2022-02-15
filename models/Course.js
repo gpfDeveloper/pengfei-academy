@@ -13,6 +13,7 @@ const CourseSchema = new mongoose.Schema(
       type: mongoose.Types.ObjectId,
       required: true,
       ref: 'User',
+      index: true,
     },
     title: { type: String, required: true, trim: true, maxlength: 60 },
     isPublished: {
@@ -31,6 +32,7 @@ const CourseSchema = new mongoose.Schema(
     publishedCourse: {
       type: mongoose.Types.ObjectId,
       ref: 'PublishedCourse',
+      index: true,
     },
     reviewStatus: {
       type: String,
