@@ -458,3 +458,34 @@ export const submitCourseForReview = async (req, res) => {
 
   return res.status(200).send();
 };
+
+export const uploadLectureVideo = async (req, res) => {
+  const { lectureId } = req.query;
+  const videoFile = req.file;
+  console.log(lectureId);
+  console.log(videoFile);
+
+  // const { title, contentType, article } = req.body;
+  // if (!lectureId || !title)
+  //   return res
+  //     .status(422)
+  //     .json({ message: 'Lecture Id or title not provided.' });
+
+  // await db.connect();
+  // const lecture = await Lecture.findById(lectureId);
+  // if (lecture) {
+  //   lecture.title = title;
+  //   if (contentType) {
+  //     lecture.contentType = contentType;
+  //   }
+  //   if (article) {
+  //     lecture.article = article;
+  //   }
+  //   await lecture.save();
+  //   return res
+  //     .status(200)
+  //     .json({ lecture: lecture.toObject({ getters: true }) });
+  // } else {
+  //   return res.status(404).json({ message: 'Lecture not found.' });
+  // }
+};

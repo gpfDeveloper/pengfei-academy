@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import { Box, Typography, Link, Paper } from '@mui/material';
 import NextLink from 'next/link';
 import moment from 'moment';
@@ -8,7 +7,7 @@ import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import WishlistIconBtn from 'components/UIs/WishlistIconBtn';
 import AddToCartBtn from 'components/UIs/AddToCartBtn';
-import VideoPlayer from 'components/UIs/VideoPlayer';
+import VideoPlayerBlob from 'components/UIs/VideoPlayerBlob';
 
 export default function CourseLandingPageHeader({
   title,
@@ -67,7 +66,7 @@ export default function CourseLandingPageHeader({
           pb: 2,
         }}
       >
-        <VideoPlayer url="/video/demo.mp4" />
+        <VideoPlayerBlob url="/video/demo.mp4" width={384} height={216} />
         <Typography variant="h6">
           {price === 0 ? 'Free' : `$${price}`}
         </Typography>

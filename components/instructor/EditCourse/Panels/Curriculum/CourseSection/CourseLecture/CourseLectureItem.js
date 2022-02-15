@@ -16,7 +16,6 @@ import {
 } from '@mui/material';
 import DescriptionIcon from '@mui/icons-material/Description';
 import DeleteIcon from '@mui/icons-material/Delete';
-// import DragHandleIcon from '@mui/icons-material/DragHandle';
 import EditIcon from '@mui/icons-material/Edit';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import PlayCircleIcon from '@mui/icons-material/PlayCircle';
@@ -28,10 +27,7 @@ export default function CourseLectureItem({
   sectionIdx,
   sectionItems,
   lectureIdx,
-  // onDrag,
-  // onDrop,
 }) {
-  // const [title, setTitle] = useState(items[idx].title);
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
   const { token } = user;
@@ -122,15 +118,11 @@ export default function CourseLectureItem({
   return (
     <>
       <Paper
-        // elevation={0}
-        // variant="outlined"
         sx={{
           cursor: 'move',
           '&:hover': { backgroundColor: 'rgba(0,0,0,0.02)' },
         }}
         draggable
-        // onDragStart={(e) => onDrag(e, idx)}
-        // onDrop={(e) => onDrop(e, idx)}
         onDragStart={lectureDragHandler}
         onDrop={lectureDropHandler}
       >
@@ -187,6 +179,9 @@ export default function CourseLectureItem({
         <AddEditLectureDialog
           isOpen={isEditLectureDialogOpen}
           title={lectureTitle}
+          courseId={section.course}
+          sectionId={section.id}
+          lectureId={lecture.id}
           contentType={contentType}
           article={article}
           onCancel={() => setIsEditLectureDialogOpen(false)}

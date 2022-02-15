@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import ReactPlayer from 'react-player/lazy';
 
-export default function VideoPlayer({ url }) {
+export default function VideoPlayerBlob({ url, height, width }) {
   const [blobUrl, setBlobUrl] = useState(null);
 
   useEffect(() => {
@@ -16,16 +16,9 @@ export default function VideoPlayer({ url }) {
         url={blobUrl}
         config={{ file: { attributes: { controlsList: 'nodownload' } } }}
         controls={true}
-        width={384}
-        height={216}
+        width={width}
+        height={height}
       />
     </div>
-    // <video
-    //   controls
-    //   controlsList="nodownload"
-    //   ref={videoRef}
-    //   height="216"
-    //   width="384"
-    // ></video>
   );
 }
