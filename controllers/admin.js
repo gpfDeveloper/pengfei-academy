@@ -229,6 +229,7 @@ const updatePublishedCourse = async (course, session) => {
   const publishedCourse = await PublishedCourse.findById(
     course.publishedCourse
   );
+  publishedCourse.authorUpdatedAt = Date.now();
   setPublishedCourseFields(course, publishedCourse);
   publishedCourse.sections = [];
   await PublishedCourseSection.deleteMany(

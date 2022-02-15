@@ -19,6 +19,10 @@ const PublishedCourseSchema = new mongoose.Schema(
       required: true,
       ref: 'User',
     },
+    authorUpdatedAt: {
+      type: Date,
+      default: Date.now(),
+    },
     title: { type: String, required: true, trim: true, maxlength: 60 },
     subtitle: { type: String, trim: true, maxlength: 120 },
     description: { type: String, trim: true, maxlength: 6000 },

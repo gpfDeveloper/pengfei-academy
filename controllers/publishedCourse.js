@@ -58,15 +58,30 @@ import { COURSE_CATEGORY } from 'utils/constants';
 
 export const getPublishedCourseServer = async (courseId) => {
   await db.connect();
-  const course = await PublishedCourse.findById(courseId);
+  const course = await PublishedCourse.findById(courseId, {
+    course: 0,
+    createdAt: 0,
+    updatedAt: 0,
+  });
 
   //fetch all course sections and course lectures;
   if (course) {
     //{[id1]:2,[id2]:0,[id3]:1}
     const sectionIdIdxMap = {};
 
-    const sections = await PublishedCourseSection.find({ course: course._id });
-    const lectures = await PublishedLecture.find({ course: course._id });
+    const sections = await PublishedCourseSection.find(
+      { course: course._id },
+      {
+        course: 0,
+        courseSection: 0,
+        createdAt: 0,
+        updatedAt: 0,
+      }
+    );
+    const lectures = await PublishedLecture.find(
+      { course: course._id },
+      { section: 0, course: 0, createdAt: 0, updatedAt: 0, lecture: 0 }
+    );
 
     for (let i = 0; i < course.sections.length; i++) {
       const sectionId = course.sections[i].toString();
@@ -83,22 +98,14 @@ export const getPublishedCourseServer = async (courseId) => {
     for (const _lecture of lectures) {
       const lecture = _lecture.toObject({ getters: true });
       lecture._id = lecture._id.toString();
-      lecture.section = null;
-      lecture.course = null;
-      lecture.lecture = null;
-      lecture.createdAt = null;
-      lecture.updatedAt = null;
       lectureIdMap[lecture.id] = lecture;
     }
 
     const ret = course.toObject({ getters: true });
+    ret.authorUpdatedAt = ret.authorUpdatedAt.toString();
     for (const _section of sections) {
       const section = _section.toObject({ getters: true });
       section._id = section._id.toString();
-      section.course = null;
-      section.courseSection = null;
-      section.createdAt = null;
-      section.updatedAt = null;
       const sectionIdx = sectionIdIdxMap[section.id];
       ret.sections[sectionIdx] = section;
       for (let i = 0; i < section.lectures.length; i++) {
@@ -108,9 +115,6 @@ export const getPublishedCourseServer = async (courseId) => {
     }
     ret._id = ret._id.toString();
     ret.author = ret.author.toString();
-    ret.course = null;
-    ret.createdAt = null;
-    ret.updatedAt = null;
     return ret;
   } else {
     throw new Error('Course not found.');

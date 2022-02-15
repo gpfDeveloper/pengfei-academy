@@ -16,7 +16,7 @@ export default function CourseLandingPage({ course }) {
     title,
     subtitle,
     language,
-    updatedAt,
+    authorUpdatedAt,
     price,
     sections,
     learningObjectives,
@@ -31,7 +31,7 @@ export default function CourseLandingPage({ course }) {
         subtitle={subtitle}
         author={author}
         language={language}
-        updatedAt={updatedAt}
+        updatedAt={authorUpdatedAt}
         price={price}
       />
       <CourseLandingPageLearnObjs objectives={learningObjectives} />
