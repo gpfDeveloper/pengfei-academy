@@ -11,6 +11,10 @@ import db from 'utils/db';
 import { isValidCategory } from 'utils';
 import { COURSE_REVIEW_STATUS } from 'utils/constants';
 import mongoose from 'mongoose';
+import { S3_BUCKETS } from 'utils/constants';
+import { v4 as uuid } from 'uuid';
+import { S3 } from 'utils/aws';
+import VideoLecture from 'models/VideoLecture';
 
 export const createCourse = async (req, res) => {
   const userId = req.user.id;
@@ -460,32 +464,93 @@ export const submitCourseForReview = async (req, res) => {
 };
 
 export const uploadLectureVideo = async (req, res) => {
-  const { lectureId } = req.query;
+  const { lectureId, id: courseId, sectionId } = req.query;
+  const userId = req.user.id;
   const videoFile = req.file;
-  console.log(lectureId);
-  console.log(videoFile);
 
-  // const { title, contentType, article } = req.body;
-  // if (!lectureId || !title)
-  //   return res
-  //     .status(422)
-  //     .json({ message: 'Lecture Id or title not provided.' });
+  if (!lectureId || !videoFile)
+    return res
+      .status(422)
+      .json({ message: 'lectureId or video file not provided' });
 
-  // await db.connect();
-  // const lecture = await Lecture.findById(lectureId);
-  // if (lecture) {
-  //   lecture.title = title;
-  //   if (contentType) {
-  //     lecture.contentType = contentType;
-  //   }
-  //   if (article) {
-  //     lecture.article = article;
-  //   }
-  //   await lecture.save();
-  //   return res
-  //     .status(200)
-  //     .json({ lecture: lecture.toObject({ getters: true }) });
-  // } else {
-  //   return res.status(404).json({ message: 'Lecture not found.' });
+  await db.connect();
+  const lecture = await Lecture.findById(lectureId);
+  if (!lecture) return res.status(404).json({ message: 'lecture not found.' });
+
+  //videoFile format:
+  // {
+  //   fieldname: 'lectureVideo',
+  //   originalname: 'Build and Deploy a Full Stack Realtime Chat Messaging App with Authentication .mp4',
+  //   encoding: '7bit',
+  //   mimetype: 'video/mp4',
+  //   buffer: <Buffer 00 00 00 18 66 74 79 70 6d 70 34 32 00 00 00 00 69 73 6f 6d 6d 70 34 32 00 55 c9 99 6d 6f 6f 76 00 00 00 6c 6d 76 68 64 00 00 00 00 dd 52 87 cb dd 52 ... 327538644 more bytes>,
+  //   size: 327538694
   // }
+
+  const videoExt = videoFile.mimetype.split('/')[1];
+
+  const params = {
+    Bucket: S3_BUCKETS.lectureVideoBucket,
+    Key: `${uuid()}.${videoExt}`,
+    Body: videoFile.buffer,
+    ContentType: videoFile.mimetype,
+    Metadata: {
+      originalName: videoFile.originalname,
+    },
+  };
+  // {
+  //   Location: 'https://pengfei-academy-lecture-video-bucket.s3.amazonaws.com/e9f96858-6cc4-42df-9bc8-150947c07deb.mp4',
+  //   Bucket: 'pengfei-academy-lecture-video-bucket',
+  //   Key: 'e9f96858-6cc4-42df-9bc8-150947c07deb.mp4',
+  //   ETag: '"4277ff8a0d7a116c59318a51fdad24a4-2"'
+  // }
+  const uploadFile = S3.upload(params).promise();
+  const { Location: s3Location, Key: s3Key } = await uploadFile.then();
+
+  const videoLecture = new VideoLecture({
+    s3Key,
+    s3Location,
+    s3Bucket: S3_BUCKETS.lectureVideoBucket,
+    author: userId,
+    lecture: lectureId,
+    course: courseId,
+    courseSection: sectionId,
+    fileName: videoFile.originalname,
+    fileSize: videoFile.size,
+  });
+
+  const session = await mongoose.startSession();
+  session.startTransaction();
+  await videoLecture.save(session);
+
+  //delete origin video file if exist and not published
+  if (lecture.video) {
+    const originVideo = await VideoLecture.findById(lecture.video);
+    if (originVideo) {
+      let hasPublishedLecture = false;
+      if (originVideo.PublishedLecture) {
+        const publishedLecture = await PublishedLecture.findById(
+          originVideo.PublishedLecture
+        );
+        if (publishedLecture) {
+          hasPublishedLecture = true;
+        }
+      }
+      if (!hasPublishedLecture) {
+        S3.deleteObject(
+          { Bucket: originVideo.s3Bucket, Key: originVideo.s3Key },
+          (err, data) => {
+            if (err) console.log(err, err.stack);
+            else console.log(data);
+          }
+        );
+        await originVideo.delete();
+      }
+    }
+  }
+
+  lecture.video = videoLecture._id;
+  await lecture.save(session);
+  await session.commitTransaction();
+  res.status(200).send();
 };

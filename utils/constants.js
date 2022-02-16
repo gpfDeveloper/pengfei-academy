@@ -163,4 +163,5 @@ export const COURSE_CONTENT_TYPE = {
 
 export const S3_BUCKETS = {
   userAvatarBucket: 'pengfei-academy-user-avatar-bucket',
+  lectureVideoBucket: 'pengfei-academy-lecture-video-bucket',
 };

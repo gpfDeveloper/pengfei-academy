@@ -43,7 +43,6 @@ export default function AddEditLectureDialog({
 }) {
   const user = useSelector((state) => state.user);
   const { token } = user;
-  console.log(token);
   const isEdit = Boolean(title);
   const dialogTitle = isEdit ? 'Edit Lecture' : 'Create Lecture';
   const [videoFileName, setVideoFileName] = useState(null);
@@ -83,7 +82,7 @@ export default function AddEditLectureDialog({
     setVideoFileName(file.name);
     const formData = new FormData();
     formData.append('lectureVideo', file);
-    const result = await axios.put(
+    await axios.put(
       `/api/instructor/course/${courseId}/section/${sectionId}/lecture/${lectureId}/uploadVideo`,
       formData,
       {
@@ -93,6 +92,7 @@ export default function AddEditLectureDialog({
         },
       }
     );
+    setLoading(false);
   };
 
   let showArticleInput = false;
@@ -221,7 +221,7 @@ export default function AddEditLectureDialog({
                 <Input
                   onChange={uploadVideoHandler}
                   id="contained-button-file"
-                  accept="video/*"
+                  accept="video/mp4"
                   type="file"
                   disabled={loading}
                 />
