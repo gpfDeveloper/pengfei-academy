@@ -33,6 +33,7 @@ export default function CourseLectureItem({
   const { token } = user;
   const section = sectionItems[sectionIdx];
   const lecture = section.lectures[lectureIdx];
+  console.log(lecture);
   const lectureTitle = lecture.title;
   const contentType = lecture.contentType;
   const isVideo = contentType === 'video';
@@ -41,7 +42,7 @@ export default function CourseLectureItem({
   const [isEditLectureDialogOpen, setIsEditLectureDialogOpen] = useState(false);
   const [isConfirmDeleteDialogOpen, setIsConfirmDeleteDialogOpen] =
     useState(false);
-  const editLectureTitleHandler = ({ title, contentType, article }) => {
+  const editLectureHandler = ({ title, contentType, article }) => {
     setIsEditLectureDialogOpen(false);
     const courseId = section.course;
     const lectureId = lecture.id;
@@ -179,13 +180,14 @@ export default function CourseLectureItem({
         <AddEditLectureDialog
           isOpen={isEditLectureDialogOpen}
           title={lectureTitle}
+          _videoFileName={lecture.video?.fileName}
           courseId={section.course}
           sectionId={section.id}
           lectureId={lecture.id}
           contentType={contentType}
           article={article}
           onCancel={() => setIsEditLectureDialogOpen(false)}
-          onSave={editLectureTitleHandler}
+          onSave={editLectureHandler}
         />
       )}
       <DialogConfirmDelete

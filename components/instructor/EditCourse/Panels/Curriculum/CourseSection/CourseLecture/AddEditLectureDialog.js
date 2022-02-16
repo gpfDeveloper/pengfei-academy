@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { setSnackbar } from 'store/snackbar';
 import { Controller, useForm } from 'react-hook-form';
 import { styled } from '@mui/material/styles';
 import {
@@ -15,6 +16,7 @@ import {
   InputLabel,
   MenuItem,
   Typography,
+  LinearProgress,
 } from '@mui/material';
 import LoadingButton from '@mui/lab/LoadingButton';
 import VideocamIcon from '@mui/icons-material/Videocam';
@@ -36,18 +38,21 @@ export default function AddEditLectureDialog({
   onCancel,
   title,
   courseId,
+  _videoFileName,
   sectionId,
   lectureId,
   contentType,
   article,
 }) {
+  const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
   const { token } = user;
   const isEdit = Boolean(title);
   const dialogTitle = isEdit ? 'Edit Lecture' : 'Create Lecture';
-  const [videoFileName, setVideoFileName] = useState(null);
+  const [videoFileName, setVideoFileName] = useState(_videoFileName);
   const [isVidoeTooBig, setIsVideoTooBig] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
   const {
     formState: { errors },
     handleSubmit,
@@ -82,17 +87,34 @@ export default function AddEditLectureDialog({
     setVideoFileName(file.name);
     const formData = new FormData();
     formData.append('lectureVideo', file);
-    await axios.put(
-      `/api/instructor/course/${courseId}/section/${sectionId}/lecture/${lectureId}/uploadVideo`,
-      formData,
-      {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-    setLoading(false);
+    try {
+      await axios.put(
+        `/api/instructor/course/${courseId}/section/${sectionId}/lecture/${lectureId}/uploadVideo`,
+        formData,
+        {
+          onUploadProgress: (e) => {
+            setUploadProgress((e.loaded / e.total) * 100 - 1);
+          },
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setUploadProgress(100);
+      setLoading(false);
+      dispatch(
+        setSnackbar({ severity: 'success', message: 'Upload success.' })
+      );
+    } catch (err) {
+      dispatch(
+        setSnackbar({
+          severity: 'error',
+          message: 'Upload failed, please try again later.',
+        })
+      );
+      setLoading(false);
+    }
   };
 
   let showArticleInput = false;
@@ -209,13 +231,22 @@ export default function AddEditLectureDialog({
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                 <Typography variant="h6">Note:</Typography>
                 <Typography>
-                  All files should be at least 720p and less than 1.0 GB.
+                  All files should be in .mp4 format and at least 720p and less
+                  than 1.0 GB.
                 </Typography>
               </Box>
               {isVidoeTooBig && (
                 <Typography color="error">
                   Video file must less than 1.0 GB
                 </Typography>
+              )}
+              {Boolean(uploadProgress) && (
+                <Box sx={{ mt: 1, mb: 1 }}>
+                  <LinearProgress
+                    variant="determinate"
+                    value={uploadProgress}
+                  />
+                </Box>
               )}
               <label htmlFor="contained-button-file">
                 <Input
@@ -225,7 +256,6 @@ export default function AddEditLectureDialog({
                   type="file"
                   disabled={loading}
                 />
-
                 {!loading && (
                   <Button
                     variant="contained"
@@ -253,7 +283,9 @@ export default function AddEditLectureDialog({
           </Box>
         </DialogContent>
         <DialogActions>
-          <Button onClick={cancelHandler}>Cancel</Button>
+          <Button onClick={cancelHandler} disabled={loading}>
+            Cancel
+          </Button>
           <Button type="submit" disabled={loading}>
             Save
           </Button>

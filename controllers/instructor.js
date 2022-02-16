@@ -99,7 +99,9 @@ export const getMyCourse = async (req, res) => {
     const sectionIdIdxMap = {};
 
     const sections = await CourseSection.find({ course: course._id });
-    const lectures = await Lecture.find({ course: course._id });
+    const lectures = await Lecture.find({ course: course._id }).populate([
+      { path: 'video', select: ['fileName'] },
+    ]);
 
     for (let i = 0; i < course.sections.length; i++) {
       const sectionId = course.sections[i].toString();
@@ -343,7 +345,9 @@ export const editLecture = async (req, res) => {
       .json({ message: 'Lecture Id or title not provided.' });
 
   await db.connect();
-  const lecture = await Lecture.findById(lectureId);
+  const lecture = await Lecture.findById(lectureId).populate([
+    { path: 'video', select: ['fileName'] },
+  ]);
   if (lecture) {
     lecture.title = title;
     if (contentType) {
