@@ -45,11 +45,6 @@ const VideoLectureSchema = new mongoose.Schema(
       ref: 'Course',
       index: true,
     },
-    courseSection: {
-      type: mongoose.Types.ObjectId,
-      ref: 'CourseSection',
-      index: true,
-    },
   },
   { timestamps: true }
 );

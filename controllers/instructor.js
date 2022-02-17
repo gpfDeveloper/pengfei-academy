@@ -293,7 +293,11 @@ export const deleteCourseSection = async (req, res) => {
   session.startTransaction();
   await CourseSection.findByIdAndDelete(sectionId, { session });
   course.sections = course.sections.filter((id) => id.toString() !== sectionId);
-  await Lecture.deleteMany({ section: sectionId }, { session });
+  const lectures = await Lecture.find({ section: sectionId });
+  for (const lecture of lectures) {
+    await _deleteOrMarkAsDeleteLectureVideo(lecture);
+    await lecture.delete({ session });
+  }
   await course.save({ session });
   await session.commitTransaction();
 
@@ -505,7 +509,7 @@ export const submitCourseForReview = async (req, res) => {
 };
 
 export const uploadLectureVideo = async (req, res) => {
-  const { lectureId, id: courseId, sectionId } = req.query;
+  const { lectureId, id: courseId } = req.query;
   const userId = req.user.id;
   const videoFile = req.file;
 
@@ -555,7 +559,6 @@ export const uploadLectureVideo = async (req, res) => {
     author: userId,
     lecture: lectureId,
     course: courseId,
-    courseSection: sectionId,
     fileName: videoFile.originalname,
     fileSize: videoFile.size,
   });
