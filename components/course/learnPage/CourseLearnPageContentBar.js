@@ -66,7 +66,7 @@ const CourseSection = ({
   );
 };
 
-export default function CourseLearnPageContent({
+export default function CourseLearnPageContentBar({
   sections,
   currentLecture,
   setCurrentLecture,

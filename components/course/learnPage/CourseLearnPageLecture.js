@@ -1,7 +1,6 @@
 import ReactMarkdown from 'react-markdown';
 import { Box, Paper, Typography } from '@mui/material';
-// import VideoPlayerBlob from 'components/UIs/VideoPlayerBlob';
-import ReactPlayer from 'react-player/lazy';
+import VideoPlayer from 'components/UIs/VideoPlayer';
 
 export default function CourseLearnPageLecture({ lecture }) {
   const { contentType, title, article, video } = lecture;
@@ -10,12 +9,7 @@ export default function CourseLearnPageLecture({ lecture }) {
     const { s3Location } = video;
     content = (
       <Box sx={{ margin: 1 }}>
-        <ReactPlayer
-          width="100%"
-          height="100%"
-          url={s3Location}
-          controls={true}
-        />
+        <VideoPlayer height="100%" width="100%" url={s3Location} />
       </Box>
     );
   } else {

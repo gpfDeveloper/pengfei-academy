@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Box } from '@mui/material';
-import CourseLearnPageContent from './CourseLearnPageContent';
+import CourseLearnPageContentBar from './CourseLearnPageContentBar';
 import CourseLearnPageLecture from './CourseLearnPageLecture';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
@@ -18,7 +18,7 @@ export default function CourseLearnPage({ course }) {
   return (
     <Box sx={{ display: 'flex', flexDirection: isBelowLg ? 'column' : 'row' }}>
       <CourseLearnPageLecture lecture={currentLecture} />
-      <CourseLearnPageContent
+      <CourseLearnPageContentBar
         sections={sections}
         currentLecture={currentLecture}
         setCurrentLecture={setCurrentLecture}
