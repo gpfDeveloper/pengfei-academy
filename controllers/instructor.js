@@ -255,7 +255,21 @@ export const deleteCourse = async (req, res) => {
       { session }
     );
   }
+
+  //delete video lectures
+  const videoLectures = await VideoLecture.find({ course });
+  for (const video of videoLectures) {
+    S3.deleteObject(
+      { Bucket: video.s3Bucket, Key: video.s3Key },
+      (err, data) => {
+        if (err) console.log(err, err.stack);
+        else console.log(data);
+      }
+    );
+    await video.delete({ session });
+  }
   await session.commitTransaction();
+
   res.status(200).send();
 };
 
