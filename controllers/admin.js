@@ -11,6 +11,7 @@ import Notification from 'models/Notification';
 import CourseReviewRequest from 'models/CourseReviewRequest';
 import db from 'utils/db';
 import { COURSE_REVIEW_STATUS, TEACH_REQUEST_STATUS } from 'utils/constants';
+import { S3 } from 'utils/aws';
 import VideoLecture from 'models/VideoLecture';
 
 const { approved: APPROVED, rejected: REJECTED } = TEACH_REQUEST_STATUS;
@@ -248,6 +249,23 @@ const updatePublishedCourse = async (course, session) => {
     { course: publishedCourse._id },
     { session }
   );
+
+  // delete all video lecture which are marked as deleted
+  const videoLectures = await VideoLecture.find({
+    course,
+    isDeletedByAuthor: true,
+  });
+  for (const videoLecture of videoLectures) {
+    S3.deleteObject(
+      { Bucket: videoLecture.s3Bucket, Key: videoLecture.s3Key },
+      (err, data) => {
+        if (err) console.log(err, err.stack);
+        else console.log(data);
+      }
+    );
+    await videoLecture.delete();
+  }
+
   for (const sectionId of course.sections) {
     await createPublishedCourseSection(sectionId, publishedCourse, session);
   }

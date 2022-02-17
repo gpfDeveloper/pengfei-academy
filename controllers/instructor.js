@@ -18,33 +18,30 @@ import VideoLecture from 'models/VideoLecture';
 
 //delete origin video file if exist and not published, if it is published, mark it to deleted, and will delete it when publish again.
 const _deleteOrMarkAsDeleteLectureVideo = async (lecture) => {
-  await db.connect();
-  if (lecture.video) {
-    const originVideo = await VideoLecture.findById(lecture.video);
-    if (originVideo) {
-      let hasPublishedLecture = false;
-      if (originVideo.PublishedLecture) {
-        const publishedLecture = await PublishedLecture.findById(
-          originVideo.PublishedLecture
-        );
-        if (publishedLecture) {
-          hasPublishedLecture = true;
-        }
-      }
-      if (!hasPublishedLecture) {
-        S3.deleteObject(
-          { Bucket: originVideo.s3Bucket, Key: originVideo.s3Key },
-          (err, data) => {
-            if (err) console.log(err, err.stack);
-            else console.log(data);
-          }
-        );
-        await originVideo.delete();
-      } else {
-        originVideo.isDeletedByAuthor = true;
-        await originVideo.save();
-      }
+  if (!lecture.video) return;
+  const originVideo = await VideoLecture.findById(lecture.video);
+  if (!originVideo) return;
+  let hasPublishedLecture = false;
+  if (originVideo.publishedLecture) {
+    const publishedLecture = await PublishedLecture.findById(
+      originVideo.publishedLecture
+    );
+    if (publishedLecture) {
+      hasPublishedLecture = true;
     }
+  }
+  if (!hasPublishedLecture) {
+    S3.deleteObject(
+      { Bucket: originVideo.s3Bucket, Key: originVideo.s3Key },
+      (err, data) => {
+        if (err) console.log(err, err.stack);
+        else console.log(data);
+      }
+    );
+    await originVideo.delete();
+  } else {
+    originVideo.isDeletedByAuthor = true;
+    await originVideo.save();
   }
 };
 
