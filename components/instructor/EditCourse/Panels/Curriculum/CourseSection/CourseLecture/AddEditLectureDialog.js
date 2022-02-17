@@ -25,6 +25,21 @@ import { COURSE_CONTENT_TYPE } from 'utils/constants';
 import axios from 'axios';
 const contentTypes = Object.keys(COURSE_CONTENT_TYPE);
 
+function LinearProgressWithLabel(props) {
+  return (
+    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+      <Box sx={{ width: '100%', mr: 1 }}>
+        <LinearProgress variant="determinate" {...props} />
+      </Box>
+      <Box sx={{ minWidth: 35 }}>
+        <Typography variant="body2" color="text.secondary">{`${Math.round(
+          props.value
+        )}%`}</Typography>
+      </Box>
+    </Box>
+  );
+}
+
 const Input = styled('input')({
   display: 'none',
 });
@@ -242,10 +257,7 @@ export default function AddEditLectureDialog({
               )}
               {Boolean(uploadProgress) && (
                 <Box sx={{ mt: 1, mb: 1 }}>
-                  <LinearProgress
-                    variant="determinate"
-                    value={uploadProgress}
-                  />
+                  <LinearProgressWithLabel value={uploadProgress} />
                 </Box>
               )}
               <label htmlFor="contained-button-file">

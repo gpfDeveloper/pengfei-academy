@@ -1,7 +1,8 @@
+import dynamic from 'next/dynamic';
 import { useState, useEffect } from 'react';
 import ReactPlayer from 'react-player/lazy';
 
-export default function VideoPlayerBlob({ url, height, width }) {
+function VideoPlayerBlob({ url, height, width }) {
   const [blobUrl, setBlobUrl] = useState(null);
 
   useEffect(() => {
@@ -22,3 +23,5 @@ export default function VideoPlayerBlob({ url, height, width }) {
     </div>
   );
 }
+
+export default dynamic(() => Promise.resolve(VideoPlayerBlob), { ssr: false });

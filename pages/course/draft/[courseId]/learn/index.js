@@ -32,12 +32,6 @@ function CourseLearnScreenDraft() {
           }
         );
         const _course = courseData.data.course;
-        const authorId = _course.author;
-        const instructorData = await axios.get(
-          `/api/profile/public/${authorId}`
-        );
-        _course.author = instructorData.data;
-        _course.author.id = authorId;
         setCourse(_course);
         setLoading(false);
       } catch (err) {

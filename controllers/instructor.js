@@ -100,7 +100,7 @@ export const getMyCourse = async (req, res) => {
 
     const sections = await CourseSection.find({ course: course._id });
     const lectures = await Lecture.find({ course: course._id }).populate([
-      { path: 'video', select: ['fileName'] },
+      { path: 'video', select: ['fileName', 's3Location'] },
     ]);
 
     for (let i = 0; i < course.sections.length; i++) {
@@ -527,7 +527,7 @@ export const uploadLectureVideo = async (req, res) => {
   session.startTransaction();
   await videoLecture.save(session);
 
-  //delete origin video file if exist and not published
+  //delete origin video file if exist and not published, if it is published, mark it to deleted, and delete it when publish again.
   if (lecture.video) {
     const originVideo = await VideoLecture.findById(lecture.video);
     if (originVideo) {
@@ -549,6 +549,9 @@ export const uploadLectureVideo = async (req, res) => {
           }
         );
         await originVideo.delete();
+      } else {
+        originVideo.isDeletedByAuthor = true;
+        await originVideo.save();
       }
     }
   }
