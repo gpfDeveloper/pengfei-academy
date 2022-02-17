@@ -80,7 +80,14 @@ export const getPublishedCourseServer = async (courseId) => {
     );
     const lectures = await PublishedLecture.find(
       { course: course._id },
-      { section: 0, course: 0, createdAt: 0, updatedAt: 0, lecture: 0 }
+      {
+        section: 0,
+        course: 0,
+        createdAt: 0,
+        updatedAt: 0,
+        lecture: 0,
+        video: 0,
+      }
     );
 
     for (let i = 0; i < course.sections.length; i++) {
@@ -131,7 +138,9 @@ export const getPublishedCourseLearn = async (req, res) => {
     const sectionIdIdxMap = {};
 
     const sections = await PublishedCourseSection.find({ course: course._id });
-    const lectures = await PublishedLecture.find({ course: course._id });
+    const lectures = await PublishedLecture.find({
+      course: course._id,
+    }).populate([{ path: 'video', select: ['fileName', 's3Location'] }]);
 
     for (let i = 0; i < course.sections.length; i++) {
       const sectionId = course.sections[i].toString();

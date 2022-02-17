@@ -28,8 +28,10 @@ const PublishedLectureSchema = new mongoose.Schema(
       enum: [...contentTypes],
     },
     article: { type: String, trim: true, maxlength: 6000 },
-    //todo video
-    // video: {},
+    video: {
+      type: mongoose.Types.ObjectId,
+      ref: 'VideoLecture',
+    },
   },
   { timestamps: true }
 );

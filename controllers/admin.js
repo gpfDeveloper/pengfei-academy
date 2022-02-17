@@ -11,6 +11,7 @@ import Notification from 'models/Notification';
 import CourseReviewRequest from 'models/CourseReviewRequest';
 import db from 'utils/db';
 import { COURSE_REVIEW_STATUS, TEACH_REQUEST_STATUS } from 'utils/constants';
+import VideoLecture from 'models/VideoLecture';
 
 const { approved: APPROVED, rejected: REJECTED } = TEACH_REQUEST_STATUS;
 
@@ -173,10 +174,17 @@ const createPublishedLecture = async (
   publishedLecture.title = lecture.title;
   publishedLecture.contentType = lecture.contentType;
   publishedLecture.article = lecture.article;
+  publishedLecture.video = lecture.video;
   lecture.publishedLecture = publishedLecture._id;
   publishedCourseSection.lectures.push(publishedLecture._id);
   await publishedLecture.save({ session });
   await lecture.save({ session });
+  //update videoLecture
+  const videoLecture = await VideoLecture.findById(lecture.video);
+  if (videoLecture) {
+    videoLecture.publishedLecture = publishedLecture._id;
+    await videoLecture.save({ session });
+  }
 };
 
 const createPublishedCourseSection = async (
