@@ -33,7 +33,6 @@ export default function CourseLectureItem({
   const { token } = user;
   const section = sectionItems[sectionIdx];
   const lecture = section.lectures[lectureIdx];
-  console.log(lecture);
   const lectureTitle = lecture.title;
   const contentType = lecture.contentType;
   const isVideo = contentType === 'video';
