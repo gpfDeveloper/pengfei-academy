@@ -581,6 +581,7 @@ export const uploadLectureVideo = async (req, res) => {
   await _deleteOrMarkAsDeleteLectureVideo(lecture);
 
   lecture.video = videoLecture._id;
+  lecture.contentType = 'video';
   await lecture.save(session);
   await session.commitTransaction();
   res.status(200).send();

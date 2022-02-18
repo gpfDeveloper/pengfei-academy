@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { uploadVideoLecture } from 'store/course';
 import { setSnackbar } from 'store/snackbar';
 import { Controller, useForm } from 'react-hook-form';
 import { styled } from '@mui/material/styles';
@@ -120,6 +121,9 @@ export default function AddEditLectureDialog({
       setLoading(false);
       dispatch(
         setSnackbar({ severity: 'success', message: 'Upload success.' })
+      );
+      dispatch(
+        uploadVideoLecture({ sectionId, lectureId, videoFileName: file.name })
       );
     } catch (err) {
       dispatch(

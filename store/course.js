@@ -74,6 +74,23 @@ const courseSlice = createSlice({
       );
       state.sections[sectionIdx].lectures[lectureIdx] = lecture;
     },
+    uploadVideoLecture: (
+      state,
+      { payload: { lectureId, sectionId, videoFileName } }
+    ) => {
+      const sectionIdx = state.sections.findIndex(
+        (section) => section.id === sectionId
+      );
+      const lectureIdx = state.sections[sectionIdx].lectures.findIndex(
+        (_lecture) => _lecture.id === lectureId
+      );
+      const lecture = state.sections[sectionIdx].lectures[lectureIdx];
+      lecture.contentType = 'video';
+      if (!lecture.video) {
+        lecture.video = {};
+      }
+      lecture.video.fileName = videoFileName;
+    },
     dragDropSection: (
       state,
       { payload: { sectionDragIdx, sectionDropIdx } }
@@ -127,6 +144,7 @@ export const {
   dragDropLectureSameSection,
   dragDropLectureOtherSection,
   updateReviewStatus,
+  uploadVideoLecture,
 } = courseSlice.actions;
 
 export default courseSlice.reducer;
