@@ -59,10 +59,9 @@ import { COURSE_CATEGORY } from 'utils/constants';
 export const getPublishedCourseServer = async (courseId) => {
   await db.connect();
   const course = await PublishedCourse.findById(courseId, {
-    course: 0,
     createdAt: 0,
     updatedAt: 0,
-  });
+  }).populate([{ path: 'course', select: ['image'] }]);
 
   //fetch all course sections and course lectures;
   if (course) {
@@ -109,7 +108,10 @@ export const getPublishedCourseServer = async (courseId) => {
     }
 
     const ret = course.toObject({ getters: true });
+    ret.image = course.course.image || null;
+    ret.course = null;
     ret.authorUpdatedAt = ret.authorUpdatedAt.toISOString();
+
     for (const _section of sections) {
       const section = _section.toObject({ getters: true });
       section._id = section._id.toString();
@@ -234,13 +236,18 @@ export const getPublishedCourseItemsServer = async ({
       'subcategory',
       'updatedAt',
     ])
-    .populate([{ path: 'author', select: ['name'] }]);
+    .populate([
+      { path: 'author', select: ['name'] },
+      { path: 'course', select: ['image'] },
+    ]);
   for (const course of courseItems) {
     course._id = course._id.toString();
     course.id = course._id;
     course.author._id = course.author._id.toString();
     course.author.id = course.author._id;
     course.updatedAt = course.updatedAt.toString();
+    course.image = course.course.image || null;
+    course.course = null;
   }
   const courseCount = await PublishedCourse.countDocuments(filters);
   const publishedCategories = await PublishedCourse.find().distinct('category');

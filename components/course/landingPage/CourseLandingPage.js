@@ -23,7 +23,10 @@ export default function CourseLandingPage({ course }) {
     prerequisites,
     description,
     courseForWho,
+    image,
   } = course;
+  const thumbnail = image?.s3Location;
+
   return (
     <Box sx={{ mt: 12, display: 'flex', flexDirection: 'column', gap: 4 }}>
       <CourseLandingPageHeader
@@ -33,6 +36,7 @@ export default function CourseLandingPage({ course }) {
         language={language}
         updatedAt={authorUpdatedAt}
         price={price}
+        thumbnail={thumbnail}
       />
       <CourseLandingPageLearnObjs objectives={learningObjectives} />
       <CourseLandingPageContent sections={sections} />

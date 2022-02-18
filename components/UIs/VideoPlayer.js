@@ -1,10 +1,11 @@
 import dynamic from 'next/dynamic';
 import ReactPlayer from 'react-player/lazy';
 
-function VideoPlayer({ url, height, width }) {
+function VideoPlayer({ url, height, width, thumbnail }) {
   return (
     <div onContextMenu={(e) => e.preventDefault()}>
       <ReactPlayer
+        light={thumbnail}
         url={url}
         config={{ file: { attributes: { controlsList: 'nodownload' } } }}
         controls={true}

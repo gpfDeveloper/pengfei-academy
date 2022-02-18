@@ -265,6 +265,18 @@ export const deleteCourse = async (req, res) => {
     );
     await video.delete({ session });
   }
+
+  //delete course image on S3 if exist
+  if (course.image) {
+    S3.deleteObject(
+      { Bucket: course.image.s3Bucket, Key: course.image.s3Key },
+      (err, data) => {
+        if (err) console.log(err, err.stack);
+        else console.log(data);
+      }
+    );
+  }
+
   await session.commitTransaction();
 
   res.status(200).send();

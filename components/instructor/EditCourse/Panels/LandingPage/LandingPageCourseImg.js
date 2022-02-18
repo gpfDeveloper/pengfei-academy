@@ -33,7 +33,7 @@ export default function LandingPageCourseImg() {
       setCourseImageUrl(data.data.url);
     };
     fetchCourseImageUrl();
-  }, [token, courseId]);
+  }, []);
 
   const uploadHandler = async (e) => {
     setLoading(true);

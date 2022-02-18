@@ -13,7 +13,9 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 export default function CourseItem({ item }) {
   const theme = useTheme();
   const isBelowMd = useMediaQuery(theme.breakpoints.down('md'));
-  const { id, thumbnail, title, price, subtitle, author } = item;
+  const { id, image, title, price, subtitle, author } = item;
+  const url = image?.s3Location;
+
   const router = useRouter();
   const clickHandler = () => {
     router.push(`/course/${id}`);
@@ -28,9 +30,9 @@ export default function CourseItem({ item }) {
           }}
         >
           <CardMedia
-            sx={{ flex: '0 0', height: 146, width: 260 }}
+            sx={{ flex: '0 0', height: 211, width: 375 }}
             component="img"
-            image={thumbnail ? thumbnail : '/image-placeholder.svg'}
+            image={url ? url : '/image-placeholder.svg'}
             alt={item.title}
           />
           <CardContent

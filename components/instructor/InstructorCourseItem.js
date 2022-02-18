@@ -18,15 +18,9 @@ const reviewStatusMap = {
 };
 
 export default function InstructorCourseItem({ item }) {
-  const {
-    id,
-    title,
-    thumbnail,
-    isPublished,
-    reviewStatus,
-    price,
-    numOfStudents,
-  } = item;
+  const { id, title, image, isPublished, reviewStatus, price, numOfStudents } =
+    item;
+  const url = image?.s3Location;
   const theme = useTheme();
   const isBelowSm = useMediaQuery(theme.breakpoints.down('sm'));
   const router = useRouter();
@@ -40,10 +34,9 @@ export default function InstructorCourseItem({ item }) {
           sx={{ display: 'flex', flexDirection: isBelowSm ? 'column' : 'row' }}
         >
           <CardMedia
-            sx={{ flex: '0 0', height: 140, width: 140 }}
+            sx={{ flex: '0 0', height: 211, width: 375 }}
             component="img"
-            // height="140"
-            image={thumbnail ? thumbnail : '/image-placeholder.svg'}
+            image={url ? url : '/image-placeholder.svg'}
             alt={title}
           />
           <CardContent sx={{ flex: '1 1' }}>
