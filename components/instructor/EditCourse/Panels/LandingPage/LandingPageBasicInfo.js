@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import Link from 'next/link';
 import { Controller, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateMyCourseBasicInfoAsync } from 'store/course-async';
@@ -144,10 +143,10 @@ export default function LandingPageBasicInfo() {
           />
         )}
       />
-      <Typography sx={{ mt: 2, color: 'text.secondary' }}>
+      <Typography sx={{ color: 'text.secondary', mt: 2 }}>
         Basic Info
       </Typography>
-      <Box sx={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', mb: 4 }}>
+      <Box sx={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', mb: 2 }}>
         <FormControl sx={{ width: 120 }}>
           <InputLabel id="Language">Language</InputLabel>
           <Controller
@@ -214,26 +213,14 @@ export default function LandingPageBasicInfo() {
         </FormControl>
       </Box>
       {!isSaving && (
-        <Box sx={{ display: 'flex', gap: 2 }}>
-          <Button
-            size="large"
-            variant="contained"
-            type="submit"
-            sx={{ alignSelf: 'flex-start' }}
-          >
-            Save
-          </Button>
-          <Link
-            href={{ pathname: '/course/draft/[courseId]', query: { courseId } }}
-            passHref
-          >
-            <a target="_blank">
-              <Button size="large" variant="outlined">
-                Preview
-              </Button>
-            </a>
-          </Link>
-        </Box>
+        <Button
+          size="large"
+          variant="contained"
+          type="submit"
+          sx={{ alignSelf: 'flex-start' }}
+        >
+          Save
+        </Button>
       )}
       {isSaving && (
         <LoadingButton loading size="large" sx={{ alignSelf: 'flex-start' }}>

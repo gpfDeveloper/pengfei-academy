@@ -2,7 +2,7 @@ import nc from 'next-connect';
 import multer from 'multer';
 
 import { isLogin, isInstructor, canViewEditCourse } from 'middleware/auth';
-import { uploadLectureVideo } from 'controllers/instructor';
+import { uploadCourseImage } from 'controllers/instructor';
 
 export const config = {
   api: {
@@ -18,8 +18,8 @@ handler.put(
   isLogin,
   isInstructor,
   canViewEditCourse,
-  upload.single('lectureVideo'),
-  uploadLectureVideo
+  upload.single('image'),
+  uploadCourseImage
 );
 
 export default handler;

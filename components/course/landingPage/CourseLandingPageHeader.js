@@ -7,7 +7,7 @@ import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import WishlistIconBtn from 'components/UIs/WishlistIconBtn';
 import AddToCartBtn from 'components/UIs/AddToCartBtn';
-import VideoPlayerBlob from 'components/UIs/VideoPlayerBlob';
+import VideoPlayer from 'components/UIs/VideoPlayer';
 
 export default function CourseLandingPageHeader({
   title,
@@ -66,7 +66,7 @@ export default function CourseLandingPageHeader({
           pb: 2,
         }}
       >
-        <VideoPlayerBlob url="/video/demo.mp4" width={384} height={216} />
+        <VideoPlayer url="/video/demo.mp4" width={384} height={216} />
         <Typography variant="h6">
           {price === 0 ? 'Free' : `$${price}`}
         </Typography>

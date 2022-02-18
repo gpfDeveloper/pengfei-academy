@@ -586,3 +586,60 @@ export const uploadLectureVideo = async (req, res) => {
   await session.commitTransaction();
   res.status(200).send();
 };
+
+export const uploadCourseImage = async (req, res) => {
+  const { id: courseId } = req.query;
+  const imageFile = req.file;
+
+  if (!imageFile)
+    return res
+      .status(422)
+      .json({ message: 'Course image file is not provided.' });
+
+  await db.connect();
+  const course = await Course.findById(courseId);
+  if (!course) return res.status(404).json({ message: 'Course not found.' });
+
+  const imgExt = imageFile.mimetype.split('/')[1];
+
+  const params = {
+    Bucket: S3_BUCKETS.courseImageBucket,
+    Key: `${uuid()}.${imgExt}`,
+    Body: imageFile.buffer,
+    ContentType: imageFile.mimetype,
+  };
+
+  const uploadFile = S3.upload(params).promise();
+  const { Location: s3Location, Key: s3Key } = await uploadFile.then();
+
+  const originImage = course.image;
+  if (originImage) {
+    S3.deleteObject(
+      { Bucket: originImage.s3Bucket, Key: originImage.s3Key },
+      (err, data) => {
+        if (err) console.log(err, err.stack);
+        else console.log(data);
+      }
+    );
+  }
+
+  course.image = {
+    s3Key,
+    s3Location,
+    s3Bucket: S3_BUCKETS.courseImageBucket,
+  };
+
+  await course.save();
+
+  res.status(200).json({ url: s3Location });
+};
+
+export const getCourseImageUrl = async (req, res) => {
+  const { id: courseId } = req.query;
+
+  await db.connect();
+  const course = await Course.findById(courseId);
+  if (!course) return res.status(404).json({ message: 'Course not found.' });
+
+  res.status(200).json({ url: course.image?.s3Location });
+};
