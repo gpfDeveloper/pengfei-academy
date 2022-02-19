@@ -1,8 +1,9 @@
 import PublishedCourse from 'models/PublishedCourse';
 import PublishedCourseSection from 'models/PublishedCourseSection';
 import PublishedLecture from 'models/PublishedLecture';
-// necessary to since we populate user
+// necessary to since we populate user,course
 import User from 'models/User';
+import Course from 'models/Course';
 import db from 'utils/db';
 
 import { COURSE_CATEGORY } from 'utils/constants';
@@ -61,7 +62,7 @@ export const getPublishedCourseServer = async (courseId) => {
   const course = await PublishedCourse.findById(courseId, {
     createdAt: 0,
     updatedAt: 0,
-  }).populate([{ path: 'course', select: ['image'] }]);
+  }).populate([{ path: 'course', select: ['image', 'promoVideo'] }]);
 
   //fetch all course sections and course lectures;
   if (course) {
@@ -109,6 +110,7 @@ export const getPublishedCourseServer = async (courseId) => {
 
     const ret = course.toObject({ getters: true });
     ret.image = course.course.image || null;
+    ret.promoVideo = course.course.promoVideo || null;
     ret.course = null;
     ret.authorUpdatedAt = ret.authorUpdatedAt.toISOString();
 

@@ -4,7 +4,7 @@ import { setSnackbar } from 'store/snackbar';
 import { styled } from '@mui/material/styles';
 import { Card, CardMedia, Box, Stack, Button, Typography } from '@mui/material';
 import LoadingButton from '@mui/lab/LoadingButton';
-import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
+import ImageIcon from '@mui/icons-material/Image';
 import axios from 'axios';
 
 const IMAGE_WIDTH = 750;
@@ -96,7 +96,7 @@ export default function LandingPageCourseImg() {
   return (
     <Stack sx={{ gap: 2 }}>
       <Box>
-        <Typography fontWeight="bold" sx={{ mb: 1 }}>
+        <Typography variant="h6" sx={{ mb: 1 }}>
           Course image
         </Typography>
         <Typography variant="body2" color="text.secondary">
@@ -121,10 +121,10 @@ export default function LandingPageCourseImg() {
       </Card>
       {errorMsg && <Typography color="error">{errorMsg}</Typography>}
       <Box>
-        <label htmlFor="contained-button-file">
+        <label htmlFor="contained-button-file-course-img">
           <Input
             onChange={uploadHandler}
-            id="contained-button-file"
+            id="contained-button-file-course-img"
             accept="image/jpg,image/jpeg,image/gif,image/png"
             type="file"
             disabled={loading}
@@ -134,7 +134,7 @@ export default function LandingPageCourseImg() {
               variant="contained"
               size="large"
               component="span"
-              startIcon={<PhotoCameraIcon />}
+              startIcon={<ImageIcon />}
             >
               Upload Image
             </Button>
@@ -142,7 +142,7 @@ export default function LandingPageCourseImg() {
         </label>
         {loading && (
           <LoadingButton
-            startIcon={<PhotoCameraIcon />}
+            startIcon={<ImageIcon />}
             loading
             loadingPosition="start"
             variant="outlined"

@@ -17,29 +17,14 @@ import {
   InputLabel,
   MenuItem,
   Typography,
-  LinearProgress,
 } from '@mui/material';
 import LoadingButton from '@mui/lab/LoadingButton';
 import VideocamIcon from '@mui/icons-material/Videocam';
 
 import { COURSE_CONTENT_TYPE } from 'utils/constants';
 import axios from 'axios';
+import LinearProgressWithLabel from 'components/UIs/LinearProgressWithLabel';
 const contentTypes = Object.keys(COURSE_CONTENT_TYPE);
-
-function LinearProgressWithLabel(props) {
-  return (
-    <Box sx={{ display: 'flex', alignItems: 'center' }}>
-      <Box sx={{ width: '100%', mr: 1 }}>
-        <LinearProgress variant="determinate" {...props} />
-      </Box>
-      <Box sx={{ minWidth: 35 }}>
-        <Typography variant="body2" color="text.secondary">{`${Math.round(
-          props.value
-        )}%`}</Typography>
-      </Box>
-    </Box>
-  );
-}
 
 const Input = styled('input')({
   display: 'none',

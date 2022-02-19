@@ -54,6 +54,7 @@ const CourseSchema = new mongoose.Schema(
     category: { type: String, enum: [...courseCategories] },
     subcategory: { type: String, enum: [...courseSubcategories] },
     image: {},
+    promoVideo: {},
     welcomeMsg: { type: String, trim: true, maxlength: 1000 },
     learningObjectives: [{ type: String, trim: true, maxlength: 160 }],
     prerequisites: [{ type: String, trim: true, maxlength: 160 }],

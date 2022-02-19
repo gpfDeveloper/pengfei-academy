@@ -24,6 +24,7 @@ export default function CourseLandingPage({ course }) {
     description,
     courseForWho,
     image,
+    promoVideo,
   } = course;
   const thumbnail = image?.s3Location;
 
@@ -37,6 +38,7 @@ export default function CourseLandingPage({ course }) {
         updatedAt={authorUpdatedAt}
         price={price}
         thumbnail={thumbnail}
+        promoVideo={promoVideo?.s3Location}
       />
       <CourseLandingPageLearnObjs objectives={learningObjectives} />
       <CourseLandingPageContent sections={sections} />

@@ -17,6 +17,7 @@ export default function CourseLandingPageHeader({
   language,
   price,
   thumbnail,
+  promoVideo,
 }) {
   const theme = useTheme();
   const isBelowMd = useMediaQuery(theme.breakpoints.down('md'));
@@ -67,12 +68,25 @@ export default function CourseLandingPageHeader({
           pb: 2,
         }}
       >
-        <VideoPlayer
-          url="/video/demo.mp4"
-          thumbnail={thumbnail}
-          width={375}
-          height={211}
-        />
+        {promoVideo && (
+          <VideoPlayer
+            url={promoVideo}
+            thumbnail={thumbnail}
+            width={375}
+            height={211}
+          />
+        )}
+        {!promoVideo && Boolean(thumbnail) && (
+          <Box component="img" src={thumbnail} width={375} height={211}></Box>
+        )}
+        {!promoVideo && !thumbnail && (
+          <Box
+            component="img"
+            src="/image-placeholder.svg"
+            width={375}
+            height={211}
+          ></Box>
+        )}
         <Typography variant="h6">
           {price === 0 ? 'Free' : `$${price}`}
         </Typography>

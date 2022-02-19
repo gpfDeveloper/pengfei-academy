@@ -655,3 +655,59 @@ export const getCourseImageUrl = async (req, res) => {
 
   res.status(200).json({ url: course.image?.s3Location });
 };
+
+export const uploadCoursePromoVideo = async (req, res) => {
+  const { id: courseId } = req.query;
+  const videoFile = req.file;
+
+  if (!videoFile)
+    return res.status(422).json({ message: 'Video file is not provided.' });
+
+  await db.connect();
+  const course = await Course.findById(courseId);
+  if (!course) return res.status(404).json({ message: 'Course not found.' });
+
+  const videoExt = videoFile.mimetype.split('/')[1];
+
+  const params = {
+    Bucket: S3_BUCKETS.coursePromoVideoBucket,
+    Key: `${uuid()}.${videoExt}`,
+    Body: videoFile.buffer,
+    ContentType: videoFile.mimetype,
+  };
+
+  const uploadFile = S3.upload(params).promise();
+  const { Location: s3Location, Key: s3Key } = await uploadFile.then();
+
+  const originVideo = course.promoVideo;
+  if (originVideo) {
+    S3.deleteObject(
+      { Bucket: originVideo.s3Bucket, Key: originVideo.s3Key },
+      (err, data) => {
+        if (err) console.log(err, err.stack);
+        else console.log(data);
+      }
+    );
+  }
+
+  course.promoVideo = {
+    s3Key,
+    s3Location,
+    s3Bucket: S3_BUCKETS.coursePromoVideoBucket,
+    size: videoFile.size,
+  };
+
+  await course.save();
+
+  res.status(200).json({ url: s3Location });
+};
+
+export const getCoursePromoVideoUrl = async (req, res) => {
+  const { id: courseId } = req.query;
+
+  await db.connect();
+  const course = await Course.findById(courseId);
+  if (!course) return res.status(404).json({ message: 'Course not found.' });
+
+  res.status(200).json({ url: course.promoVideo?.s3Location });
+};

@@ -165,4 +165,5 @@ export const S3_BUCKETS = {
   userAvatarBucket: 'pengfei-academy-user-avatar-bucket',
   lectureVideoBucket: 'pengfei-academy-lecture-video-bucket',
   courseImageBucket: 'pengfei-academy-course-image-bucket',
+  coursePromoVideoBucket: 'pengfei-academy-course-promo-video-bucket',
 };

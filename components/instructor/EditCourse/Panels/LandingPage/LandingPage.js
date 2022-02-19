@@ -3,6 +3,7 @@ import NextLink from 'next/link';
 import { Box, Divider, Typography, Button } from '@mui/material';
 import LandingPageBasicInfo from './LandingPageBasicInfo';
 import LandingPageCourseImg from './LandingPageCourseImg';
+import LandingPagePromotionVideo from './LandingPagePromotionVideo';
 
 export default function LandingPage() {
   const course = useSelector((state) => state.course);
@@ -13,6 +14,7 @@ export default function LandingPage() {
       <Divider />
       <LandingPageBasicInfo />
       <LandingPageCourseImg />
+      <LandingPagePromotionVideo />
       <NextLink
         href={{ pathname: '/course/draft/[courseId]', query: { courseId } }}
         passHref
