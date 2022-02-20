@@ -11,9 +11,9 @@ import db from 'utils/db';
 import { isValidCategory } from 'utils';
 import { COURSE_REVIEW_STATUS } from 'utils/constants';
 import mongoose from 'mongoose';
-import { S3_BUCKETS } from 'utils/constants';
+import { S3_BUCKETS, CF_DOMAINS } from 'utils/constants';
 import { v4 as uuid } from 'uuid';
-import { S3 } from 'utils/aws';
+import { S3, cloudFrontSigner } from 'utils/aws';
 import VideoLecture from 'models/VideoLecture';
 
 //delete origin video file if exist and not published, if it is published, mark it to deleted, and will delete it when publish again.
@@ -699,7 +699,17 @@ export const uploadCoursePromoVideo = async (req, res) => {
 
   await course.save();
 
-  res.status(200).json({ url: s3Location });
+  const resourceUrl = `https://${CF_DOMAINS.coursePromoVideo}/${s3Key}`;
+  //expires in two hours
+  const resourceUrlExpires = Math.floor(
+    (Date.now() + 2 * 60 * 60 * 1000) / 1000
+  );
+  const url = cloudFrontSigner.getSignedUrl({
+    url: resourceUrl,
+    expires: resourceUrlExpires,
+  });
+
+  res.status(200).json({ url });
 };
 
 export const getCoursePromoVideoUrl = async (req, res) => {
@@ -709,5 +719,19 @@ export const getCoursePromoVideoUrl = async (req, res) => {
   const course = await Course.findById(courseId);
   if (!course) return res.status(404).json({ message: 'Course not found.' });
 
-  res.status(200).json({ url: course.promoVideo?.s3Location });
+  let url;
+  if (course.promoVideo) {
+    const { s3Key } = course.promoVideo;
+    const resourceUrl = `https://${CF_DOMAINS.coursePromoVideo}/${s3Key}`;
+    //expires in two hours
+    const resourceUrlExpires = Math.floor(
+      (Date.now() + 2 * 60 * 60 * 1000) / 1000
+    );
+    url = cloudFrontSigner.getSignedUrl({
+      url: resourceUrl,
+      expires: resourceUrlExpires,
+    });
+  }
+
+  res.status(200).json({ url });
 };
