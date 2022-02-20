@@ -99,6 +99,9 @@ export const canLearnPublishedCourse = async (req, res, next) => {
   await db.connect();
   const user = await User.findById(req.user.id);
   const course = await PublishedCourse.findById(courseId);
+  if (!course) {
+    return res.status(404).json({ message: 'Course not found.' });
+  }
   if (user.isAdmin || course.author.toString() === user._id.toString()) {
     req.course = course;
     return next();
@@ -111,5 +114,45 @@ export const canLearnPublishedCourse = async (req, res, next) => {
     return next();
   } else {
     return res.status(403).json({ message: 'Not authorized.' });
+  }
+};
+
+export const canLearnOrPreviewLectureVideo = async (req, res, next) => {
+  const courseId = req.query.courseId;
+  if (!courseId) {
+    return res.status(422).json({ message: 'Course id not provide.' });
+  }
+  await db.connect();
+  const user = await User.findById(req.user.id);
+  const publishedCourse = await PublishedCourse.findById(courseId);
+  if (publishedCourse) {
+    if (
+      user.isAdmin ||
+      publishedCourse.author.toString() === user._id.toString()
+    ) {
+      req.course = publishedCourse;
+      return next();
+    }
+    let learningList = user.learningList || [];
+    learningList = learningList.map((item) => item.toString());
+    const isEnrolled = learningList.indexOf(courseId) !== -1;
+    if (isEnrolled) {
+      req.course = publishedCourse;
+      return next();
+    } else {
+      return res.status(403).json({ message: 'Not authorized.' });
+    }
+  } else {
+    //maybe preview a draft course by instructor or admin
+    const course = await Course.findById(courseId);
+    if (!course) {
+      return res.status(404).json({ message: 'Course not found.' });
+    }
+    if (user.isAdmin || course.author.toString() === user._id.toString()) {
+      req.course = course;
+      return next();
+    } else {
+      return res.status(403).json({ message: 'Not authorized.' });
+    }
   }
 };
