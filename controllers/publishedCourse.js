@@ -5,8 +5,9 @@ import PublishedLecture from 'models/PublishedLecture';
 import User from 'models/User';
 import Course from 'models/Course';
 import db from 'utils/db';
+import { cloudFrontSigner } from 'utils/aws';
 
-import { COURSE_CATEGORY } from 'utils/constants';
+import { COURSE_CATEGORY, CF_DOMAINS } from 'utils/constants';
 
 // export const getCourse = async (req, res) => {
 //   const courseId = req.query.id;
@@ -275,4 +276,18 @@ export const getPublishedCourseItemsServer = async ({
     publishedSubcategories,
     publishedLanguages,
   };
+};
+
+export const getSignedCoursePromoVideoUrl = (req, res) => {
+  const { s3Key } = req.body;
+  const resourceUrl = `https://${CF_DOMAINS.coursePromoVideo}/${s3Key}`;
+  //expires in two hours
+  const resourceUrlExpires = Math.floor(
+    (Date.now() + 2 * 60 * 60 * 1000) / 1000
+  );
+  const url = cloudFrontSigner.getSignedUrl({
+    url: resourceUrl,
+    expires: resourceUrlExpires,
+  });
+  res.status(200).json({ url });
 };

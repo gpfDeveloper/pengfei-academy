@@ -7,7 +7,7 @@ import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import WishlistIconBtn from 'components/UIs/WishlistIconBtn';
 import AddToCartBtn from 'components/UIs/AddToCartBtn';
-import VideoPlayer from 'components/UIs/VideoPlayer';
+import CourseLandingPageHeaderMedia from './CourseLandingPageHeaderMedia';
 
 export default function CourseLandingPageHeader({
   title,
@@ -17,7 +17,7 @@ export default function CourseLandingPageHeader({
   language,
   price,
   thumbnail,
-  promoVideo,
+  promoVideoS3Key,
 }) {
   const theme = useTheme();
   const isBelowMd = useMediaQuery(theme.breakpoints.down('md'));
@@ -68,25 +68,10 @@ export default function CourseLandingPageHeader({
           pb: 2,
         }}
       >
-        {promoVideo && (
-          <VideoPlayer
-            url={promoVideo}
-            thumbnail={thumbnail}
-            width={375}
-            height={211}
-          />
-        )}
-        {!promoVideo && Boolean(thumbnail) && (
-          <Box component="img" src={thumbnail} width={375} height={211}></Box>
-        )}
-        {!promoVideo && !thumbnail && (
-          <Box
-            component="img"
-            src="/image-placeholder.svg"
-            width={375}
-            height={211}
-          ></Box>
-        )}
+        <CourseLandingPageHeaderMedia
+          promoVideoS3Key={promoVideoS3Key}
+          thumbnail={thumbnail}
+        />
         <Typography variant="h6">
           {price === 0 ? 'Free' : `$${price}`}
         </Typography>

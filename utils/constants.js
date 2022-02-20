@@ -167,3 +167,7 @@ export const S3_BUCKETS = {
   courseImageBucket: 'pengfei-academy-course-image-bucket',
   coursePromoVideoBucket: 'pengfei-academy-course-promo-video-bucket',
 };
+
+export const CF_DOMAINS = {
+  coursePromoVideo: 'dbxiefh2buoba.cloudfront.net',
+};

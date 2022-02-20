@@ -38,7 +38,7 @@ export default function CourseLandingPage({ course }) {
         updatedAt={authorUpdatedAt}
         price={price}
         thumbnail={thumbnail}
-        promoVideo={promoVideo?.s3Location}
+        promoVideoS3Key={promoVideo?.s3Key}
       />
       <CourseLandingPageLearnObjs objectives={learningObjectives} />
       <CourseLandingPageContent sections={sections} />
