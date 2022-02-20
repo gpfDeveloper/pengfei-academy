@@ -77,7 +77,7 @@ export const login = async (req, res) => {
     if (user.profile) {
       const profile = await Profile.findById(user.profile);
       if (profile.avatar) {
-        avatarUrl = profile.avatar.s3Location;
+        avatarUrl = profile.avatar.cfLocation;
       }
     }
     res.json({

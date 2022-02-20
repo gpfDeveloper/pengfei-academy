@@ -2,7 +2,7 @@ import db from 'utils/db';
 import User from 'models/User';
 import Profile from 'models/Profile';
 import { S3 } from 'utils/aws';
-import { S3_BUCKETS } from 'utils/constants';
+import { S3_BUCKETS, CF_DOMAINS } from 'utils/constants';
 import { v4 as uuid } from 'uuid';
 import mongoose from 'mongoose';
 
@@ -69,7 +69,7 @@ export const getProfileAvatarUrl = async (req, res) => {
     let profileAvatarUrl = null;
     if (user.profile) {
       const profile = await Profile.findById(user.profile);
-      profileAvatarUrl = profile.avatar?.s3Location;
+      profileAvatarUrl = profile.avatar?.cfLocation;
     }
     res.status(200).json({ profileAvatarUrl });
   } else {
@@ -93,7 +93,7 @@ export const getPublicProfile = async (req, res) => {
       headline = profile.headline;
       bio = profile.bio;
       website = profile.website;
-      avatarUrl = profile.avatar?.s3Location;
+      avatarUrl = profile.avatar?.cfLocation;
     }
     res
       .status(200)
@@ -159,7 +159,7 @@ export const updateProfileAvatar = async (req, res) => {
       };
 
       const uploadS3 = S3.upload(params).promise();
-      const { key: s3Key, Location: s3Location } = await uploadS3.then();
+      const { key: s3Key } = await uploadS3.then();
 
       // delete the origin avatar from S3 if exists
       const originAvatar = profile.avatar;
@@ -173,9 +173,11 @@ export const updateProfileAvatar = async (req, res) => {
         );
       }
 
+      const cfLocation = `https://${CF_DOMAINS.userAvatar}/${s3Key}`;
+
       profile.avatar = {
         s3Key,
-        s3Location,
+        cfLocation,
         s3Bucket: S3_BUCKETS.userAvatarBucket,
       };
 
@@ -188,7 +190,7 @@ export const updateProfileAvatar = async (req, res) => {
       } else {
         await profile.save();
       }
-      return res.status(200).json({ userAvatarUrl: s3Location });
+      return res.status(200).json({ userAvatarUrl: cfLocation });
     } catch (err) {
       console.log(err);
       return res.status(422).json({
