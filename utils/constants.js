@@ -172,4 +172,5 @@ export const CF_DOMAINS = {
   coursePromoVideo: 'dbxiefh2buoba.cloudfront.net',
   courseImage: 'd38tym3n9jk0lc.cloudfront.net',
   userAvatar: 'dfeqyo6rqtwj1.cloudfront.net',
+  lectureVideo: 'd30maxphw3m7hl.cloudfront.net',
 };

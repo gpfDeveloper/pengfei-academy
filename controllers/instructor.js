@@ -129,7 +129,7 @@ export const getMyCourse = async (req, res) => {
 
     const sections = await CourseSection.find({ course: course._id });
     const lectures = await Lecture.find({ course: course._id }).populate([
-      { path: 'video', select: ['fileName', 's3Location'] },
+      { path: 'video', select: ['fileName', 's3Key'] },
     ]);
 
     for (let i = 0; i < course.sections.length; i++) {
@@ -573,11 +573,10 @@ export const uploadLectureVideo = async (req, res) => {
   //   ETag: '"4277ff8a0d7a116c59318a51fdad24a4-2"'
   // }
   const uploadFile = S3.upload(params).promise();
-  const { Location: s3Location, Key: s3Key } = await uploadFile.then();
+  const { Key: s3Key } = await uploadFile.then();
 
   const videoLecture = new VideoLecture({
     s3Key,
-    s3Location,
     s3Bucket: S3_BUCKETS.lectureVideoBucket,
     author: userId,
     lecture: lectureId,
@@ -678,7 +677,7 @@ export const uploadCoursePromoVideo = async (req, res) => {
   };
 
   const uploadFile = S3.upload(params).promise();
-  const { Location: s3Location, Key: s3Key } = await uploadFile.then();
+  const { Key: s3Key } = await uploadFile.then();
 
   const originVideo = course.promoVideo;
   if (originVideo) {
@@ -693,7 +692,6 @@ export const uploadCoursePromoVideo = async (req, res) => {
 
   course.promoVideo = {
     s3Key,
-    s3Location,
     s3Bucket: S3_BUCKETS.coursePromoVideoBucket,
     size: videoFile.size,
   };

@@ -114,9 +114,9 @@ export const getPublicProfileServer = async (userId) => {
     let website = '';
     if (user.profile) {
       const profile = await Profile.findById(user.profile);
-      headline = profile.headline;
-      bio = profile.bio;
-      website = profile.website;
+      headline = profile.headline || null;
+      bio = profile.bio || null;
+      website = profile.website || null;
     }
     return { name, headline, bio, website, isInstructor };
   } else {

@@ -14,10 +14,6 @@ const VideoLectureSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    s3Location: {
-      type: String,
-      required: true,
-    },
     author: {
       type: mongoose.Types.ObjectId,
       ref: 'User',

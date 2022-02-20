@@ -145,7 +145,7 @@ export const getPublishedCourseLearn = async (req, res) => {
     const sections = await PublishedCourseSection.find({ course: course._id });
     const lectures = await PublishedLecture.find({
       course: course._id,
-    }).populate([{ path: 'video', select: ['fileName', 's3Location'] }]);
+    }).populate([{ path: 'video', select: ['fileName', 's3Key'] }]);
 
     for (let i = 0; i < course.sections.length; i++) {
       const sectionId = course.sections[i].toString();
@@ -281,6 +281,20 @@ export const getPublishedCourseItemsServer = async ({
 export const getSignedCoursePromoVideoUrl = (req, res) => {
   const { s3Key } = req.body;
   const resourceUrl = `https://${CF_DOMAINS.coursePromoVideo}/${s3Key}`;
+  //expires in two hours
+  const resourceUrlExpires = Math.floor(
+    (Date.now() + 2 * 60 * 60 * 1000) / 1000
+  );
+  const url = cloudFrontSigner.getSignedUrl({
+    url: resourceUrl,
+    expires: resourceUrlExpires,
+  });
+  res.status(200).json({ url });
+};
+
+export const getSignedLectureVideoUrl = (req, res) => {
+  const { s3Key } = req.body;
+  const resourceUrl = `https://${CF_DOMAINS.lectureVideo}/${s3Key}`;
   //expires in two hours
   const resourceUrlExpires = Math.floor(
     (Date.now() + 2 * 60 * 60 * 1000) / 1000
