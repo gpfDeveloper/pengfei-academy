@@ -20,7 +20,7 @@ const reviewStatusMap = {
 export default function InstructorCourseItem({ item }) {
   const { id, title, image, isPublished, reviewStatus, price, numOfStudents } =
     item;
-  const url = image?.s3Location;
+  const url = image?.cfLocation;
   const theme = useTheme();
   const isBelowSm = useMediaQuery(theme.breakpoints.down('sm'));
   const router = useRouter();

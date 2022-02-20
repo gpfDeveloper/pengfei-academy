@@ -622,7 +622,7 @@ export const uploadCourseImage = async (req, res) => {
   };
 
   const uploadFile = S3.upload(params).promise();
-  const { Location: s3Location, Key: s3Key } = await uploadFile.then();
+  const { Key: s3Key } = await uploadFile.then();
 
   const originImage = course.image;
   if (originImage) {
@@ -634,16 +634,17 @@ export const uploadCourseImage = async (req, res) => {
       }
     );
   }
+  const cfLocation = `https://${CF_DOMAINS.courseImage}/${s3Key}`;
 
   course.image = {
     s3Key,
-    s3Location,
+    cfLocation,
     s3Bucket: S3_BUCKETS.courseImageBucket,
   };
 
   await course.save();
 
-  res.status(200).json({ url: s3Location });
+  res.status(200).json({ url: cfLocation });
 };
 
 export const getCourseImageUrl = async (req, res) => {
@@ -653,7 +654,7 @@ export const getCourseImageUrl = async (req, res) => {
   const course = await Course.findById(courseId);
   if (!course) return res.status(404).json({ message: 'Course not found.' });
 
-  res.status(200).json({ url: course.image?.s3Location });
+  res.status(200).json({ url: course.image?.cfLocation });
 };
 
 export const uploadCoursePromoVideo = async (req, res) => {

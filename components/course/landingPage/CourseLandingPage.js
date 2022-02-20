@@ -26,7 +26,7 @@ export default function CourseLandingPage({ course }) {
     image,
     promoVideo,
   } = course;
-  const thumbnail = image?.s3Location;
+  const thumbnail = image?.cfLocation;
 
   return (
     <Box sx={{ mt: 12, display: 'flex', flexDirection: 'column', gap: 4 }}>

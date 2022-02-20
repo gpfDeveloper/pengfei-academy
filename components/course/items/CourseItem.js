@@ -14,7 +14,7 @@ export default function CourseItem({ item }) {
   const theme = useTheme();
   const isBelowMd = useMediaQuery(theme.breakpoints.down('md'));
   const { id, image, title, price, subtitle, author } = item;
-  const url = image?.s3Location;
+  const url = image?.cfLocation;
 
   const router = useRouter();
   const clickHandler = () => {
