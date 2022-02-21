@@ -18,6 +18,7 @@ export default function CourseLearningItems({ items }) {
   return (
     <Box
       sx={{
+        alignSelf: 'stretch',
         display: 'flex',
         flexDirection: 'column',
         gap: 4,

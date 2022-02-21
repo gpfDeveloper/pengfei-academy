@@ -4,6 +4,7 @@ import PublishedLecture from 'models/PublishedLecture';
 // necessary to since we populate user,course
 import User from 'models/User';
 import Course from 'models/Course';
+import VideoLecture from 'models/VideoLecture';
 import db from 'utils/db';
 import { cloudFrontSigner } from 'utils/aws';
 

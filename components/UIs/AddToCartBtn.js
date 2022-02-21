@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { enrollmentAsync } from 'store/user-async';
 import { addToCart } from 'store/cart';
 
-function AddToCartBtn({ author, price, title }) {
+function AddToCartBtn({ author, price, title, thumbnail }) {
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart);
   const user = useSelector((state) => state.user);
@@ -19,7 +19,7 @@ function AddToCartBtn({ author, price, title }) {
     learningList.findIndex((item) => item === courseId) !== -1;
 
   const addToCartHandler = () => {
-    dispatch(addToCart({ courseId, author, price, title }));
+    dispatch(addToCart({ courseId, author, price, title, thumbnail }));
   };
   const goToCartHandler = () => {
     router.push('/cart');

@@ -207,9 +207,15 @@ export const getWishlistCourseItems = async (req, res) => {
         'subcategory',
         'updatedAt',
       ])
-      .populate([{ path: 'author', select: ['name'] }]);
+      .populate([
+        { path: 'author', select: ['name'] },
+        { path: 'course', select: ['image'] },
+      ]);
     return res.status(200).json({
-      courseItems: courseItems.map((item) => item.toObject({ getters: true })),
+      courseItems: courseItems.map((item) => ({
+        ...item.toObject({ getters: true }),
+        image: item.course.image,
+      })),
     });
   } else {
     return res.status(404).json({ message: 'User not found.' });
@@ -265,7 +271,10 @@ export const getLearningListCourseItems = async (req, res) => {
     let learningList = user.learningList || [];
     let courseItems = await PublishedCourse.find({ _id: { $in: learningList } })
       .select(['title', 'subtitle', 'category', 'subcategory', 'updatedAt'])
-      .populate([{ path: 'author', select: ['name'] }]);
+      .populate([
+        { path: 'author', select: ['name'] },
+        { path: 'course', select: ['image'] },
+      ]);
     return res.status(200).json({
       courseItems: courseItems.map((item) => item.toObject({ getters: true })),
     });

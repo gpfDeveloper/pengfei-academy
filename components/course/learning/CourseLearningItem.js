@@ -13,7 +13,8 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 export default function CourseLearningItem({ item }) {
   const theme = useTheme();
   const isBelowMd = useMediaQuery(theme.breakpoints.down('md'));
-  const { id, thumbnail, title, author } = item;
+  const { id, course, title, author } = item;
+  const thumbnail = course.image?.cfLocation;
   const router = useRouter();
   const clickHandler = () => {
     router.push(`/course/${id}/learn`);

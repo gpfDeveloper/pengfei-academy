@@ -17,11 +17,14 @@ const cartSlice = createSlice({
   name: 'cart',
   initialState,
   reducers: {
-    addToCart: (state, { payload: { courseId, title, author, price } }) => {
+    addToCart: (
+      state,
+      { payload: { courseId, title, author, price, thumbnail } }
+    ) => {
       const isExist =
         state.items.findIndex((item) => item.courseId === courseId) !== -1;
       if (isExist) return;
-      state.items.push({ courseId, title, author, price });
+      state.items.push({ courseId, title, author, price, thumbnail });
       state.subtotal += price;
       state.subtotal = Math.round(state.subtotal * 100) / 100;
       Cookies.set(CART_INFO_KEY, JSON.stringify(state));

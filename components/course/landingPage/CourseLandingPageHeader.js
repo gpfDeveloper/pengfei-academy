@@ -76,7 +76,12 @@ export default function CourseLandingPageHeader({
           {price === 0 ? 'Free' : `$${price}`}
         </Typography>
         <Box sx={{ display: 'flex', gap: 2, alignSelf: 'stretch' }}>
-          <AddToCartBtn title={title} author={author.name} price={price} />
+          <AddToCartBtn
+            title={title}
+            author={author.name}
+            price={price}
+            thumbnail={thumbnail}
+          />
           <WishlistIconBtn />
         </Box>
       </Paper>
