@@ -1,5 +1,4 @@
 import { useRouter } from 'next/router';
-import { useSelector } from 'react-redux';
 import {
   Box,
   List,
@@ -7,20 +6,18 @@ import {
   ListItemText,
   Divider,
   Stack,
+  Tooltip,
 } from '@mui/material';
 
-import { PAGES, PAGES_INSTRUCTOR } from 'utils/constants';
+import { PAGES_INSTRUCTOR_VIEW } from 'utils/constants';
 import Brand from 'components/UIs/Brand';
 
-export default function DrawerNavs({ onClose }) {
+export default function DrawerNavsInstructorView({ onClose }) {
   const router = useRouter();
-  const user = useSelector((state) => state.user);
-  const { isInstructor } = user;
   const pathName = router.pathname;
-  let pages = PAGES;
-  if (isInstructor) {
-    pages = PAGES_INSTRUCTOR;
-  }
+  const studentViewHandler = () => {
+    router.push('/');
+  };
   return (
     <Box sx={{ width: 250 }} onClick={onClose} onKeyDown={onClose}>
       <Stack sx={{ padding: 2 }}>
@@ -28,7 +25,7 @@ export default function DrawerNavs({ onClose }) {
       </Stack>
       <Divider />
       <List>
-        {pages.map((page) => (
+        {PAGES_INSTRUCTOR_VIEW.map((page) => (
           <ListItemButton
             key={page.label}
             onClick={() => router.push(page.path)}
@@ -37,6 +34,12 @@ export default function DrawerNavs({ onClose }) {
             <ListItemText primary={page.label} />
           </ListItemButton>
         ))}
+        <Divider />
+        <Tooltip title="Switch to the student view here - get back to the courses you’re taking.">
+          <ListItemButton onClick={studentViewHandler}>
+            Student view
+          </ListItemButton>
+        </Tooltip>
       </List>
     </Box>
   );

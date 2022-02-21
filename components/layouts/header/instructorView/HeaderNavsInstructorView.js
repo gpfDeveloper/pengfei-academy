@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router';
 import dynamic from 'next/dynamic';
+import { PAGES_INSTRUCTOR_VIEW } from 'utils/constants';
 
 import { Box, Button } from '@mui/material';
 
@@ -12,18 +13,15 @@ function HeaderNavsInstructorView() {
         display: { lg: 'flex', md: 'none', xs: 'none', gap: 2 },
       }}
     >
-      <Button
-        color={'/instructor' === pathname ? 'primary' : 'inherit'}
-        onClick={() => router.push('/instructor')}
-      >
-        My Courses
-      </Button>
-      <Button
-        color={'/instructor/support' === pathname ? 'primary' : 'inherit'}
-        onClick={() => router.push('/instructor/support')}
-      >
-        Support
-      </Button>
+      {PAGES_INSTRUCTOR_VIEW.map((item) => (
+        <Button
+          key={item.path}
+          color={item.path === pathname ? 'primary' : 'inherit'}
+          onClick={() => router.push(item.path)}
+        >
+          {item.label}
+        </Button>
+      ))}
     </Box>
   );
 }
