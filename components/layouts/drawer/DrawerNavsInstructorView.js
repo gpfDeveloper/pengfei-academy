@@ -21,7 +21,7 @@ export default function DrawerNavsInstructorView({ onClose }) {
   return (
     <Box sx={{ width: 250 }} onClick={onClose} onKeyDown={onClose}>
       <Stack sx={{ padding: 2 }}>
-        <Brand />
+        <Brand link="/instructor" />
       </Stack>
       <Divider />
       <List>
