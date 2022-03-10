@@ -143,7 +143,7 @@ export default function CourseLectureItem({
             }}
           >
             <CheckCircleIcon fontSize="small" />
-            <Typography sx={{ flex: '0 0 78px', fontWeight: 'bold' }}>
+            <Typography sx={{ flex: '0 0 84px', fontWeight: 'bold' }}>
               {lectureLabel}
             </Typography>
             <Box sx={{ display: 'flex', gap: 1, flexGrow: 1 }}>

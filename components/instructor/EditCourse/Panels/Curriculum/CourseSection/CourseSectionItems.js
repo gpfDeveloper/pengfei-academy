@@ -71,12 +71,6 @@ export default function CourseSectionItems() {
     }
   };
 
-  // const addSectionHandler = () => {
-  //   const newItem = { title: '', id: uuid() };
-  //   setItems((pre) => [...pre, newItem]);
-  //   setAddSectionDialogOpen(true);
-  // };
-
   const addSectionHandler = (title) => {
     setIsAddSectionDialogOpen(false);
     dispatch(createCourseSectionAsync({ token, courseId, title }));

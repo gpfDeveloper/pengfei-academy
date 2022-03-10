@@ -33,6 +33,10 @@ const PublishedCourseSchema = new mongoose.Schema(
       default: 'English',
       enum: [...courseLanguages],
     },
+    priority: {
+      type: Number,
+      default: 0,
+    },
     price: { type: Number, max: 1000, min: 0 },
     category: { type: String, enum: [...courseCategories] },
     subcategory: { type: String, enum: [...courseSubcategories] },

@@ -41,7 +41,7 @@ export const createOrderAndBatchEnrollment = async (req, res) => {
   await db.connect();
   const userId = req.user.id;
   const { order } = req.body;
-  const user = await User.findById(userId).select('+totalPayment');
+  const user = await User.findById(userId);
   if (!user) {
     res.status(404).json({ message: 'User not found' });
   }
@@ -52,7 +52,6 @@ export const createOrderAndBatchEnrollment = async (req, res) => {
 
   const session = await mongoose.startSession();
   session.startTransaction();
-  user.totalPayment += order.totalAmount;
   for (const item of order.items) {
     await _enrollmentServer(user, item.courseId, item.price, session);
   }

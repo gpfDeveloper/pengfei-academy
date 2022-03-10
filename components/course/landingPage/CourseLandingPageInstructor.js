@@ -3,7 +3,7 @@ import { Avatar, Box, Typography, Link } from '@mui/material';
 import ReactMarkdown from 'react-markdown';
 
 export default function CourseLandingPageInstructor({ instructor }) {
-  const { name, headline, bio, id, avatar } = instructor;
+  const { name, headline, bio, id, avatarUrl } = instructor;
 
   return (
     <Box
@@ -17,7 +17,7 @@ export default function CourseLandingPageInstructor({ instructor }) {
       <Typography variant="h4">Instructor</Typography>
       <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
         <Avatar
-          src={avatar || '/'}
+          src={avatarUrl || '/'}
           alt={name}
           sx={{
             backgroundColor: 'primary.main',

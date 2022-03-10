@@ -20,11 +20,6 @@ const userSchema = new mongoose.Schema(
     },
     resetPasswordToken: String,
     resetPasswordTokenExpire: Date,
-    totalPayment: {
-      type: Number,
-      default: 0,
-      select: false,
-    },
     isAdmin: {
       type: Boolean,
       default: false,

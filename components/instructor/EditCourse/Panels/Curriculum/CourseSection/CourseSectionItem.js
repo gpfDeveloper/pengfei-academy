@@ -15,7 +15,6 @@ import {
 } from '@mui/material';
 import DescriptionIcon from '@mui/icons-material/Description';
 import DeleteIcon from '@mui/icons-material/Delete';
-// import DragHandleIcon from '@mui/icons-material/DragHandle';
 import EditIcon from '@mui/icons-material/Edit';
 import AddIcon from '@mui/icons-material/Add';
 
@@ -29,9 +28,7 @@ export default function CourseSectionItem({
   onDrag,
   onDrop,
   sectionItems,
-  // setItems,
 }) {
-  // const [title, setTitle] = useState(items[idx].title);
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
   const { token } = user;
@@ -76,27 +73,6 @@ export default function CourseSectionItem({
       })
     );
   };
-
-  // const changeHandler = (e) => {
-  //   const value = e.target.value;
-  //   setTitle(value);
-  //   setItems((pre) => {
-  //     const newItems = [...pre];
-  //     newItems[idx].title = value;
-  //     return newItems;
-  //   });
-  // };
-
-  // const deleteHandler = () => {
-  //   setItems((pre) => {
-  //     const ret = [];
-  //     for (let i = 0; i < pre.length; i++) {
-  //       if (i === idx) continue;
-  //       ret.push(pre[i]);
-  //     }
-  //     return ret;
-  //   });
-  // };
 
   return (
     <>

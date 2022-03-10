@@ -3,7 +3,7 @@ import React from 'react';
 
 export default function Footer() {
   return (
-    <AppBar position="static" color="primary" component="footer">
+    <AppBar position="static" color="primary" component="footer" sx={{ mt: 4 }}>
       <Container maxWidth="md">
         <Toolbar sx={{ justifyContent: 'center' }}>
           <Typography variant="body1" color="inherit">

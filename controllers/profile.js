@@ -112,13 +112,15 @@ export const getPublicProfileServer = async (userId) => {
     let headline = '';
     let bio = '';
     let website = '';
+    let avatarUrl = '';
     if (user.profile) {
       const profile = await Profile.findById(user.profile);
       headline = profile.headline || null;
       bio = profile.bio || null;
       website = profile.website || null;
+      avatarUrl = profile.avatar?.cfLocation || null;
     }
-    return { name, headline, bio, website, isInstructor };
+    return { name, headline, bio, website, isInstructor, avatarUrl };
   } else {
     throw new Error('User not found');
   }
