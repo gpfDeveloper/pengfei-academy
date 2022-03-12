@@ -115,6 +115,7 @@ export default function PaypalCheckout() {
     });
   };
   const onError = (err) => {
+    console.log(err);
     dispatch(
       setSnackbar({
         severity: 'error',
