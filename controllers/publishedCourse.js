@@ -226,7 +226,7 @@ export const getPublishedCourseItemsServer = async ({
     ...languageFilter,
     ...priceFilter,
   };
-  const order = { updatedAt: -1 };
+  const order = { priority: -1, updatedAt: -1 };
   const courseItems = await PublishedCourse.find(filters)
     .sort(order)
     .skip(_pageSize * (_page - 1))
@@ -239,6 +239,7 @@ export const getPublishedCourseItemsServer = async ({
       'category',
       'subcategory',
       'updatedAt',
+      'priority',
     ])
     .populate([
       { path: 'author', select: ['name'] },
