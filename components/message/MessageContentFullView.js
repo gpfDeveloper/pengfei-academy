@@ -59,6 +59,7 @@ export default function MessageContentFullView({ convId }) {
         <>
           <MessageContentFullViewHeader
             userName={targetUser.name}
+            userAvatar={targetUser.userAvatar}
             userId={targetUser.id}
           />
           <Box sx={{ mt: 10 }}>

@@ -1,5 +1,6 @@
 import db from 'utils/db';
 import User from 'models/User';
+import Profile from 'models/Profile';
 import Conversation from 'models/Conversation';
 import Message from 'models/Message';
 import mongoose from 'mongoose';
@@ -116,6 +117,11 @@ export const getConversations = async (req, res) => {
       }
       convInfo.userName = convUser.name;
       convInfo.userId = convUser._id.toString();
+      convInfo.userAvatar = null;
+      const userProfile = await Profile.findOne({ user: convInfo.userId });
+      if (userProfile && userProfile.avatar) {
+        convInfo.userAvatar = userProfile.avatar.cfLocation;
+      }
       const lastMsg = await Message.findById(conv.lastMsg).select({
         text: 1,
         sender: 1,
@@ -135,6 +141,17 @@ export const getMsgsByConversation = async (req, res) => {
   const member1 = req.member1;
   const member2 = req.member2;
   await db.connect();
+  //get avatar
+  let member1Avatar = null;
+  let member2Avatar = null;
+  const member1Profile = await Profile.findOne({ user: member1._id });
+  if (member1Profile && member1Profile.avatar) {
+    member1Avatar = member1Profile.avatar.cfLocation;
+  }
+  const member2Profile = await Profile.findOne({ user: member2._id });
+  if (member2Profile && member2Profile.avatar) {
+    member2Avatar = member2Profile.avatar.cfLocation;
+  }
   const messages = [];
   const relatedMsg = await Message.find({ conversation: conversationId }).sort({
     createdAt: 'asc',
@@ -151,8 +168,14 @@ export const getMsgsByConversation = async (req, res) => {
   }
   res.status(200).json({
     messages,
-    member1: member1.toObject({ getters: true }),
-    member2: member2.toObject({ getters: true }),
+    member1: {
+      ...member1.toObject({ getters: true }),
+      userAvatar: member1Avatar,
+    },
+    member2: {
+      ...member2.toObject({ getters: true }),
+      userAvatar: member2Avatar,
+    },
   });
 };
 

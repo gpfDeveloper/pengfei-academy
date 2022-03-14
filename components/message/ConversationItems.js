@@ -26,6 +26,7 @@ export default function ConversationItems({
           <ConversationItem
             key={item.id}
             userName={item.userName}
+            userAvatar={item.userAvatar}
             lastMsg={item.lastMsg}
             isSendByMe={item.isSendByMe}
             lastMsgTime={item.lastMsgTime}

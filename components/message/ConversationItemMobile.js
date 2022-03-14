@@ -12,6 +12,7 @@ import { sliceText } from 'utils';
 
 export default function ConversationItemMobile({
   userName,
+  userAvatar,
   lastMsgTime,
   isSendByMe,
   lastMsg,
@@ -25,7 +26,7 @@ export default function ConversationItemMobile({
     <>
       <ListItemButton alignItems="flex-start" onClick={clickHandler}>
         <ListItemAvatar>
-          <Avatar alt={userName} src="/" />
+          <Avatar alt={userName} src={userAvatar || '/'} />
         </ListItemAvatar>
         <Box sx={{ display: 'flex', flexDirection: 'column', flex: 1, gap: 2 }}>
           <Box

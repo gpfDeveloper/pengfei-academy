@@ -4,7 +4,11 @@ import { AppBar, Toolbar, IconButton, Avatar, Link, Box } from '@mui/material';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import { sliceText } from 'utils';
 
-export default function MessageContentFullViewHeader({ userName, userId }) {
+export default function MessageContentFullViewHeader({
+  userName,
+  userAvatar,
+  userId,
+}) {
   const router = useRouter();
   return (
     <AppBar sx={{ position: 'absolute', zIndex: 1000 }}>
@@ -27,7 +31,7 @@ export default function MessageContentFullViewHeader({ userName, userId }) {
         </NextLink>
         <Box>
           <IconButton onClick={() => router.push(`/user/${userId}`)}>
-            <Avatar alt={userName} src="/" />
+            <Avatar alt={userName} src={userAvatar || '/'} />
           </IconButton>
           <NextLink passHref href={`/user/${userId}`}>
             <Link

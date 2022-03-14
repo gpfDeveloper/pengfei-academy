@@ -3,13 +3,13 @@ import { useRouter } from 'next/router';
 import { AppBar, Toolbar, IconButton, Avatar, Link } from '@mui/material';
 import { sliceText } from 'utils';
 
-export default function MessageContentHeader({ userId, userName }) {
+export default function MessageContentHeader({ userId, userName, userAvatar }) {
   const router = useRouter();
   return (
     <AppBar sx={{ position: 'absolute', zIndex: 1000 }}>
       <Toolbar sx={{ gap: 1 }}>
         <IconButton onClick={() => router.push(`/user/${userId}`)}>
-          <Avatar alt={userName} src="/" />
+          <Avatar alt={userName} src={userAvatar || '/'} />
         </IconButton>
         <NextLink passHref href={`/user/${userId}`}>
           <Link

@@ -126,7 +126,6 @@ export default function CourseSectionItems() {
             onDrop={sectionOrLectureDropHandler}
             idx={idx}
             sectionItems={sections}
-            // setItems={setItems}
           />
         ))}
         <ListItem sx={{ pl: 0 }}>

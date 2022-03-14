@@ -18,6 +18,7 @@ export default function ConversationItemsMobile({ items, isLoading }) {
           <ConversationItemMobile
             key={item.id}
             userName={item.userName}
+            userAvatar={item.userAvatar}
             lastMsg={item.lastMsg}
             isSendByMe={item.isSendByMe}
             lastMsgTime={item.lastMsgTime}

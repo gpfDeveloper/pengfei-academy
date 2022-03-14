@@ -11,6 +11,7 @@ import { sliceText } from 'utils';
 
 export default function ConversationItem({
   userName,
+  userAvatar,
   lastMsgTime,
   isSendByMe,
   lastMsg,
@@ -26,7 +27,7 @@ export default function ConversationItem({
         selected={id === current?.id}
       >
         <ListItemAvatar>
-          <Avatar alt={userName} src="/" />
+          <Avatar alt={userName} src={userAvatar || '/'} />
         </ListItemAvatar>
         <Box sx={{ display: 'flex', flexDirection: 'column', flex: 1, gap: 2 }}>
           <Box

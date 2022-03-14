@@ -7,13 +7,18 @@ import MessageContentInput from './MessageContentInput';
 export default function MessageContent({
   userName,
   userId,
+  userAvatar,
   isLoadingMsgs,
   msgs,
   onSend,
 }) {
   return (
     <Box sx={{ position: 'relative', flex: 1, height: 680 }}>
-      <MessageContentHeader userName={userName} userId={userId} />
+      <MessageContentHeader
+        userName={userName}
+        userId={userId}
+        userAvatar={userAvatar}
+      />
       <Box sx={{ mt: 10 }}>
         {isLoadingMsgs && <Spinner />}
         {!isLoadingMsgs && <MessageContentItems items={msgs} />}

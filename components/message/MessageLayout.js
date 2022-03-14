@@ -79,6 +79,7 @@ export default function MessageLayout() {
         <MessageContent
           userName={current.userName}
           userId={current.userId}
+          userAvatar={current.userAvatar}
           isLoadingMsgs={isLoadingMsgs}
           msgs={msgs}
           onSend={sendMsgHandler}
