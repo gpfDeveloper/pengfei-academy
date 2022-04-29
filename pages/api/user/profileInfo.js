@@ -5,6 +5,6 @@ import { isLogin } from 'middleware/auth';
 
 const handler = nc();
 
-handler.put(isLogin, updateProfileInfo);
+// handler.put(isLogin, updateProfileInfo);
 
 export default handler;
