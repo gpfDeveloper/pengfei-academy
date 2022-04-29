@@ -1,64 +1,40 @@
-import { useRouter } from 'next/router';
-import { Box, Pagination, Typography } from '@mui/material';
+import { Box } from '@mui/material';
 import CourseItems from 'components/course/items/CourseItems';
 import PageLayout from 'components/layouts/PageLayout';
 import { getPublishedCourseItemsServer } from 'controllers/publishedCourse';
-import CourseFilter from 'components/course/filter/CourseFilter';
-import { useTheme } from '@mui/material/styles';
-import useMediaQuery from '@mui/material/useMediaQuery';
-import CourseFilterDrawer from 'components/course/filter/CourseFilterDrawer';
 
 export default function Courses({
   courseItems,
-  pageCount,
-  page,
-  courseCount,
-  publishedCategories,
-  publishedSubcategories,
-  publishedLanguages,
+
   language,
   category,
   subcategory,
   price,
 }) {
-  const theme = useTheme();
-  const isBelowMd = useMediaQuery(theme.breakpoints.down('md'));
-  const router = useRouter();
   if (!language) language = 'all';
   if (!category) category = 'all';
   if (!subcategory) subcategory = 'all';
   if (!price) price = 'all';
 
-  const filterSearch = ({ page, category, subcategory, language, price }) => {
-    const pathname = '/course';
-    const { query } = router;
-    if (page) query.page = page;
-    if (category) query.category = category;
-    if (subcategory) query.subcategory = subcategory;
-    if (language) query.language = language;
-    if (price) query.price = price;
-    router.push({ pathname, query });
-  };
+  // const changePageHandler = (e, page) => {
+  //   filterSearch({ page });
+  // };
 
-  const changePageHandler = (e, page) => {
-    filterSearch({ page });
-  };
+  // const changeCategoryHandler = (category) => {
+  //   filterSearch({ category, subcategory: 'all' });
+  // };
 
-  const changeCategoryHandler = (category) => {
-    filterSearch({ category, subcategory: 'all' });
-  };
+  // const changeSubcategoryHandler = (subcategory) => {
+  //   filterSearch({ subcategory });
+  // };
 
-  const changeSubcategoryHandler = (subcategory) => {
-    filterSearch({ subcategory });
-  };
+  // const changeLanguageHandler = (language) => {
+  //   filterSearch({ language });
+  // };
 
-  const changeLanguageHandler = (language) => {
-    filterSearch({ language });
-  };
-
-  const changePriceHandler = (price) => {
-    filterSearch({ price });
-  };
+  // const changePriceHandler = (price) => {
+  //   filterSearch({ price });
+  // };
 
   return (
     <PageLayout>
@@ -185,49 +161,3 @@ export async function getStaticProps() {
     revalidate: 60 * 60 * 24,
   };
 }
-
-// export async function getServerSideProps({ query }) {
-//   const page = +query.page || 1;
-//   let category = query.category || '';
-//   let subcategory = query.subcategory || '';
-//   let language = query.language || '';
-//   let price = query.price || '';
-//   if (category === 'all') category = '';
-//   if (subcategory === 'all') subcategory = '';
-//   if (language === 'all') language = '';
-//   if (price === 'all') price = '';
-
-//   const _searchQuery = query.searchQuery;
-
-//   const {
-//     courseItems,
-//     pageCount,
-//     courseCount,
-//     publishedCategories,
-//     publishedSubcategories,
-//     publishedLanguages,
-//   } = await getPublishedCourseItemsServer({
-//     _page: page,
-//     _category: category,
-//     _subcategory: subcategory,
-//     _language: language,
-//     _price: price,
-//     _searchQuery,
-//   });
-
-//   return {
-//     props: {
-//       pageCount,
-//       courseCount,
-//       courseItems,
-//       page,
-//       publishedCategories,
-//       publishedSubcategories,
-//       publishedLanguages,
-//       language,
-//       category,
-//       subcategory,
-//       price,
-//     },
-//   };
-// }
