@@ -2,6 +2,7 @@ import PageLayout from 'components/layouts/PageLayout';
 import CourseLandingPage from 'components/course/landingPage/CourseLandingPage';
 
 export default function CourseLandingScreen({ course }) {
+  if (!course) return <></>;
   return (
     <PageLayout title={course.title} description={course.subtitle}>
       <CourseLandingPage course={course} />
@@ -16,11 +17,6 @@ import {
 import { getPublicProfileServer } from 'controllers/profile';
 
 export async function getStaticPaths() {
-  // const slugs = await getAllBlogSlugs();
-  // return {
-  //   paths: slugs.map((slug) => ({ params: { slug } })),
-  //   fallback: true,
-  // };
   const ids = await getAllPublishedCourseIdsServer();
   return {
     paths: ids.map((courseId) => ({ params: { courseId } })),
