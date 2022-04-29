@@ -307,3 +307,9 @@ export const getSignedLectureVideoUrl = (req, res) => {
   });
   res.status(200).json({ url });
 };
+
+export const getAllPublishedCourseIdsServer = async () => {
+  await db.connect();
+  const ids = await PublishedCourse.find({}).select('_id');
+  return ids.map((id) => id._id.toString());
+};

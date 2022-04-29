@@ -16,7 +16,7 @@ function HeaderNavs() {
     <>
       <Box
         sx={{
-          flexGrow: 1,
+          // flexGrow: 1,
           display: { lg: 'flex', md: 'none', xs: 'none', gap: 2 },
         }}
       >

@@ -35,13 +35,13 @@ export default function Header() {
   return (
     <HideOnScroll>
       <AppBar>
-        <Toolbar>
+        <Toolbar sx={{ justifyContent: 'space-between' }}>
           <Drawer />
           <Brand />
-          <HeaderSearch />
+          {/* <HeaderSearch /> */}
           <HeaderNavs />
           <HeaderActions />
-          <HeaderSearchMobile />
+          {/* <HeaderSearchMobile /> */}
           <HeaderActionsMobile />
         </Toolbar>
       </AppBar>

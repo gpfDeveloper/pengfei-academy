@@ -65,7 +65,7 @@ export default function Courses({
       <Box
         sx={{ display: 'flex', flexDirection: 'column', mt: 12, gap: 2, mb: 4 }}
       >
-        <Box
+        {/* <Box
           sx={{
             display: 'flex',
             alignItems: 'center',
@@ -98,9 +98,9 @@ export default function Courses({
             {' '}
             {courseCount} results
           </Typography>
-        </Box>
+        </Box> */}
         <Box sx={{ display: 'flex', justifyContent: 'space-between', gap: 2 }}>
-          <Box sx={{ display: isBelowMd ? 'none' : 'block' }}>
+          {/* <Box sx={{ display: isBelowMd ? 'none' : 'block' }}>
             <CourseFilter
               publishedCategories={publishedCategories}
               publishedSubcategories={publishedSubcategories}
@@ -114,7 +114,7 @@ export default function Courses({
               onChangeLanguage={changeLanguageHandler}
               onChangePrice={changePriceHandler}
             />
-          </Box>
+          </Box> */}
           <Box
             sx={{
               display: 'flex',
@@ -125,13 +125,13 @@ export default function Courses({
             }}
           >
             <CourseItems items={courseItems} />
-            <Pagination
+            {/* <Pagination
               count={pageCount}
               variant="outlined"
               page={page}
               color="primary"
               onChange={changePageHandler}
-            />
+            /> */}
           </Box>
         </Box>
       </Box>
@@ -139,18 +139,18 @@ export default function Courses({
   );
 }
 
-export async function getServerSideProps({ query }) {
-  const page = +query.page || 1;
-  let category = query.category || '';
-  let subcategory = query.subcategory || '';
-  let language = query.language || '';
-  let price = query.price || '';
+export async function getStaticProps() {
+  const page = 1;
+  let category = '';
+  let subcategory = '';
+  let language = '';
+  let price = '';
   if (category === 'all') category = '';
   if (subcategory === 'all') subcategory = '';
   if (language === 'all') language = '';
   if (price === 'all') price = '';
 
-  const _searchQuery = query.searchQuery;
+  const _searchQuery = '';
 
   const {
     courseItems,
@@ -182,5 +182,52 @@ export async function getServerSideProps({ query }) {
       subcategory,
       price,
     },
+    revalidate: 60 * 60 * 24,
   };
 }
+
+// export async function getServerSideProps({ query }) {
+//   const page = +query.page || 1;
+//   let category = query.category || '';
+//   let subcategory = query.subcategory || '';
+//   let language = query.language || '';
+//   let price = query.price || '';
+//   if (category === 'all') category = '';
+//   if (subcategory === 'all') subcategory = '';
+//   if (language === 'all') language = '';
+//   if (price === 'all') price = '';
+
+//   const _searchQuery = query.searchQuery;
+
+//   const {
+//     courseItems,
+//     pageCount,
+//     courseCount,
+//     publishedCategories,
+//     publishedSubcategories,
+//     publishedLanguages,
+//   } = await getPublishedCourseItemsServer({
+//     _page: page,
+//     _category: category,
+//     _subcategory: subcategory,
+//     _language: language,
+//     _price: price,
+//     _searchQuery,
+//   });
+
+//   return {
+//     props: {
+//       pageCount,
+//       courseCount,
+//       courseItems,
+//       page,
+//       publishedCategories,
+//       publishedSubcategories,
+//       publishedLanguages,
+//       language,
+//       category,
+//       subcategory,
+//       price,
+//     },
+//   };
+// }

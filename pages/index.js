@@ -23,6 +23,6 @@ export async function getStaticProps() {
     props: {
       featuredCourses: courses.courseItems,
     },
-    revalidate: 60,
+    revalidate: 60 * 60 * 24,
   };
 }
